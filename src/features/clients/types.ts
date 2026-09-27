@@ -22,10 +22,3 @@ export type ClientInput = Pick<
   Client,
   "firstName" | "lastName" | "company" | "email" | "phone" | "status" | "owner" | "position" | "address" | "notes"
 >;
-
-export type ClientActivity = {
-  id: string;
-  kind: "created" | "updated" | "deleted";
-  clientName: string;
-  occurredAt: string;
-};

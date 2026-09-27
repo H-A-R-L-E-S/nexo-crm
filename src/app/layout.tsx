@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Resumen | Nexo CRM",
-  description: "Nexo CRM: un espacio para conectar con tus clientes. Demostración con datos ficticios.",
+  description: "Nexo CRM: un espacio para conectar con tus clientes.",
   icons: { icon: "/icon.svg" },
 };
 

@@ -26,6 +26,7 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
   const { clients, addClient, updateClient } = useClients();
   const [values, setValues] = useState<ClientInput>(() => clientInitialValues(client));
   const [errors, setErrors] = useState<ClientFormErrors>({});
+  const [saving, setSaving] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const id = useId();
 
@@ -42,8 +43,9 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
     return errors[field] ? <p id={`${id}-${field}-error`} className="text-xs leading-5 text-red-600">{errors[field]}</p> : null;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (saving) return;
     const input = normalizeClientInput(values);
     const nextErrors = validateClient(input, clients, client?.id);
     setErrors(nextErrors);
@@ -55,10 +57,17 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
       });
       return;
     }
-    if (client) updateClient(client.id, input);
-    else addClient(input);
-    toast.success(client ? "Cambios guardados" : "Cliente registrado", { description: `${input.firstName} ${input.lastName}: ${client ? "información actualizada correctamente." : "se agregó a tu cartera."}` });
-    onClose();
+    setSaving(true);
+    try {
+      if (client) await updateClient(client.id, input);
+      else await addClient(input);
+      toast.success(client ? "Cambios guardados" : "Cliente registrado", { description: `${input.firstName} ${input.lastName}: ${client ? "información actualizada correctamente." : "se agregó a tu cartera."}` });
+      onClose();
+    } catch (cause) {
+      toast.error(cause instanceof Error ? cause.message : "No se pudo guardar el cliente.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   const selectClassName = "h-10 w-full appearance-none rounded-lg border border-input bg-white px-3 pr-9 text-sm text-slate-700 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/25 aria-invalid:border-red-500 aria-invalid:ring-red-100";
@@ -106,10 +115,9 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
         <Textarea {...fieldA11y("notes")} value={values.notes} onChange={(event) => updateField("notes", event.target.value)} placeholder="Agrega contexto que te ayude a conocer mejor al cliente…" maxLength={1500} rows={3} className="resize-y rounded-lg" />
         {fieldError("notes")}
       </div>
-      <p className="rounded-lg bg-slate-50 px-3 py-2.5 text-xs leading-5 text-slate-500">Demostración local. Los cambios se reinician al recargar la página.</p>
       <DialogFooter className="gap-2 border-t border-slate-100 pt-5">
-        <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
-        <Button type="submit">{client ? "Guardar cambios" : "Guardar cliente"}</Button>
+        <Button type="button" variant="outline" disabled={saving} onClick={onClose}>Cancelar</Button>
+        <Button type="submit" disabled={saving}>{saving ? "Guardando..." : client ? "Guardar cambios" : "Guardar cliente"}</Button>
       </DialogFooter>
     </form>
   );

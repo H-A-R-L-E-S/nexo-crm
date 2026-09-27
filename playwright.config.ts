@@ -10,7 +10,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: 1,
+  timeout: 60_000,
+  expect: { timeout: 15_000 },
   reporter: "list",
   use: {
     baseURL: "http://127.0.0.1:3000",
@@ -27,9 +29,13 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev -- --hostname 127.0.0.1 --port 3000",
+    command: "node node_modules/next/dist/bin/next dev --webpack --hostname 127.0.0.1 --port 3000",
+    env: {
+      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "playwright-anon-key",
+    },
     url: "http://127.0.0.1:3000",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

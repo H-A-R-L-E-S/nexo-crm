@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexo CRM
 
-## Getting Started
+CRM desarrollado con Next.js 16. El módulo de Clientes usa Supabase; el resto del proyecto conserva las vistas existentes.
 
-First, run the development server:
+## Configuración de Supabase
+
+1. Crea un proyecto en Supabase.
+2. Ejecuta [supabase/schema.sql](supabase/schema.sql) en el editor SQL de Supabase. Sus políticas RLS son temporales para desarrollo: permiten operaciones públicas sin login. Reemplázalas antes de publicar la aplicación.
+3. Opcionalmente ejecuta [supabase/seed.sql](supabase/seed.sql) para insertar cinco clientes ficticios.
+4. Copia `.env.example` a `.env.local` en la raíz del repositorio.
+5. Agrega la URL del proyecto y la clave pública `anon` en `.env.local`:
+
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   ```
+
+6. Reinicia el servidor. Para desarrollo usa `npm run dev -- --webpack` debido al problema conocido de parsing del CSS con Turbopack.
+
+`.env.local` permanece fuera de Git. Nunca coloques una clave `service_role` en una variable `NEXT_PUBLIC_`.
+
+## Verificación
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build -- --webpack
+npm run test:e2e
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Las pruebas de Playwright simulan las respuestas de Supabase y no necesitan credenciales reales.

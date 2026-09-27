@@ -8,7 +8,6 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme="light"
       containerAriaLabel="Notificaciones"
-      closeButtonAriaLabel="Cerrar notificación"
       className="toaster group"
       icons={{
         success: (

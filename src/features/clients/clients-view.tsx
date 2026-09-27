@@ -9,6 +9,7 @@ import {
   ChevronRight,
   CircleUserRound,
   Pencil,
+  Trash2,
   Search,
   SlidersHorizontal,
   UserRoundCheck,
@@ -17,6 +18,8 @@ import {
   X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,7 +35,7 @@ import { cn } from "@/lib/utils";
 import { ClientFormDialog } from "./client-form";
 import { useClients } from "./clients-provider";
 import { OWNERS } from "./demo-data";
-import type { ClientStatus } from "./types";
+import type { Client, ClientStatus } from "./types";
 
 const STATUS_STYLES: Record<ClientStatus, string> = {
   Activo: "border-emerald-100 bg-emerald-50 text-emerald-700",
@@ -67,15 +70,45 @@ function pageNumbers(currentPage: number, totalPages: number) {
   return result;
 }
 
+function DeleteClientButton({ client }: { client: Client }) {
+  const { deleteClient } = useClients();
+  const [open, setOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function remove() {
+    if (deleting) return;
+    setDeleting(true);
+    try {
+      await deleteClient(client.id);
+      toast.success("Cliente eliminado", { description: client.name });
+      setOpen(false);
+    } catch (cause) {
+      toast.error(cause instanceof Error ? cause.message : "No se pudo eliminar el cliente.");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  return <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialogTrigger asChild><Button variant="ghost" size="icon" className="size-9 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600" aria-label={`Eliminar a ${client.name}`} title={`Eliminar a ${client.name}`}><Trash2 className="size-3.5" aria-hidden="true" /></Button></AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader><AlertDialogTitle>Eliminar cliente</AlertDialogTitle><AlertDialogDescription>¿Eliminar a {client.name}? Esta acción no se puede deshacer.</AlertDialogDescription></AlertDialogHeader>
+      <AlertDialogFooter><AlertDialogCancel disabled={deleting}>Cancelar</AlertDialogCancel><AlertDialogAction disabled={deleting} onClick={(event) => { event.preventDefault(); void remove(); }}>{deleting ? "Eliminando..." : "Eliminar"}</AlertDialogAction></AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>;
+}
+
 export function ClientsView({
   initialStatus,
   initialOwner,
+  initialSearch,
 }: {
   initialStatus?: ClientStatus;
   initialOwner?: string;
+  initialSearch?: string;
 }) {
-  const { clients } = useClients();
-  const [query, setQuery] = useState("");
+  const { clients, loading, error, reload } = useClients();
+  const [query, setQuery] = useState(initialSearch ?? "");
   const [status, setStatus] = useState<ClientStatus | "">(initialStatus ?? "");
   const [owner, setOwner] = useState(initialOwner ?? "");
   const [page, setPage] = useState(1);
@@ -86,7 +119,7 @@ export function ClientsView({
     const search = normalizeSearch(query.trim());
     return clients.filter((client) => {
       const matchesSearch = normalizeSearch(
-        `${client.name} ${client.company} ${client.email}`,
+        `${client.name} ${client.company} ${client.email} ${client.phone}`,
       ).includes(search);
       return (
         matchesSearch &&
@@ -154,7 +187,7 @@ export function ClientsView({
           </div>
           <span className="hidden items-center gap-1.5 text-xs text-slate-500 md:flex">
             <Check className="size-3.5 text-emerald-600" aria-hidden="true" />
-            Datos de demostración
+            Datos de Supabase
           </span>
         </div>
 
@@ -216,9 +249,10 @@ export function ClientsView({
           </div>
         )}
 
-        {visibleClients.length > 0 ? (
+        {error && <div role="alert" className="flex flex-wrap items-center justify-between gap-3 border-t border-red-100 bg-red-50 px-6 py-4 text-sm text-red-700"><span>{error}</span><Button variant="outline" size="sm" onClick={() => void reload()}>Reintentar</Button></div>}
+        {loading ? <div role="status" className="border-t border-slate-100 px-6 py-16 text-center text-sm text-slate-500">Cargando clientes...</div> : error ? null : visibleClients.length > 0 ? (
           <Table className="min-w-[850px]" tabIndex={0} aria-label="Directorio de clientes. Desplázate horizontalmente para ver todas las columnas.">
-            <TableCaption className="sr-only">Clientes de demostración, información de contacto, estado y responsable.</TableCaption>
+            <TableCaption className="sr-only">Clientes, información de contacto, estado y responsable.</TableCaption>
             <TableHeader className="border-t border-slate-100 bg-slate-50/80">
               <TableRow className="border-slate-100 hover:bg-transparent">
                 <TableHead scope="col" className="h-11 pl-6 text-[11px] font-medium tracking-[0.07em] text-slate-500 uppercase">Cliente</TableHead>
@@ -262,11 +296,14 @@ export function ClientsView({
                     </div>
                   </TableCell>
                   <TableCell className="pr-5 text-right">
+                    <div className="flex justify-end gap-1">
                     <ClientFormDialog client={client}>
                       <Button variant="ghost" size="icon" className="size-9 rounded-lg text-slate-500 hover:bg-blue-50 hover:text-blue-600" aria-label={`Editar a ${client.name}`} title={`Editar a ${client.name}`}>
                         <Pencil className="size-3.5" aria-hidden="true" />
                       </Button>
                     </ClientFormDialog>
+                    <DeleteClientButton client={client} />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -322,9 +359,6 @@ export function ClientsView({
           </div>
         </div>
       </section>
-      <p className="text-center text-xs leading-5 text-slate-400">
-        Una vista de ejemplo con empresas y contactos ficticios. Los cambios se reinician al recargar.
-      </p>
     </div>
   );
 }

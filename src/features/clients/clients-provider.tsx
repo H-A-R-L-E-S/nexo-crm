@@ -5,72 +5,69 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState,
+  useEffect,
   type ReactNode,
 } from "react";
-import { DEMO_CLIENTS, DEMO_TODAY } from "./demo-data";
-import type { Client, ClientActivity, ClientInput } from "./types";
+import { createCliente, deleteCliente, getClientes, updateCliente } from "./services/clients.service";
+import type { Client, ClientInput } from "./types";
 
 type ClientsContextValue = {
   clients: Client[];
-  addClient: (input: ClientInput) => void;
-  updateClient: (id: string, input: ClientInput) => void;
-  deleteClient: (id: string) => void;
-  activity: ClientActivity[];
+  loading: boolean;
+  error: string | null;
+  reload: () => Promise<void>;
+  addClient: (input: ClientInput) => Promise<void>;
+  updateClient: (id: string, input: ClientInput) => Promise<void>;
+  deleteClient: (id: string) => Promise<void>;
 };
 
 const ClientsContext = createContext<ClientsContextValue | null>(null);
 
 export function ClientsProvider({ children }: { children: ReactNode }) {
-  const [clients, setClients] = useState<Client[]>(() =>
-    DEMO_CLIENTS.map((client) => ({ ...client })),
-  );
-  const [activity, setActivity] = useState<ClientActivity[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const mutationVersion = useRef(0);
 
-  const recordActivity = useCallback((kind: ClientActivity["kind"], clientName: string) => {
-    const item: ClientActivity = {
-      id: crypto.randomUUID(),
-      kind,
-      clientName,
-      occurredAt: new Date().toISOString(),
-    };
-    setActivity((current) => [item, ...current].slice(0, 20));
+  const reload = useCallback(async () => {
+    const version = mutationVersion.current;
+    setLoading(true);
+    setError(null);
+    try {
+      const loaded = await getClientes();
+      if (mutationVersion.current === version) setClients(loaded);
+    } catch (cause) {
+      if (mutationVersion.current === version) setError(cause instanceof Error ? cause.message : "No se pudieron cargar los clientes.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const addClient = useCallback((input: ClientInput) => {
-    const client: Client = {
-      ...input,
-      name: `${input.firstName} ${input.lastName}`.trim(),
-      lastContact: null,
-      id: crypto.randomUUID(),
-      createdAt: DEMO_TODAY,
-      updatedAt: DEMO_TODAY,
-    };
+  useEffect(() => { queueMicrotask(() => void reload()); }, [reload]);
+
+  const addClient = useCallback(async (input: ClientInput) => {
+    const client = await createCliente(input);
+    mutationVersion.current += 1;
     setClients((current) => [client, ...current]);
-    recordActivity("created", client.name);
-  }, [recordActivity]);
+  }, []);
 
-  const updateClient = useCallback((id: string, input: ClientInput) => {
-    setClients((current) =>
-      current.map((client) =>
-        client.id === id
-          ? { ...client, ...input, name: `${input.firstName} ${input.lastName}`.trim(), updatedAt: DEMO_TODAY }
-          : client,
-      ),
-    );
-    recordActivity("updated", `${input.firstName} ${input.lastName}`.trim());
-  }, [recordActivity]);
+  const updateClient = useCallback(async (id: string, input: ClientInput) => {
+    const client = await updateCliente(id, input);
+    mutationVersion.current += 1;
+    setClients((current) => current.map((item) => item.id === id ? client : item));
+  }, []);
 
-  const deleteClient = useCallback((id: string) => {
-    const client = clients.find((item) => item.id === id);
-    if (!client) return;
+  const deleteClient = useCallback(async (id: string) => {
+    await deleteCliente(id);
+    mutationVersion.current += 1;
     setClients((current) => current.filter((item) => item.id !== id));
-    recordActivity("deleted", client.name);
-  }, [clients, recordActivity]);
+  }, []);
 
   const value = useMemo(
-    () => ({ clients, addClient, updateClient, deleteClient, activity }),
-    [clients, addClient, updateClient, deleteClient, activity],
+    () => ({ clients, loading, error, reload, addClient, updateClient, deleteClient }),
+    [clients, loading, error, reload, addClient, updateClient, deleteClient],
   );
 
   return (

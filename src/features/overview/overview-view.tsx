@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClientFormDialog } from "@/features/clients/client-form";
 import { useClients } from "@/features/clients/clients-provider";
-import { DEMO_TODAY, OWNERS } from "@/features/clients/demo-data";
+import { OWNERS } from "@/features/clients/demo-data";
 
 const statusStyles = {
   Activo: "border-emerald-100 bg-emerald-50 text-emerald-700",
@@ -142,8 +142,8 @@ function MonthlyChart({
 }
 
 export function OverviewView() {
-  const { clients } = useClients();
-  const referenceDate = new Date(`${DEMO_TODAY}T12:00:00Z`);
+  const { clients, loading, error } = useClients();
+  const referenceDate = new Date();
   const months = Array.from({ length: 6 }, (_, index) => {
     const date = new Date(Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth() - 5 + index, 1));
     const key = monthKey(date);
@@ -195,7 +195,7 @@ export function OverviewView() {
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-600">
             <CalendarDays className="size-4 text-slate-400" aria-hidden="true" />
-            <span><span className="text-slate-400">Demo · </span>{formattedDate}</span>
+            <span>{formattedDate}</span>
           </div>
           <ClientFormDialog>
             <Button className="h-10 gap-2"><Plus className="size-4" aria-hidden="true" />Nuevo cliente</Button>
@@ -204,6 +204,8 @@ export function OverviewView() {
       </div>
 
       <section aria-label="Indicadores de clientes" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {loading && <p role="status" className="col-span-full text-sm text-slate-500">Cargando clientes...</p>}
+        {error && <p role="alert" className="col-span-full text-sm text-red-700">{error}</p>}
         {metrics.map((metric) => (
           <Link
             href={metric.href}
@@ -319,8 +321,8 @@ export function OverviewView() {
 
           <aside className="rounded-xl border border-blue-100 bg-blue-50/60 p-5">
             <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-blue-900"><Sparkles className="size-4 text-blue-600" aria-hidden="true" />Todo empieza con una conexión</div>
-            <p className="text-xs leading-relaxed text-slate-600">Conoce Nexo con datos ficticios. Puedes registrar y editar clientes, y ver cómo cambia tu resumen.</p>
-            <p className="mt-3 flex items-start gap-1.5 text-[11px] leading-relaxed text-slate-500"><Check className="mt-0.5 size-3 shrink-0 text-blue-600" aria-hidden="true" />Los cambios se reinician al recargar la página.</p>
+            <p className="text-xs leading-relaxed text-slate-600">Registra y edita clientes para ver cómo cambia tu resumen.</p>
+            <p className="mt-3 flex items-start gap-1.5 text-[11px] leading-relaxed text-slate-500"><Check className="mt-0.5 size-3 shrink-0 text-blue-600" aria-hidden="true" />Los clientes se guardan en Supabase.</p>
           </aside>
         </div>
       </div>
