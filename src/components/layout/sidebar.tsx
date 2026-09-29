@@ -9,6 +9,7 @@ import { WorkspaceDialog, type WorkspacePanel } from "./workspace-dialog";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "@/features/auth/user-menu";
 
 const navigation = [
   { label: "Resumen", href: "/", icon: LayoutDashboard },
@@ -42,10 +43,10 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
       <div className="mt-auto px-4 pb-4 pt-7">
         <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50/65 p-3.5"><div className="flex items-center gap-2 text-xs font-semibold text-blue-800"><Sparkles className="size-4" aria-hidden="true" />Tu siguiente gran conexión</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">Cada relación es una nueva posibilidad. Empieza con tus clientes.</p></div>
-        <button type="button" onClick={() => setPanel({ kind: "settings" })} className="sidebar-utility"><Settings2 className="size-[17px]" aria-hidden="true" />Configuración</button>
+        <Link href="/configuracion" onClick={onNavigate} aria-current={pathname === "/configuracion" ? "page" : undefined} className="sidebar-utility"><Settings2 className="size-[17px]" aria-hidden="true" />Configuración</Link>
         <button type="button" onClick={() => setPanel({ kind: "help" })} className="sidebar-utility"><CircleHelp className="size-[17px]" aria-hidden="true" />Ayuda</button>
       </div>
-      <button type="button" aria-label="Perfil de Ana García" onClick={() => setPanel({ kind: "profile" })} className="flex w-full items-center gap-3 border-t border-slate-100 p-5 text-left hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-blue-600"><span className="avatar-profile">AG</span><span><span className="block text-xs font-semibold text-slate-800">Ana García</span><span className="mt-0.5 block text-[11px] text-slate-500">Administrador · Demo</span></span><span className="ml-auto size-2 rounded-full bg-emerald-500" aria-hidden="true" /></button>
+      <UserMenu sidebar onNavigate={onNavigate} />
       <WorkspaceDialog panel={panel} onClose={() => setPanel(null)} />
     </>
   );

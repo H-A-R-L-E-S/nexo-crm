@@ -1,7 +1,5 @@
 ﻿import type { Metadata } from "next";
-import { AppShell } from "@/components/layout/app-shell";
 import { Toaster } from "@/components/ui/sonner";
-import { ClientsProvider } from "@/features/clients/clients-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,10 +12,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className="h-full antialiased">
       <body className="min-h-full">
-        <ClientsProvider>
-          <AppShell>{children}</AppShell>
-          <Toaster theme="light" position="bottom-right" richColors closeButton />
-        </ClientsProvider>
+        {children}
+        <Toaster theme="light" position="bottom-right" richColors closeButton />
       </body>
     </html>
   );

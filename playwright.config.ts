@@ -15,7 +15,7 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "http://127.0.0.1:3100",
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
   },
@@ -28,14 +28,18 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: "node node_modules/next/dist/bin/next dev --webpack --hostname 127.0.0.1 --port 3000",
+  webServer: [{
+    command: "node tests/support/auth-server.mjs",
+    url: "http://127.0.0.1:54321/health",
+    reuseExistingServer: false,
+  }, {
+    command: "node node_modules/next/dist/bin/next dev --webpack --hostname 127.0.0.1 --port 3100",
     env: {
-      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
+      NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "playwright-anon-key",
     },
-    url: "http://127.0.0.1:3000",
+    url: "http://127.0.0.1:3100/login",
     reuseExistingServer: false,
     timeout: 120_000,
-  },
+  }],
 });

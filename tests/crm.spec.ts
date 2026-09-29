@@ -1,4 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
+import { login } from "./support/login";
+
+test.beforeEach(async ({ request }) => {
+  await request.post("http://127.0.0.1:54321/__test/reset");
+});
 
 type ClientRow = {
   id: string;
@@ -37,7 +42,7 @@ const initialClient: ClientRow = {
 async function mockClientes(page: Page) {
   const rows = [initialClient];
   let unavailable = false;
-  await page.route("https://example.supabase.co/rest/v1/clientes**", async (route) => {
+  await page.route("http://127.0.0.1:54321/rest/v1/clientes**", async (route) => {
     const request = route.request();
     const url = new URL(request.url());
     const id = url.searchParams.get("id")?.replace("eq.", "");
@@ -66,6 +71,7 @@ async function mockClientes(page: Page) {
 }
 
 test("lista, filtra y conserva el CRUD de clientes al recargar", async ({ page }) => {
+  await login(page);
   const database = await mockClientes(page);
   await page.goto("/clientes");
   await expect(page.getByRole("row").filter({ hasText: "Ana García" })).toBeVisible();
@@ -103,6 +109,7 @@ test("lista, filtra y conserva el CRUD de clientes al recargar", async ({ page }
 });
 
 test("muestra un error de carga y permite reintentar", async ({ page }) => {
+  await login(page);
   const database = await mockClientes(page);
   database.setUnavailable(true);
   await page.goto("/clientes");
@@ -111,3 +118,14 @@ test("muestra un error de carga y permite reintentar", async ({ page }) => {
   await page.getByRole("button", { name: "Reintentar" }).click();
   await expect(page.getByRole("row").filter({ hasText: "Ana García" })).toBeVisible();
 });
+
+for (const [email, canDelete] of [["admin@example.test", true], ["gerente@example.test", true], ["vendedor@example.test", false]] as const) {
+  test(`permisos visuales de clientes para ${email}`, async ({ page }) => {
+    await login(page, email);
+    await mockClientes(page);
+    await page.goto("/clientes");
+    await expect(page.getByRole("button", { name: "Editar a Ana García" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Nuevo cliente", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Eliminar a Ana García" })).toHaveCount(canDelete ? 1 : 0);
+  });
+}

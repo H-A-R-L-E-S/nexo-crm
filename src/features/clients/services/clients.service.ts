@@ -1,12 +1,6 @@
 import { getSupabaseClient } from "@/lib/supabase/client";
-import type { Client, ClientInput, ClientStatus } from "../types";
-
-type ClientRow = {
-  id: string; nombres: string; apellidos: string; empresa: string; correo: string;
-  telefono: string; cargo: string; estado: ClientStatus; direccion: string;
-  notas: string; responsable: string; ultimo_contacto: string | null;
-  created_at: string; updated_at: string;
-};
+import type { Client, ClientInput } from "../types";
+import type { ClientRow } from "@/lib/supabase/database.types";
 
 function toClient(row: ClientRow): Client {
   return {
@@ -29,6 +23,11 @@ function toRow(input: ClientInput) {
 }
 
 function fail(message: string, error: { code?: string; message: string }): never {
+  if (error.code === "42501") throw new Error("No tienes permisos para esta operación. Verifica tu sesión o contacta al administrador.");
+  if (error.code === "PGRST301" || error.code === "PGRST303") {
+    if (typeof window !== "undefined") window.location.replace("/login?motivo=sesion");
+    throw new Error("Tu sesión expiró. Inicia sesión para continuar.");
+  }
   if (error.code === "23505") throw new Error("Ya existe un cliente con este correo electrónico.");
   throw new Error(`${message}: ${error.message}`);
 }

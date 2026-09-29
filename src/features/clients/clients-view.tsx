@@ -36,6 +36,8 @@ import { ClientFormDialog } from "./client-form";
 import { useClients } from "./clients-provider";
 import { OWNERS } from "./demo-data";
 import type { Client, ClientStatus } from "./types";
+import { useAuth } from "@/features/auth/auth-provider";
+import { canDeleteClient } from "@/features/auth/roles";
 
 const STATUS_STYLES: Record<ClientStatus, string> = {
   Activo: "border-emerald-100 bg-emerald-50 text-emerald-700",
@@ -71,12 +73,13 @@ function pageNumbers(currentPage: number, totalPages: number) {
 }
 
 function DeleteClientButton({ client }: { client: Client }) {
+  const { profile } = useAuth();
   const { deleteClient } = useClients();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   async function remove() {
-    if (deleting) return;
+    if (deleting || !canDeleteClient(profile.rol)) return;
     setDeleting(true);
     try {
       await deleteClient(client.id);
@@ -89,6 +92,7 @@ function DeleteClientButton({ client }: { client: Client }) {
     }
   }
 
+  if (!canDeleteClient(profile.rol)) return null;
   return <AlertDialog open={open} onOpenChange={setOpen}>
     <AlertDialogTrigger asChild><Button variant="ghost" size="icon" className="size-9 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600" aria-label={`Eliminar a ${client.name}`} title={`Eliminar a ${client.name}`}><Trash2 className="size-3.5" aria-hidden="true" /></Button></AlertDialogTrigger>
     <AlertDialogContent>
