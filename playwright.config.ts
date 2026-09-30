@@ -37,6 +37,7 @@ export default defineConfig({
     env: {
       NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "playwright-anon-key",
+      SUPABASE_SERVICE_ROLE_KEY: "playwright-service-role-key",
     },
     url: "http://127.0.0.1:3100/login",
     reuseExistingServer: false,

@@ -25,7 +25,13 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      admin_update_profile: {
+        Args: { p_id: string; p_nombres: string; p_apellidos: string; p_rol: Profile["rol"]; p_activo: boolean; p_updated_at: string | null };
+        Returns: Profile[];
+      };
+      admin_user_management_ready: { Args: Record<string, never>; Returns: boolean };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

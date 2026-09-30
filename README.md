@@ -34,7 +34,7 @@ En el proyecto Supabase existente abre **SQL Editor** y ejecuta completo [supaba
 - Reemplaza todas las políticas de `clientes` y revoca el acceso de `anon`.
 - Permite repetir la migración sobre el esquema de esta entrega.
 
-**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, y finalmente `auth_roles.sql` antes de usar la aplicación.
+**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql` y finalmente `user_management.sql` antes de usar la aplicación.
 
 Este repositorio no ejecuta migraciones contra tu proyecto remoto. Hasta que apliques el SQL, las políticas anteriores seguirán vigentes y el acceso al CRM requerirá completar la configuración de perfiles.
 
@@ -42,7 +42,7 @@ Este repositorio no ejecuta migraciones contra tu proyecto remoto. Hasta que apl
 
 En **Authentication → Sign In / Providers** (configuración de proveedores de Auth), desactiva **Allow new users to sign up** y los inicios de sesión anónimos. Mantén el proveedor Email para iniciar sesión con contraseña.
 
-No hay formulario de registro, OAuth ni recuperación automática de contraseña. La creación de usuarios es controlada por el operador del proyecto desde Supabase Dashboard.
+No hay formulario de registro, OAuth ni recuperación automática de contraseña. El primer Administrador se crea desde Supabase Dashboard. Los siguientes usuarios pueden crearse desde el módulo Usuarios, después de aplicar la configuración administrativa descrita abajo.
 
 ### 3. Crear el primer Administrador
 
@@ -80,9 +80,9 @@ Confirma que se actualizó una fila. También puedes editar estos campos en Tabl
 
 Políticas de clientes: `clientes_select_authenticated`, `clientes_insert_authenticated`, `clientes_update_authenticated`, `clientes_delete_managers`. Consultan el rol vigente y el estado activo en la base de datos mediante `nexo_private.active_role()`, no metadatos editables ni un rol guardado en el navegador. No expongas el esquema `nexo_private` en la Data API.
 
-Perfiles: `profiles_read_self` y `profiles_update_self` permiten consultar el perfil propio y actualizar nombres/apellidos si está activo. El permiso SQL `UPDATE (nombres, apellidos)` impide modificar `rol`, `activo`, `email`, `id` y otros campos desde la API, incluso al Administrador. Los cambios de rol se realizan por ahora solo desde Supabase Dashboard/SQL Editor. No se permite insertar ni eliminar perfiles desde el cliente; el trigger los crea y `auth.users` controla su ciclo de vida.
+Perfiles: `profiles_read_self` y `profiles_update_self` permiten consultar el perfil propio y actualizar nombres/apellidos si está activo. El permiso SQL `UPDATE (nombres, apellidos)` impide modificar `rol`, `activo`, `email`, `id` y otros campos desde la API, incluso al Administrador. El módulo Usuarios cambia rol y estado mediante una RPC controlada; el UPDATE directo de esas columnas continúa prohibido. El primer Administrador se asigna desde Supabase Dashboard/SQL Editor. No se permite insertar ni eliminar perfiles desde el cliente; el trigger los crea y `auth.users` controla su ciclo de vida.
 
-La restricción de eliminar para Vendedores existe en RLS además de ocultar el botón. PostgreSQL puede responder con cero filas eliminadas en vez de un error; el servicio no presenta una eliminación exitosa si no se eliminó ninguna fila. Un cambio de rol en Supabase se refleja en la interfaz al recargar; RLS usa el valor actualizado en cada operación.
+La restricción de eliminar para Vendedores existe en RLS además de ocultar el botón. PostgreSQL puede responder con cero filas eliminadas en vez de un error; el servicio no presenta una eliminación exitosa si no se eliminó ninguna fila. La interfaz vuelve a comprobar el perfil al navegar, al recuperar visibilidad y cada 60 segundos mientras está visible. RLS usa el valor actualizado en cada operación, incluso antes de refrescar la interfaz.
 
 ## Arquitectura de sesión
 
@@ -114,4 +114,54 @@ Prueba manual final: inicia sesión con una cuenta de cada rol, registra y edita
 
 ## Siguientes etapas
 
-Administración de usuarios, recuperación de contraseña, asignación individual por responsable, Leads, oportunidades, seguimiento, cotizaciones, ventas, tareas, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
+Recuperación de contraseña, cambio obligatorio de contraseña inicial, asignación individual por responsable, Leads, oportunidades, seguimiento, cotizaciones, ventas, tareas, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
+
+
+## Administración de usuarios
+
+### Preparación manual de esta etapa
+
+1. En el proyecto Supabase existente ejecuta completo [supabase/user_management.sql](supabase/user_management.sql) en **SQL Editor**, después de la migración de autenticación ya aplicada. No hace falta repetir `auth_roles.sql` ni `schema.sql`.
+2. En **Project Settings → API Keys** obtén una clave administrativa del mismo proyecto. Puedes usar la clave `service_role` de la sección **Legacy API keys**, o una clave secreta actual `sb_secret_...` (recomendada por Supabase); ambas deben mantenerse únicamente en el servidor.
+3. Añádela a `.env.local` con este nombre exacto:
+
+   ```env
+   SUPABASE_SERVICE_ROLE_KEY=
+   ```
+
+4. Conserva `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` como están. No uses `NEXT_PUBLIC_` para la clave administrativa. `.env.example` contiene solamente nombres sin valores reales.
+5. Reinicia `npm run dev -- --webpack` y entra con tu Administrador activo.
+
+No se ejecuta SQL remoto ni se modifica `.env.local` desde esta entrega. La clave solo se necesita para crear cuentas en Auth; listar y editar perfiles usa el cliente de sesión y RLS. No se agregan dependencias para este módulo.
+
+### Uso y permisos
+
+La ruta es **`/configuracion/usuarios`**. Solo Administradores ven el enlace Usuarios en Sidebar y la tarjeta correspondiente en Configuración. Gerentes y Vendedores que escriban la URL reciben acceso restringido. Todas las Server Actions vuelven a comprobar la sesión y el rol actual en el servidor.
+
+El módulo incluye conteos de usuarios y roles, búsqueda por nombre/correo, filtros de rol/estado, paginación, creación, edición y activación/inactivación con confirmación. El correo es de solo lectura al editar; no se permite editar identificadores ni fechas. No hay eliminación permanente de cuentas.
+
+Nuevo usuario pide nombres, apellidos, correo, contraseña temporal confirmada de 12–128 caracteres con letras y números, rol y estado. La contraseña se envía únicamente a Supabase Auth, nunca a `profiles` ni a logs. La cuenta se crea con correo confirmado, sin invitación por correo. Entrega la contraseña por un canal seguro; todavía no se fuerza su cambio al primer acceso.
+
+### Protecciones del servidor y SQL
+
+- `src/lib/supabase/admin.ts` usa `server-only`. Su cliente privilegiado no lee ni modifica cookies y no se envía al navegador. Solo se utiliza para `auth.admin.createUser()` después de comprobar el Administrador.
+- `profiles_admin_read_team` permite a Administradores activos consultar el equipo. Los demás conservan la lectura de su perfil propio. Reutiliza `nexo_private.active_role()` para evitar recursión RLS.
+- El UPDATE directo de `rol`/`activo` sigue prohibido. `admin_update_profile` verifica nuevamente al actor, valida los campos y aplica la modificación en una transacción con bloqueo asesor. Impide desactivarse, quitarse el propio rol y dejar cero Administradores activos; las modificaciones concurrentes del módulo se serializan. También detecta un formulario obsoleto mediante `updated_at`.
+- `admin_user_management_ready` comprueba que esta migración existe antes de iniciar un alta en Auth.
+- El trigger existente se reutiliza: para cuentas creadas con `app_metadata.nexo_provisioning`, genera inicialmente un perfil Vendedor **inactivo**. La RPC completa sus datos y permisos. No se duplican perfiles.
+- Auth y PostgreSQL no comparten una transacción de alta. Si la segunda fase falla, la UI avisa y bloquea repetir el envío: revisa la cuenta existente desde Editar. No se elimina automáticamente ni se vuelve a crear. Si se perdió solo la respuesta final, comprueba el estado real en la lista antes de continuar.
+- Un usuario inactivado conserva su sesión de Auth, pero RLS bloquea sus operaciones inmediatamente. Al navegar, volver a la pestaña o en la comprobación periódica, la UI lo lleva a acceso restringido. Allí puede cerrar sesión. No se borran cuentas ni historial.
+
+Conserva el orden de migraciones. Si vuelves a aplicar `auth_roles.sql`, reaplica después `user_management.sql`, porque la primera define la versión anterior del trigger de altas. Los cambios manuales con claves privilegiadas en Supabase Dashboard son operaciones del administrador del proyecto y pueden eludir RLS; las protecciones de esta pantalla cubren las operaciones de su RPC.
+
+### Cómo probar
+
+- **Administrador:** abre Usuarios, crea una cuenta de prueba, cambia su nombre y rol, cancela una inactivación y después confírmala; verifica que puedes reactivarla. Tu propia fila debe impedir cambiar rol/estado.
+- **Vendedor y Gerente:** inicia sesión con cada rol; Usuarios no debe aparecer y `/configuracion/usuarios` debe bloquearse. Clientes debe conservar sus permisos anteriores.
+- **Sesión activa:** deja una cuenta de prueba abierta en otro navegador, inactívala y navega en esa sesión; debe ir a acceso restringido.
+- **Pruebas automáticas:** `npm run test:e2e` añade casos de administración y mantiene login/Clientes. Incluye intentos de invocar Server Actions con otro rol y de manipular el propio rol, además de alta incompleta, validaciones y móvil. Usa un servicio local simulado, no la base real.
+- **RLS real:** ejecuta opcionalmente [supabase/tests/user_management.sql](supabase/tests/user_management.sql) después de la migración. Verifica lectura por rol, bloqueo del UPDATE directo y de la autoasignación, provisión inactiva y RPC; revierte los datos al terminar. No sustituye pruebas concurrentes de integración en tu infraestructura. No se ejecuta automáticamente desde aquí.
+
+Archivos nuevos principales: `src/features/users/`, `src/app/(crm)/configuracion/usuarios/`, `src/lib/supabase/admin.ts`, `supabase/user_management.sql`, `supabase/tests/user_management.sql` y `tests/users.spec.ts`. Se actualizan el contexto de perfil, Header/Sidebar, Configuración, acceso restringido, tipos de Supabase, configuración de pruebas, `.env.example` y este README. No se reconstruyen Dashboard, Clientes ni autenticación.
+
+Referencias oficiales: [Auth Admin createUser](https://supabase.com/docs/reference/javascript/auth-admin-createuser), [claves API de Supabase](https://supabase.com/docs/guides/api/api-keys).

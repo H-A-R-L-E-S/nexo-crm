@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "@/features/auth/user-menu";
+import { useAuth } from "@/features/auth/auth-provider";
+import { isAdmin } from "@/features/auth/roles";
 
 const navigation = [
   { label: "Resumen", href: "/", icon: LayoutDashboard },
@@ -23,6 +25,7 @@ const navigation = [
 ];
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
+  const { profile } = useAuth();
   const pathname = usePathname();
   const [panel, setPanel] = useState<WorkspacePanel | null>(null);
   return (
@@ -44,6 +47,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       <div className="mt-auto px-4 pb-4 pt-7">
         <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50/65 p-3.5"><div className="flex items-center gap-2 text-xs font-semibold text-blue-800"><Sparkles className="size-4" aria-hidden="true" />Tu siguiente gran conexión</div><p className="mt-2 text-[11px] leading-relaxed text-slate-500">Cada relación es una nueva posibilidad. Empieza con tus clientes.</p></div>
         <Link href="/configuracion" onClick={onNavigate} aria-current={pathname === "/configuracion" ? "page" : undefined} className="sidebar-utility"><Settings2 className="size-[17px]" aria-hidden="true" />Configuración</Link>
+        {isAdmin(profile.rol) && <Link href="/configuracion/usuarios" onClick={onNavigate} aria-current={pathname === "/configuracion/usuarios" ? "page" : undefined} className={cn("sidebar-utility", pathname === "/configuracion/usuarios" && "bg-blue-50 text-blue-700")}><UsersRound className="size-[17px]" aria-hidden="true" />Usuarios</Link>}
         <button type="button" onClick={() => setPanel({ kind: "help" })} className="sidebar-utility"><CircleHelp className="size-[17px]" aria-hidden="true" />Ayuda</button>
       </div>
       <UserMenu sidebar onNavigate={onNavigate} />
