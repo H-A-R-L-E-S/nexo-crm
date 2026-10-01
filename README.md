@@ -114,7 +114,7 @@ Prueba manual final: inicia sesión con una cuenta de cada rol, registra y edita
 
 ## Siguientes etapas
 
-Recuperación de contraseña, cambio obligatorio de contraseña inicial, asignación individual por responsable, Leads, oportunidades, seguimiento, cotizaciones, ventas, tareas, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
+La siguiente etapa es Oportunidades. Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, seguimiento y tareas completos, cotizaciones, ventas, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
 
 
 ## Administración de usuarios
@@ -165,3 +165,54 @@ Conserva el orden de migraciones. Si vuelves a aplicar `auth_roles.sql`, reaplic
 Archivos nuevos principales: `src/features/users/`, `src/app/(crm)/configuracion/usuarios/`, `src/lib/supabase/admin.ts`, `supabase/user_management.sql`, `supabase/tests/user_management.sql` y `tests/users.spec.ts`. Se actualizan el contexto de perfil, Header/Sidebar, Configuración, acceso restringido, tipos de Supabase, configuración de pruebas, `.env.example` y este README. No se reconstruyen Dashboard, Clientes ni autenticación.
 
 Referencias oficiales: [Auth Admin createUser](https://supabase.com/docs/reference/javascript/auth-admin-createuser), [claves API de Supabase](https://supabase.com/docs/guides/api/api-keys).
+
+## Leads
+
+### Activación manual en el proyecto existente
+
+1. En **Supabase → SQL Editor**, ejecuta completo [supabase/leads.sql](supabase/leads.sql). Requiere las migraciones de Clientes, autenticación y Usuarios que ya están aplicadas. **Para esta entrega solo debes aplicar `leads.sql`**; no repitas `schema.sql` ni las migraciones anteriores.
+2. No hay nuevas dependencias ni variables de entorno. Conserva las claves existentes. Ejecuta `npm ci` si necesitas instalar el proyecto y `npm run dev -- --webpack`; abre `/leads` con una cuenta activa.
+3. Para verificar los permisos reales y la conversión, ejecuta opcionalmente [supabase/tests/leads.sql](supabase/tests/leads.sql) completo en SQL Editor. Crea datos de prueba y termina en `ROLLBACK`. Si falla, ejecuta `ROLLBACK` y revisa el error. Este archivo **no es una migración**.
+
+No se ha ejecutado ninguna operación contra Supabase remoto. La migración permite repetirse sobre su propio esquema: crea tabla/índices si faltan y reemplaza sus funciones, trigger y políticas. No modifica las políticas existentes de Clientes o Profiles. En una instalación nueva, el orden completo es `schema.sql` → `auth_roles.sql` → `user_management.sql` → `leads.sql`.
+
+### Uso
+
+Leads tiene indicadores reales, búsqueda por contacto/empresa/correo/teléfono, filtros combinables de estado/prioridad/fuente/responsable, paginación de diez filas, detalle, alta, edición, eliminación confirmada y conversión. Los estados de carga, vacío, error y operaciones pendientes incluyen mensajes en español. La edición detecta cambios concurrentes mediante `updated_at` y pide actualizar la lista.
+
+Nombres y teléfono son obligatorios al registrar. Apellidos y correo pueden completarse al convertir porque Clientes sí los requiere. Los responsables vienen de perfiles reales. Los selectores de asignación ofrecen solo perfiles activos; un responsable posteriormente inactivado sigue visible en su lead y puede conservarse al editarlo. Las fechas usan **America/Lima (UTC−5)**. Seguimientos pendientes cuenta leads abiertos con seguimiento hoy o anterior; la tabla marca como vencida una hora ya pasada. Convertidos y No interesados no cuentan como pendientes.
+
+La tarjeta Prospectos del Resumen conserva su significado actual (clientes en estado Prospecto). No se cambió el Dashboard; una métrica comercial conjunta queda para la siguiente etapa.
+
+### Roles y consistencia
+
+| Acción | Administrador | Gerente | Vendedor |
+| --- | --- | --- | --- |
+| Ver todos los leads, crear, editar y convertir | Sí | Sí | Sí |
+| Asignar/reasignar responsable | Sí | Sí | No; al crear se asigna a sí mismo |
+| Eliminar | Sí | Sí | No |
+
+`leads_read`, `leads_create` y `leads_edit` exigen un perfil activo con uno de los tres roles. `leads_delete` solo admite Administrador/Gerente. La restricción de asignación vive también en un trigger; no depende de la UI. Usuarios inactivos y anónimos no acceden al módulo. Se reutiliza `nexo_private.active_role()` para evitar recursión RLS.
+
+`lead_responsibles()` expone únicamente ID, nombres, apellidos, estado y rol a usuarios activos; no amplía el acceso directo a Profiles ni entrega sus correos. Incluye los inactivos ya referenciados para mostrar el historial.
+
+`convert_lead()` comprueba al usuario activo y ejecuta la creación/vinculación y actualización del lead en una transacción. Bloquea el lead y serializa conversiones del mismo correo normalizado. Una repetición devuelve el cliente ya vinculado. Un correo existente devuelve una propuesta: solo la confirmación explícita vincula el ID coincidente, sin sobrescribir los datos del cliente. Un índice único existente de Clientes protege también frente a altas concurrentes desde su propio módulo.
+
+El lead se conserva con estado Convertido y referencia al cliente; el detalle permite abrirlo en Clientes. Estado y vínculo deben ser consistentes y no se permite escribir el vínculo directamente desde el navegador. Editar después el lead no sincroniza sus datos con el cliente. Las claves foráneas impiden borrar un cliente o perfil todavía referenciado; inactivar usuarios conserva sus relaciones. Eliminar el lead es permanente y no elimina el cliente vinculado.
+
+### Verificación
+
+```bash
+npm run typecheck
+npm run lint
+npm run build -- --webpack
+npm run test:e2e
+```
+
+Playwright usa exclusivamente Supabase simulado local, con casos de los tres roles, validaciones, CRUD, conversión, correo existente con confirmación, búsqueda/filtros, paginación, detalle, carga fallida/reintento, acceso autenticado y móvil. Mantiene las pruebas de Auth, Clientes y Usuarios. Estos casos comprueban la aplicación; no certifican RLS ni la transacción PostgreSQL. El SQL de verificación manual comprueba permisos de roles, asignación, directorio, vínculo consistente, conversión idempotente, duplicados e inactivos, con reversión final. No sustituye una prueba de concurrencia contra PostgreSQL.
+
+Prueba manual con **Administrador** y después **Gerente**: crea un lead, asigna un usuario activo, edita empresa/estado/seguimiento, combina filtros, consulta detalle y elimina otro lead tras confirmar. Con **Vendedor**, crea y edita un lead, comprueba la autoasignación y la ausencia de Eliminar. Para verificar que la restricción también existe en base de datos, usa el SQL de pruebas.
+
+Para probar **Lead → Cliente**, crea un lead con un correo nuevo, pulsa Convertir a cliente y completa apellidos/correo si faltan. Debe quedar Convertido y abrir su cliente desde el detalle. Repite con otro lead del mismo correo: debe ofrecer vincular al existente sin duplicarlo. Recarga para comprobar persistencia. Inactiva después a un responsable desde Usuarios y verifica que sus leads lo conservan, pero no aparece como opción para nuevas asignaciones.
+
+Archivos de esta etapa: `src/features/leads/` (tipos, validación, fechas, permisos, servicio, hook y componentes), `src/app/(crm)/leads/`, `supabase/leads.sql`, `supabase/tests/leads.sql` y `tests/leads.spec.ts`. Se actualizan los tipos de Supabase, Sidebar/Header, aviso del layout, búsqueda por ID y mensaje de relación de Clientes, y este README. Se conserva `package-lock.json` sin cambios y no se usa el cliente administrativo para Leads.

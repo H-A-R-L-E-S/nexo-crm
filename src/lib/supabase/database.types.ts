@@ -1,5 +1,6 @@
 import type { Profile } from "@/features/auth/types";
 import type { ClientStatus } from "@/features/clients/types";
+import type { Lead, NuevoLead, LeadConversion, LeadResponsable } from "@/features/leads/types";
 
 export type ClientRow = {
   id: string; nombres: string; apellidos: string; empresa: string; correo: string;
@@ -11,6 +12,7 @@ export type ClientRow = {
 export type Database = {
   public: {
     Tables: {
+      leads: { Row: Lead; Insert: NuevoLead; Update: Partial<NuevoLead>; Relationships: [] };
       clientes: {
         Row: ClientRow;
         Insert: Omit<ClientRow, "id" | "created_at" | "updated_at" | "ultimo_contacto"> & Partial<Pick<ClientRow, "id" | "created_at" | "updated_at" | "ultimo_contacto">>;
@@ -26,6 +28,8 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      lead_responsibles: { Args: Record<string, never>; Returns: LeadResponsable[] };
+      convert_lead: { Args: { p_lead_id: string; p_apellidos: string; p_correo: string; p_existing_client_id: string | null }; Returns: LeadConversion[] };
       admin_update_profile: {
         Args: { p_id: string; p_nombres: string; p_apellidos: string; p_rol: Profile["rol"]; p_activo: boolean; p_updated_at: string | null };
         Returns: Profile[];

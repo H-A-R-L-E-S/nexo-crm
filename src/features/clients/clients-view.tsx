@@ -123,7 +123,7 @@ export function ClientsView({
     const search = normalizeSearch(query.trim());
     return clients.filter((client) => {
       const matchesSearch = normalizeSearch(
-        `${client.name} ${client.company} ${client.email} ${client.phone}`,
+        `${client.id} ${client.name} ${client.company} ${client.email} ${client.phone}`,
       ).includes(search);
       return (
         matchesSearch &&

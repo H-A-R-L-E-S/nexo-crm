@@ -16,7 +16,7 @@ import { isAdmin } from "@/features/auth/roles";
 const navigation = [
   { label: "Resumen", href: "/", icon: LayoutDashboard },
   { label: "Clientes", href: "/clientes", icon: UsersRound },
-  { label: "Leads", icon: UserRoundSearch },
+  { label: "Leads", href: "/leads", icon: UserRoundSearch },
   { label: "Oportunidades", icon: GitBranch },
   { label: "Ventas", icon: ShoppingBag },
   { label: "Tareas", icon: CheckSquare },
