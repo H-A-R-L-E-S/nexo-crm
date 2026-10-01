@@ -15,17 +15,17 @@ import { opportunityStats } from "./stats";
 
 const emptyFilters = { stage: "", owner: "", client: "", status: "", from: "", to: "" };
 const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-export function OpportunitiesView({ initialNow, initialClientId, initialLeadId, create = false }: { initialNow: string; initialClientId?: string; initialLeadId?: string; create?: boolean }) {
+export function OpportunitiesView({ initialNow, initialClientId, initialLeadId, create = false, initialSearch = "" }: { initialNow: string; initialClientId?: string; initialLeadId?: string; create?: boolean; initialSearch?: string }) {
   const { items, directory, loading, loaded, error, reload, saved, removed } = useOpportunities();
   const [view, setView] = useState<"pipeline" | "list">("pipeline");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialSearch);
   const [filters, setFilters] = useState(emptyFilters);
   const [page, setPage] = useState(1);
   const [now, setNow] = useState(() => new Date(initialNow));
   useEffect(() => { const timer = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(timer); }, []);
   const clientName = (id: string) => directory.clients.find((client) => client.id === id)?.name ?? "Cliente no disponible";
   const ownerName = (id: string | null) => { const owner = directory.responsibles.find((person) => person.id === id); return owner ? `${responsableName(owner)}${owner.activo ? "" : " (inactivo)"}` : "Sin asignar"; };
-  const filtered = items.filter((item) => normalize(`${item.titulo} ${clientName(item.cliente_id)} ${item.origen}`).includes(normalize(query.trim())) && (!filters.stage || item.etapa === filters.stage) && (!filters.owner || (item.responsable_id ?? "none") === filters.owner) && (!filters.client || item.cliente_id === filters.client) && (!filters.status || isClosed(item.etapa) === (filters.status === "closed")) && (!filters.from || Boolean(item.fecha_cierre_estimada && item.fecha_cierre_estimada >= filters.from)) && (!filters.to || Boolean(item.fecha_cierre_estimada && item.fecha_cierre_estimada <= filters.to)));
+  const filtered = items.filter((item) => normalize(`${item.id} ${item.titulo} ${clientName(item.cliente_id)} ${item.origen}`).includes(normalize(query.trim())) && (!filters.stage || item.etapa === filters.stage) && (!filters.owner || (item.responsable_id ?? "none") === filters.owner) && (!filters.client || item.cliente_id === filters.client) && (!filters.status || isClosed(item.etapa) === (filters.status === "closed")) && (!filters.from || Boolean(item.fecha_cierre_estimada && item.fecha_cierre_estimada >= filters.from)) && (!filters.to || Boolean(item.fecha_cierre_estimada && item.fecha_cierre_estimada <= filters.to)));
   const stats = opportunityStats(items, now);
   const summary = [{ label: "Oportunidades abiertas", value: String(stats.open), detail: "Nueva, Contacto, Propuesta y Negociación" }, { label: "Valor del pipeline", value: formatCents(stats.pipeline), detail: `Ponderado: ${formatCents(stats.weighted)}` }, { label: "Ganadas este mes", value: String(stats.wonMonth), detail: "Según cierre real · Hora de Lima" }, { label: "Tasa de cierre", value: `${stats.closeRate.toLocaleString("es-PE", { maximumFractionDigits: 1 })}%`, detail: `${stats.won} ganadas / ${stats.won + stats.lost} cerradas · Histórico` }];
   const pageCount = Math.max(1, Math.ceil(filtered.length / 10));

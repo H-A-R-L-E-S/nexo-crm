@@ -29,7 +29,7 @@ function fail(message: string, error: { code?: string; message: string }): never
     throw new Error("Tu sesión expiró. Inicia sesión para continuar.");
   }
   if (error.code === "23505") throw new Error("Ya existe un cliente con este correo electrónico.");
-  if (error.code === "23503") throw new Error("Este cliente tiene leads u oportunidades relacionadas. Conserva el historial o modifica primero esas relaciones.");
+  if (error.code === "23503") throw new Error("Este cliente tiene leads, oportunidades, ventas o tareas relacionadas. Conserva el historial o modifica primero esas relaciones.");
   throw new Error(`${message}: ${error.message}`);
 }
 

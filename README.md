@@ -1,6 +1,6 @@
 ﻿# Nexo CRM
 
-CRM con Next.js 16 App Router, TypeScript, Tailwind y shadcn/ui. Clientes, Leads, Oportunidades y Ventas guardan sus datos en Supabase. El acceso al CRM usa Supabase Auth, perfiles y permisos respaldados por RLS.
+CRM con Next.js 16 App Router, TypeScript, Tailwind y shadcn/ui. Clientes, Leads, Oportunidades, Ventas y Tareas guardan sus datos en Supabase. El acceso al CRM usa Supabase Auth, perfiles y permisos respaldados por RLS.
 
 ## Instalación y ejecución
 
@@ -34,7 +34,7 @@ En el proyecto Supabase existente abre **SQL Editor** y ejecuta completo [supaba
 - Reemplaza todas las políticas de `clientes` y revoca el acceso de `anon`.
 - Permite repetir la migración sobre el esquema de esta entrega.
 
-**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql`, `user_management.sql`, `leads.sql`, `opportunities.sql` y `sales.sql`.
+**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql`, `user_management.sql`, `leads.sql`, `opportunities.sql`, `sales.sql` y `tasks.sql`.
 
 Este repositorio no ejecuta migraciones contra tu proyecto remoto. Hasta que apliques el SQL, las políticas anteriores seguirán vigentes y el acceso al CRM requerirá completar la configuración de perfiles.
 
@@ -93,7 +93,7 @@ La restricción de eliminar para Vendedores existe en RLS además de ocultar el 
 - `src/app/(crm)`: agrupa las pantallas protegidas sin alterar sus URLs. Dashboard y Clientes se movieron conservando su contenido.
 - `src/features/auth`: formularios, contexto, roles tipados, perfil y menú de usuario.
 
-`/`, `/clientes`, `/perfil` y `/configuracion` están protegidas. El proxy aplica la misma regla a `/leads`, `/oportunidades`, `/ventas`, `/tareas`, `/calendario`, `/reportes` y futuras rutas; estos módulos aún no se implementan. `/login` es pública y redirige al Resumen si ya existe sesión. `/acceso-restringido` requiere sesión pero permite cerrar sesión cuando no hay perfil activo. Para nuevas consultas del servidor usa también `requireProfile()` antes de acceder a datos.
+`/`, `/clientes`, `/perfil` y `/configuracion` están protegidas. El proxy aplica la misma regla a `/leads`, `/oportunidades`, `/ventas`, `/tareas`, `/calendario`, `/reportes` y futuras rutas. Clientes, Leads, Oportunidades, Ventas y Tareas están implementados; Calendario y Reportes siguen pendientes. `/login` es pública y redirige al Resumen si ya existe sesión. `/acceso-restringido` requiere sesión pero permite cerrar sesión cuando no hay perfil activo. Para nuevas consultas del servidor usa también `requireProfile()` antes de acceder a datos.
 
 ## Comprobaciones
 
@@ -114,7 +114,7 @@ Prueba manual final: inicia sesión con una cuenta de cada rol, registra y edita
 
 ## Siguientes etapas
 
-Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, seguimiento y tareas completos, cotizaciones, productos, inventario, calendario, reportes y pagos por cuotas. Facturación electrónica SUNAT y multiempresa quedan fuera de esta etapa.
+Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, cotizaciones, productos, inventario, calendario, reportes y pagos por cuotas. Tareas y seguimiento ya están implementados. Facturación electrónica SUNAT y multiempresa quedan fuera de esta etapa.
 
 
 ## Administración de usuarios
@@ -254,7 +254,7 @@ El formulario carga clientes, leads y perfiles reales. Desde una fila de Cliente
 
 `oportunidades_read`, `oportunidades_create` y `oportunidades_edit` requieren uno de los tres roles activos; `oportunidades_delete` exige Administrador/Gerente. El trigger impide que Vendedor asigne a otra persona o cambie responsables. Las restricciones existen en PostgreSQL, además de los botones. `opportunity_responsibles()` solo expone datos mínimos a perfiles activos, sin ampliar SELECT de Profiles. Una nueva asignación exige perfil activo; un responsable posteriormente inactivado sigue relacionado y puede conservarse al editar. Las claves foráneas conservan trazabilidad: no se elimina un cliente, lead o perfil mientras tenga oportunidades asociadas.
 
-Leads, Clientes, Auth y Usuarios conservan sus flujos. Oportunidades no usa `service_role`. Ventas se describe en la sección siguiente; quedan pendientes cotizaciones, productos, tareas completas, calendario, reportes y multiempresa.
+Leads, Clientes, Auth y Usuarios conservan sus flujos. Oportunidades no usa `service_role`. Ventas se describe en la sección siguiente; Tareas y seguimiento se describen más adelante; quedan pendientes cotizaciones, productos, calendario, reportes y multiempresa.
 
 ### Cómo verificar esta entrega
 
@@ -333,3 +333,65 @@ El Dashboard conserva sus métricas actuales de Clientes. Los indicadores reales
 Comandos de verificación: `npm run typecheck`, `npm run lint`, `npm run build -- --webpack` y `npm run test:e2e`. Playwright añade pruebas de Ventas y conserva las regresiones de Auth, Clientes, Leads, Oportunidades y Usuarios. El navegador usa exclusivamente el servicio HTTP simulado local. En esta etapa también se validaron las migraciones y los SQL de permisos en un **clúster temporal PostgreSQL 17**, con funciones mínimas de Auth para las identidades ficticias. Se aplicó `sales.sql` dos veces y pasó la prueba de concurrencia: 24 solicitudes, 17 ventas/números únicos y ocho reintentos de la misma alta produciendo una sola venta. Estas pruebas locales no ejecutan ni sustituyen la activación y verificación del proyecto Supabase remoto.
 
 Archivos creados: `src/features/sales/` (tipos, cálculos, validación, estadísticas, permisos, servicios, hook, formulario, acciones, resumen, listado y detalle), `src/app/(crm)/ventas/`, `supabase/sales.sql`, `supabase/tests/sales.sql` y `tests/sales.spec.ts`. Se modifican tipos de Supabase, Sidebar/Header/aviso del layout, acción Nueva venta y mensaje de relaciones de Oportunidades, conservación del foco al mover tarjetas entre etapas, ESLint para ignorar reportes generados y este README. No se reconstruyen los módulos anteriores ni se utiliza `service_role` en Ventas.
+
+## Tareas y seguimiento comercial
+
+### Activación manual en el proyecto existente
+
+1. Abre **Supabase → SQL Editor** en tu proyecto actual y ejecuta completo [supabase/tasks.sql](supabase/tasks.sql). Como los módulos anteriores ya están instalados, **solo ejecuta `tasks.sql`**; no repitas `schema.sql` ni las migraciones anteriores. La migración está en una transacción, puede repetirse sobre su propio esquema y no modifica las políticas de otros módulos.
+2. No hay nuevas dependencias ni variables de entorno. Conserva tu `.env.local`. Ejecuta `npm ci` únicamente si necesitas instalar dependencias y después `npm run dev -- --webpack`.
+3. Inicia sesión con una cuenta activa y abre **`/tareas`**. **`/tareas/[id]`** muestra el detalle. Calendario y Reportes siguen marcados «Pronto».
+4. Opcionalmente ejecuta completo [supabase/tests/tasks.sql](supabase/tests/tasks.sql) en SQL Editor para comprobar permisos y persistencia. Introduce datos ficticios aislados y termina en `ROLLBACK`; si interrumpes o falla, ejecuta `ROLLBACK`. Es una prueba, no una migración.
+
+No se ejecuta nada en tu Supabase remoto automáticamente. El módulo usa la sesión de Supabase Auth y la clave pública existente, sin `service_role` en Tareas.
+
+### Crear, relacionar y consultar
+
+Pulsa **Nueva tarea**. Completa título (2–160 caracteres), tipo, prioridad, responsable, estado y vencimiento. Puedes añadir descripción (hasta 3000 caracteres), inicio y recordatorio. El inicio y el recordatorio deben ser anteriores o iguales al vencimiento; se permiten tareas vencidas para registrar pendientes reales. Las fechas `datetime-local` se interpretan explícitamente en **America/Lima (UTC−5)**, aunque el navegador esté en otra zona, y se guardan como `timestamptz` en UTC.
+
+**Relacionado con** permite elegir **Ninguno**, **Cliente**, **Lead**, **Oportunidad** o **Venta**, y luego seleccionar un registro existente. Cada tarea tiene como máximo una relación directa. Una tarea de oportunidad o venta conserva esa relación sin copiar ni modificar clientes, leads, etapas o pagos. Los cuatro módulos comerciales ofrecen el icono **Nueva tarea** en sus acciones, que abre el formulario con el registro preseleccionado. En Ventas también aparece desde su detalle. El responsable del registro se propone cuando está activo y tu rol permite asignarlo; Vendedor siempre crea para sí mismo.
+
+La lista principal muestra tipo, relación enlazada, responsable, prioridad, estado, vencimiento y acciones; pagina diez tareas. El buscador incluye título, descripción y nombre del registro relacionado, incluidas ventas. Los filtros combinan estado, prioridad, tipo, responsable, fechas inclusivas de vencimiento en Lima y Vencidas/Para hoy. **Tablero** agrupa las cuatro etapas, incluida Cancelada, con las mismas acciones y filtros; no requiere arrastrar tarjetas. El detalle muestra descripción, responsable, creador, relación, todas las fechas y estado.
+
+Los indicadores son globales e independientes de los filtros:
+
+- **Pendientes:** estado Pendiente.
+- **Vencidas:** Pendiente/En progreso con vencimiento estrictamente anterior a ahora.
+- **Para hoy:** Pendiente/En progreso cuyo vencimiento cae en el día actual de Lima; puede incluir tareas ya vencidas hoy.
+- **Completadas este mes:** estado Completada y fecha `completada_at` en el mes actual de Lima.
+
+El Resumen conserva sus métricas y diseño e incorpora **Seguimiento comercial**, con tareas para hoy, vencidas y los primeros tres seguimientos abiertos ordenados por vencimiento (incluidas las vencidas). Los contadores se actualizan periódicamente; **Actualizar**, navegar o recargar vuelve a consultar Supabase. No hay suscripción Realtime en esta etapa.
+
+### Completar, reabrir, cancelar y eliminar
+
+- **Completar:** acción rápida que persiste inmediatamente el estado Completada y registra `completada_at` con la hora del servidor. Editar una tarea que sigue Completada conserva su fecha de finalización.
+- **Reabrir:** disponible en Completadas, vuelve a Pendiente y limpia `completada_at`. Administrador/Gerente pueden hacerlo en todas; Vendedor solo en las propias. El formulario también permite pasar a En progreso.
+- **Cancelar tarea:** solicita confirmación y conserva el registro como Cancelada; deja de contar como abierta o vencida. Una cancelada no se reabre ni elimina: crea una nueva tarea para retomar el seguimiento. Su información puede corregirse sin cambiar ese estado.
+- **Eliminar:** solo Administrador/Gerente y únicamente tareas generales Pendientes, sin relación comercial ni actividad previa. `actividad_at` conserva la primera salida de Pendiente, por lo que completar y reabrir no habilita una eliminación posterior. En el resto de casos se usa Cancelar. Vendedor no elimina tareas en esta primera versión.
+
+### Roles, RLS y consistencia
+
+| Operación | Administrador | Gerente | Vendedor activo |
+| --- | --- | --- | --- |
+| Ver todas y crear | Sí | Sí | Sí; responsable propio |
+| Editar, completar, reabrir y cancelar | Todas | Todas | Solo asignadas a su cuenta |
+| Asignar/reasignar | A perfiles activos | A perfiles activos | No |
+| Eliminar una general pendiente sin actividad | Sí | Sí | No |
+
+`tareas_read` exige un perfil activo con uno de los tres roles. Se revocan permisos INSERT/UPDATE/DELETE directos; `save_task`, `set_task_status` y `delete_task` comprueban permisos, estado y versión `updated_at` bajo bloqueo de fila. Vendedor no puede modificar una tarea ajena aunque la haya creado antes de que se reasignara. Las funciones `SECURITY DEFINER` usan `search_path` vacío y solo se conceden a `authenticated`; anónimos e inactivos no pueden operar. Los campos de auditoría no son parámetros editables.
+
+`task_responsibles()` devuelve únicamente ID, nombres, rol y estado de perfiles activos y de creadores/responsables históricos referenciados, sin ampliar la política SELECT de Profiles. Una asignación nueva exige perfil activo; un responsable histórico inactivo puede conservarse al editar. Las claves foráneas `ON DELETE RESTRICT` impiden eliminar clientes, leads, oportunidades, ventas o perfiles aún relacionados. El alta usa una referencia UUID estable para que repetir una solicitud cuya respuesta se perdió no cree otra tarea; cambios simultáneos muestran un mensaje de actualización necesaria.
+
+### Pruebas manuales por rol
+
+1. **Administrador:** crea una tarea general y otra desde cada módulo comercial; comprueba preselección y enlaces. Edita descripción/fechas, reasigna a otro perfil activo, completa, recarga y reabre. Cancela con confirmación y verifica que permanece. Elimina otra tarea general pendiente sin actividad. Inactiva a un responsable y verifica que sus tareas anteriores conservan el nombre y que no se ofrece para nuevas asignaciones.
+2. **Gerente:** repite creación, edición, reasignación, completar, reabrir y cancelar. Puede eliminar solo generales pendientes sin actividad; no obtiene permisos administrativos de Usuarios.
+3. **Vendedor:** crea y edita su propia tarea; Responsable debe estar bloqueado a su cuenta. Completa, recarga y reabre. Consulta una tarea de otro responsable: no debe ofrecer edición, completar ni cancelación. No debe aparecer Eliminar. La prueba SQL verifica que invocar RPC directamente tampoco permite reasignar ni modificar/eliminar tareas ajenas.
+4. **Fechas y consultas:** registra una tarea para ayer, otra para hoy y otra para mañana. Verifica Vencida/Hoy/Próxima, combina filtros, busca por descripción y por cliente/lead/oportunidad, cambia entre Lista/Tablero y revisa estados vacíos. Completar y cancelar deben excluirlas de vencidas y tareas para hoy.
+5. **Recordatorio:** guarda una hora antes del vencimiento y comprueba su visualización en lista y detalle tras recargar. Solo se prepara el dato: no se envían emails, push ni WhatsApp.
+
+Verificación local: `npm run typecheck`, `npm run lint`, `npm run build -- --webpack`, `npm run test:e2e -- tests/tasks.spec.ts` y la suite completa `npm run test:e2e`. Playwright usa transporte HTTP simulado local para los flujos de interfaz. En PostgreSQL 17 temporal se aplicó `tasks.sql` dos veces, pasó `supabase/tests/tasks.sql` y pasaron las cinco pruebas SQL de los módulos anteriores. También pasó la concurrencia: 16 solicitudes crearon nueve tareas únicas (ocho reintentos de una misma alta crearon una sola), y dos actualizaciones con la misma versión aceptaron solo una. El servidor temporal se detuvo al terminar. Estas pruebas no sustituyen la aplicación de la migración y las pruebas con tus cuentas reales de Supabase.
+
+Archivos nuevos: `src/features/tasks/` (tipos estrictos, fechas/estadísticas, validación, permisos, servicio, hook/directorio, formulario, acciones, lista/tablero, detalle, enlace comercial y bloque de Resumen), `src/app/(crm)/tareas/`, `supabase/tasks.sql`, `supabase/tests/tasks.sql` y `tests/tasks.spec.ts`. Archivos modificados: tipos de Supabase, Sidebar, Header, aviso del layout, acciones de Clientes/Leads/Oportunidades/Ventas, búsqueda por ID y parámetro `buscar` en Leads/Oportunidades para enlazar relaciones, mensajes de claves foráneas, composición de Resumen y este README. Se conserva `package-lock.json`, sin nuevas dependencias.
+
+**Siguiente etapa: Calendario.** Quedan fuera de esta entrega calendario completo, notificaciones push, email automático, WhatsApp, recurrencias complejas, reportes completos y multiempresa.

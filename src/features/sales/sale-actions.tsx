@@ -6,6 +6,7 @@ import { Ban, CreditCard, Eye, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { NewTaskLink } from "@/features/tasks/task-link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,7 +26,7 @@ export function SaleStateBadge({ state }: { state: SaleState }) { return <Badge 
 type Props = { sale: Sale; directory: SalesDirectory; today: string; onSaved: (sale: Sale) => void; onEdited?: (detail: SaleDetail) => void; onDeleted: (id: string) => void; showDetail?: boolean };
 export function SaleActions({ sale, directory, today, onSaved, onEdited, onDeleted, showDetail = true }: Props) {
   const { profile } = useAuth();
-  return <div className={showDetail ? "flex w-max shrink-0 gap-1" : "flex flex-wrap gap-1"}>{showDetail && <Button asChild variant="ghost" size="icon"><Link href={`/ventas/${sale.id}`} aria-label={`Ver venta ${sale.numero}`} title="Ver detalle"><Eye className="size-4" /></Link></Button>}{canEditSale(sale) && <><SaleFormDialog sale={sale} directory={directory} today={today} onSaved={(detail) => { onSaved(detail.sale); onEdited?.(detail); }}><Button variant="ghost" size="icon" aria-label={`Editar venta ${sale.numero}`} title="Editar venta"><Pencil className="size-4" /></Button></SaleFormDialog><SaleStatusDialog sale={sale} today={today} onSaved={onSaved} /></>}{canManageSales(profile.rol) && sale.estado !== "Cancelada" && <SaleStatusDialog sale={sale} today={today} onSaved={onSaved} cancel />}{canDeleteSale(profile.rol, sale) && <SaleDelete sale={sale} onDeleted={onDeleted} />}</div>;
+  return <div className={showDetail ? "flex w-max shrink-0 gap-1" : "flex flex-wrap gap-1"}><NewTaskLink type="Venta" id={sale.id} label={sale.numero} />{showDetail && <Button asChild variant="ghost" size="icon"><Link href={`/ventas/${sale.id}`} aria-label={`Ver venta ${sale.numero}`} title="Ver detalle"><Eye className="size-4" /></Link></Button>}{canEditSale(sale) && <><SaleFormDialog sale={sale} directory={directory} today={today} onSaved={(detail) => { onSaved(detail.sale); onEdited?.(detail); }}><Button variant="ghost" size="icon" aria-label={`Editar venta ${sale.numero}`} title="Editar venta"><Pencil className="size-4" /></Button></SaleFormDialog><SaleStatusDialog sale={sale} today={today} onSaved={onSaved} /></>}{canManageSales(profile.rol) && sale.estado !== "Cancelada" && <SaleStatusDialog sale={sale} today={today} onSaved={onSaved} cancel />}{canDeleteSale(profile.rol, sale) && <SaleDelete sale={sale} onDeleted={onDeleted} />}</div>;
 }
 function SaleStatusDialog({ sale, today, onSaved, cancel = false }: { sale: Sale; today: string; onSaved: (sale: Sale) => void; cancel?: boolean }) {
   const [open, setOpen] = useState(false);

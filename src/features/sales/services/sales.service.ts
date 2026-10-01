@@ -61,6 +61,7 @@ export async function changeSaleStatus(sale: Sale, state: SaleState, payment: { 
 }
 export async function deleteSale(sale: Sale): Promise<void> {
   const { data, error } = await getSupabaseClient().rpc("delete_sale", { p_id: sale.id, p_updated_at: sale.updated_at });
+  if (error?.code === "23503") throw new Error("La venta tiene tareas relacionadas. Cancélala para conservar el historial.");
   if (error) fail(error);
   if (!data) throw new Error("No se eliminó la venta. Actualiza la lista.");
 }

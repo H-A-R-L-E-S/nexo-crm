@@ -18,6 +18,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ClientFormDialog } from "@/features/clients/client-form";
+import { TasksOverview } from "@/features/tasks/tasks-overview";
 import { useClients } from "@/features/clients/clients-provider";
 import { OWNERS } from "@/features/clients/demo-data";
 
@@ -303,6 +304,7 @@ export function OverviewView() {
         </section>
 
         <div className="space-y-5">
+          <TasksOverview />
           <section aria-labelledby="owners-heading" className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-xs sm:p-6">
             <div className="flex items-center justify-between">
               <h2 id="owners-heading" className="text-[15px] font-semibold text-slate-900">Tu equipo</h2>

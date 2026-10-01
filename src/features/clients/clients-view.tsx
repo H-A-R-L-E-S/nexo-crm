@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { NewTaskLink } from "@/features/tasks/task-link";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -309,7 +310,7 @@ export function ClientsView({
                         <Pencil className="size-3.5" aria-hidden="true" />
                       </Button>
                     </ClientFormDialog>
-                    <DeleteClientButton client={client} />
+                    <NewTaskLink type="Cliente" id={client.id} label={client.name} /><DeleteClientButton client={client} />
                     </div>
                   </TableCell>
                 </TableRow>

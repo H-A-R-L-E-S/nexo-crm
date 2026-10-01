@@ -3,6 +3,7 @@ import type { ClientStatus } from "@/features/clients/types";
 import type { Lead, NuevoLead, LeadConversion, LeadResponsable } from "@/features/leads/types";
 import type { OpportunityRow, CreateOpportunity, OpportunityResponsible } from "@/features/opportunities/types";
 import type { SaleRow, SaleItemRow, SaveSale, SaleItemInput, SaleResponsible, SaleState } from "@/features/sales/types";
+import type { Task, CreateTask, TaskStatus, TaskResponsible } from "@/features/tasks/types";
 
 export type ClientRow = {
   id: string; nombres: string; apellidos: string; empresa: string; correo: string;
@@ -14,6 +15,7 @@ export type ClientRow = {
 export type Database = {
   public: {
     Tables: {
+      tareas: { Row: Task; Insert: never; Update: never; Relationships: [] };
       ventas: { Row: SaleRow; Insert: never; Update: never; Relationships: [] };
       venta_items: { Row: SaleItemRow; Insert: never; Update: never; Relationships: [] };
       oportunidades: { Row: OpportunityRow; Insert: CreateOpportunity; Update: Partial<CreateOpportunity>; Relationships: [] };
@@ -33,6 +35,10 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      task_responsibles: { Args: Record<string, never>; Returns: TaskResponsible[] };
+      save_task: { Args: { p_id: string | null; p_updated_at: string | null; p_request_id: string; p_data: CreateTask }; Returns: string };
+      set_task_status: { Args: { p_id: string; p_updated_at: string; p_estado: TaskStatus }; Returns: string };
+      delete_task: { Args: { p_id: string; p_updated_at: string }; Returns: boolean };
       sale_responsibles: { Args: Record<string, never>; Returns: SaleResponsible[] };
       save_sale: { Args: { p_id: string | null; p_updated_at: string | null; p_request_id: string; p_data: SaveSale; p_items: SaleItemInput[] }; Returns: string };
       set_sale_status: { Args: { p_id: string; p_estado: SaleState; p_updated_at: string; p_fecha_pago: string | null; p_metodo_pago: string; p_referencia_pago: string; p_motivo: string }; Returns: string };
