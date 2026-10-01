@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { flushSync } from "react-dom";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { updateOpportunity } from "./services/opportunities.service";
@@ -13,10 +14,12 @@ export function StageControl({ item, onSaved }: { item: Opportunity; onSaved: (i
     if (pending || stage === item.etapa) return;
     setPending(true); setError("");
     try {
-      onSaved(await updateOpportunity(item.id, { ...opportunityInput(item), etapa: stage, probabilidad: STAGE_PROBABILITY[stage] }, item.updated_at));
+      const saved = await updateOpportunity(item.id, { ...opportunityInput(item), etapa: stage, probabilidad: STAGE_PROBABILITY[stage] }, item.updated_at);
+      // El selector debe estar montado y habilitado antes de restaurar su foco.
+      flushSync(() => { setPending(false); onSaved(saved); });
       toast.success(`Oportunidad en ${stage}`);
       // La tarjeta cambia de columna y se monta de nuevo; conserva el foco del teclado.
-      requestAnimationFrame(() => document.querySelector<HTMLSelectElement>(`[data-opportunity-stage="${item.id}"]`)?.focus());
+      document.querySelector<HTMLSelectElement>(`[data-opportunity-stage="${item.id}"]`)?.focus();
     }
     catch (cause) { setError(cause instanceof Error ? cause.message : "No se pudo cambiar la etapa."); }
     finally { setPending(false); }

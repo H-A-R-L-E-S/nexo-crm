@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { CreditCard, Eye, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
@@ -25,7 +25,7 @@ export function OpportunityActions({ item, directory, onSaved, onDeleted }: { it
   const owner = directory.responsibles.find((value) => value.id === item.responsable_id);
   const fields = { Valor: formatMoney(item.valor), Probabilidad: `${item.probabilidad}%`, Responsable: owner ? `${responsableName(owner)}${owner.activo ? "" : " (inactivo)"}` : "Sin asignar", "Fecha estimada": estimatedDate(item.fecha_cierre_estimada), Origen: item.origen || "Sin registrar", "Lead de origen": lead ? leadName(lead) : "Sin lead relacionado", Creación: formatLeadDate(item.created_at), Actualización: formatLeadDate(item.updated_at), "Cierre real": formatLeadDate(item.cerrada_at) };
   return <div className="flex shrink-0"><Dialog><DialogTrigger asChild><Button variant="ghost" size="icon" aria-label={`Ver oportunidad: ${item.titulo}`} title="Ver detalle"><Eye className="size-4" /></Button></DialogTrigger><DialogContent className="max-h-[90dvh] overflow-y-auto p-6 sm:max-w-xl"><DialogHeader><DialogTitle className="break-words">{item.titulo}</DialogTitle><DialogDescription>Detalle comercial · Fechas y horas en Lima</DialogDescription></DialogHeader><StageBadge stage={item.etapa} /><Link className="text-sm font-medium text-blue-700 underline" href={`/clientes?buscar=${encodeURIComponent(item.cliente_id)}`}>{client?.name ?? "Ver cliente"}</Link><dl className="grid gap-4 sm:grid-cols-2">{Object.entries(fields).map(([label, value]) => <div key={label} className="min-w-0"><dt className="text-xs text-slate-500">{label}</dt><dd className="mt-1 break-words text-sm">{value}</dd></div>)}</dl><div><h3 className="text-xs text-slate-500">Descripción</h3><p className="mt-1 whitespace-pre-wrap break-words text-sm">{item.descripcion || "Sin descripción"}</p></div>{lead && <p className="break-all text-xs text-slate-400">ID del lead: {lead.id}</p>}</DialogContent></Dialog>
-    <OpportunityFormDialog item={item} directory={directory} onSaved={onSaved}><Button variant="ghost" size="icon" aria-label={`Editar oportunidad: ${item.titulo}`} title="Editar oportunidad"><Pencil className="size-4" /></Button></OpportunityFormDialog>{canManageOpportunities(profile.rol) && <DeleteOpportunity item={item} onDeleted={onDeleted} />}</div>;
+    {item.etapa === "Ganada" && <Button asChild variant="ghost" size="icon"><Link href={`/ventas?nueva=1&oportunidad=${encodeURIComponent(item.id)}`} aria-label={`Nueva venta: ${item.titulo}`} title="Nueva venta"><CreditCard className="size-4 text-blue-600" /></Link></Button>}<OpportunityFormDialog item={item} directory={directory} onSaved={onSaved}><Button variant="ghost" size="icon" aria-label={`Editar oportunidad: ${item.titulo}`} title="Editar oportunidad"><Pencil className="size-4" /></Button></OpportunityFormDialog>{canManageOpportunities(profile.rol) && <DeleteOpportunity item={item} onDeleted={onDeleted} />}</div>;
 }
 function DeleteOpportunity({ item, onDeleted }: { item: Opportunity; onDeleted: (id: string) => void }) {
   const [open, setOpen] = useState(false);

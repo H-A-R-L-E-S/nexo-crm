@@ -18,7 +18,7 @@ const navigation = [
   { label: "Clientes", href: "/clientes", icon: UsersRound },
   { label: "Leads", href: "/leads", icon: UserRoundSearch },
   { label: "Oportunidades", href: "/oportunidades", icon: GitBranch },
-  { label: "Ventas", icon: ShoppingBag },
+  { label: "Ventas", href: "/ventas", icon: ShoppingBag },
   { label: "Tareas", icon: CheckSquare },
   { label: "Calendario", icon: CalendarDays },
   { label: "Reportes", icon: ChartNoAxesCombined },
@@ -38,7 +38,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       <nav aria-label="Navegación principal" className="space-y-1 px-4">
         <p className="mb-3 px-3 text-[10px] font-semibold tracking-[1.5px] text-slate-400">ESPACIO DE TRABAJO</p>
         {navigation.map(({ label, href, icon: Icon }) => {
-          const active = pathname === href;
+          const active = pathname === href || (Boolean(href) && href !== "/" && pathname.startsWith(`${href}/`));
           const className = cn("flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600", active ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900");
           return href ? <Link key={label} href={href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={className}><Icon className="size-[18px]" aria-hidden="true" />{label}{active && <span className="ml-auto size-1.5 rounded-full bg-blue-600" />}</Link>
             : <button key={label} type="button" className={className} onClick={() => setPanel({ kind: "module", name: label })}><Icon className="size-[18px]" aria-hidden="true" />{label}<span className="ml-auto text-[9px] font-normal text-slate-400">Pronto</span></button>;

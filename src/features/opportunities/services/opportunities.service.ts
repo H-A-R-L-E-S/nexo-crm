@@ -7,7 +7,7 @@ const selection = "id,titulo,cliente_id,lead_id,responsable_id,etapa,valor:valor
 function fail(error: { code?: string; message: string }): never {
   if (error.code === "42501") throw new Error("No tienes permiso para esta operación. Comprueba tu sesión y rol.");
   if (error.code === "22023") throw new Error(error.message);
-  if (error.code === "23503") throw new Error("El cliente, lead o responsable ya no está disponible. Actualiza la lista.");
+  if (error.code === "23503") throw new Error("Revisa las relaciones comerciales de la oportunidad. El cliente, lead o responsable puede no estar disponible, o existen ventas asociadas que deben conservarse.");
   if (error.code === "23514" || error.code === "22003") throw new Error("Revisa el importe, la probabilidad y los campos obligatorios.");
   if (error.code === "PGRST301" || error.code === "PGRST303") {
     window.location.replace("/login?motivo=sesion");

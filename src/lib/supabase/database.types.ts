@@ -2,6 +2,7 @@ import type { Profile } from "@/features/auth/types";
 import type { ClientStatus } from "@/features/clients/types";
 import type { Lead, NuevoLead, LeadConversion, LeadResponsable } from "@/features/leads/types";
 import type { OpportunityRow, CreateOpportunity, OpportunityResponsible } from "@/features/opportunities/types";
+import type { SaleRow, SaleItemRow, SaveSale, SaleItemInput, SaleResponsible, SaleState } from "@/features/sales/types";
 
 export type ClientRow = {
   id: string; nombres: string; apellidos: string; empresa: string; correo: string;
@@ -13,6 +14,8 @@ export type ClientRow = {
 export type Database = {
   public: {
     Tables: {
+      ventas: { Row: SaleRow; Insert: never; Update: never; Relationships: [] };
+      venta_items: { Row: SaleItemRow; Insert: never; Update: never; Relationships: [] };
       oportunidades: { Row: OpportunityRow; Insert: CreateOpportunity; Update: Partial<CreateOpportunity>; Relationships: [] };
       leads: { Row: Lead; Insert: NuevoLead; Update: Partial<NuevoLead>; Relationships: [] };
       clientes: {
@@ -30,6 +33,10 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      sale_responsibles: { Args: Record<string, never>; Returns: SaleResponsible[] };
+      save_sale: { Args: { p_id: string | null; p_updated_at: string | null; p_request_id: string; p_data: SaveSale; p_items: SaleItemInput[] }; Returns: string };
+      set_sale_status: { Args: { p_id: string; p_estado: SaleState; p_updated_at: string; p_fecha_pago: string | null; p_metodo_pago: string; p_referencia_pago: string; p_motivo: string }; Returns: string };
+      delete_sale: { Args: { p_id: string; p_updated_at: string }; Returns: boolean };
       opportunity_responsibles: { Args: Record<string, never>; Returns: OpportunityResponsible[] };
       lead_responsibles: { Args: Record<string, never>; Returns: LeadResponsable[] };
       convert_lead: { Args: { p_lead_id: string; p_apellidos: string; p_correo: string; p_existing_client_id: string | null }; Returns: LeadConversion[] };

@@ -1,6 +1,6 @@
 ﻿# Nexo CRM
 
-CRM con Next.js 16 App Router, TypeScript, Tailwind y shadcn/ui. Clientes, Leads y Oportunidades guardan sus datos en Supabase. El acceso al CRM usa Supabase Auth, perfiles y permisos respaldados por RLS.
+CRM con Next.js 16 App Router, TypeScript, Tailwind y shadcn/ui. Clientes, Leads, Oportunidades y Ventas guardan sus datos en Supabase. El acceso al CRM usa Supabase Auth, perfiles y permisos respaldados por RLS.
 
 ## Instalación y ejecución
 
@@ -34,7 +34,7 @@ En el proyecto Supabase existente abre **SQL Editor** y ejecuta completo [supaba
 - Reemplaza todas las políticas de `clientes` y revoca el acceso de `anon`.
 - Permite repetir la migración sobre el esquema de esta entrega.
 
-**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql`, `user_management.sql`, `leads.sql` y `opportunities.sql`.
+**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql`, `user_management.sql`, `leads.sql`, `opportunities.sql` y `sales.sql`.
 
 Este repositorio no ejecuta migraciones contra tu proyecto remoto. Hasta que apliques el SQL, las políticas anteriores seguirán vigentes y el acceso al CRM requerirá completar la configuración de perfiles.
 
@@ -114,7 +114,7 @@ Prueba manual final: inicia sesión con una cuenta de cada rol, registra y edita
 
 ## Siguientes etapas
 
-La siguiente etapa es Ventas. Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, seguimiento y tareas completos, cotizaciones, productos, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
+Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, seguimiento y tareas completos, cotizaciones, productos, inventario, calendario, reportes y pagos por cuotas. Facturación electrónica SUNAT y multiempresa quedan fuera de esta etapa.
 
 
 ## Administración de usuarios
@@ -254,7 +254,7 @@ El formulario carga clientes, leads y perfiles reales. Desde una fila de Cliente
 
 `oportunidades_read`, `oportunidades_create` y `oportunidades_edit` requieren uno de los tres roles activos; `oportunidades_delete` exige Administrador/Gerente. El trigger impide que Vendedor asigne a otra persona o cambie responsables. Las restricciones existen en PostgreSQL, además de los botones. `opportunity_responsibles()` solo expone datos mínimos a perfiles activos, sin ampliar SELECT de Profiles. Una nueva asignación exige perfil activo; un responsable posteriormente inactivado sigue relacionado y puede conservarse al editar. Las claves foráneas conservan trazabilidad: no se elimina un cliente, lead o perfil mientras tenga oportunidades asociadas.
 
-Leads, Clientes, Auth y Usuarios conservan sus flujos. Oportunidades no usa `service_role`. No se implementan Ventas, cotizaciones, productos, tareas completas, calendario, reportes ni multiempresa.
+Leads, Clientes, Auth y Usuarios conservan sus flujos. Oportunidades no usa `service_role`. Ventas se describe en la sección siguiente; quedan pendientes cotizaciones, productos, tareas completas, calendario, reportes y multiempresa.
 
 ### Cómo verificar esta entrega
 
@@ -267,3 +267,69 @@ Leads, Clientes, Auth y Usuarios conservan sus flujos. Oportunidades no usa `ser
 Comprobaciones locales: `npm run typecheck`, `npm run lint`, `npm run build -- --webpack` y `npm run test:e2e`. Playwright añade los flujos anteriores, filtros/paginación, cambios obsoletos, error/reintento, móvil, importes exactos y límite mensual de Lima. Conserva las regresiones de Clientes, Leads, Auth y Usuarios. Usa exclusivamente el servicio Supabase simulado local: **la persistencia y RLS del proyecto remoto requieren aplicar el SQL y realizar la prueba manual**. No se ejecutaron los SQL de verificación en PostgreSQL local porque este entorno no tiene `psql` ni Docker.
 
 Archivos creados: `src/features/opportunities/` (tipos, dinero, estadísticas, validación, permisos, servicio, hook, formularios, detalle, acciones y vistas), `src/app/(crm)/oportunidades/`, `supabase/opportunities.sql`, `supabase/tests/opportunities.sql` y `tests/opportunities.spec.ts`. Archivos modificados: tipos de Supabase, Sidebar/Header/aviso de layout, acciones de Clientes y detalle de Leads, mensajes al eliminar registros relacionados y README. La prueba de inactivación de Usuarios navega directamente a la ruta para evitar una carrera con su redirección periódica; no se modifica la autenticación.
+
+## Ventas
+
+### Activación manual
+
+En **SQL Editor del proyecto Supabase existente**, ejecuta completo [supabase/sales.sql](supabase/sales.sql). Como Oportunidades ya está instalado, **solo necesitas ejecutar `sales.sql`**. No repitas las migraciones anteriores. La migración puede repetirse sobre su propio esquema y no modifica las políticas de Clientes, Leads, Oportunidades o Profiles.
+
+No se ejecutó ninguna operación contra Supabase remoto. No hay nuevas dependencias ni variables de entorno; se conserva `package-lock.json`. Ejecuta `npm ci` si necesitas instalar y `npm run dev -- --webpack`. Abre **`/ventas`** con una cuenta activa. **`/ventas/[id]`** muestra el detalle de cada venta.
+
+### Crear, editar y registrar pago
+
+Nueva venta pide cliente, responsable, fecha, estado y al menos un ítem. Los ítems admiten descripción, cantidad, precio unitario y descuento monetario por línea. Puedes agregar y quitar filas, hasta 100. El resumen se actualiza al escribir; permite aplicar o desactivar IGV 18%. Métodos: Efectivo, Transferencia, Tarjeta, Yape, Plin y Otro. El formulario, listado y detalle incluyen carga, vacío, error/reintento y operaciones pendientes.
+
+Desde una **Oportunidad Ganada**, la acción **Nueva venta** abre el formulario con cliente, oportunidad y responsable preseleccionados. Para Vendedor, el responsable nuevo siempre es su propia cuenta. Se propone el título y valor de la oportunidad como primer ítem; ese valor se interpreta como precio base antes del IGV y puede editarse. No se crea otro cliente. SQL exige que la oportunidad pertenezca al cliente y esté Ganada al crear la asociación; no cambia su etapa automáticamente. Si luego se reabre la oportunidad, la relación previa se conserva como historial.
+
+**Borrador** y **Pendiente** permiten editar datos e ítems. Borrador puede pasar a Pendiente o Pagada; una Pendiente no puede volver a Borrador. Al pulsar **Marcar pagada**, completa fecha de pago y método, y opcionalmente referencia; confirma **Marcar Pagada**. También puedes registrar una nueva venta directamente Pagada, completando esos campos. Los tres roles pueden registrar el pago.
+
+Una venta **Pagada** queda bloqueada para editar datos, relaciones, importes e ítems, incluso para Administrador/Gerente. Para revertir la operación comercial, ellos deben usar **Cancelar venta**, registrar un motivo y confirmar. **Cancelada** conserva número, ítems, importes, pago original, motivo, fecha y actor de cancelación; no permite edición ni reapertura. No cuenta como ingreso. No se admite borrado permanente de ventas Pagadas, Pendientes o Canceladas.
+
+### Cálculos y numeración
+
+- Cada `venta_items.subtotal` es el importe bruto `round(cantidad × precio_unitario, 2)`. El descuento de la línea es un importe total, no un porcentaje, y no puede superar ese subtotal.
+- `ventas.subtotal` suma los importes brutos; `ventas.descuento` suma los descuentos de las líneas.
+- La base neta es subtotal menos descuento. El IGV es 18% de esa base, redondeado al céntimo, o cero si está desactivado. `total = subtotal − descuento + impuesto`.
+- Ejemplo: 2 × S/ 100.00 con S/ 10.00 de descuento, más 1.5 × S/ 20.00, produce subtotal **S/ 230.00**, descuento **S/ 10.00**, IGV **S/ 39.60** y total **S/ 259.60**.
+
+PostgreSQL guarda dinero como `numeric(14,2)` y cantidades como `numeric(12,3)`. Rechaza cantidades cero/negativas, descuentos excesivos e importes fuera de rango. Los campos de texto generados entregan decimales exactos al navegador; los cálculos de la UI usan enteros `bigint` en céntimos y milésimas de cantidad. No se usa float para dinero. `save_sale()` valida y recalcula todo en SQL; los totales enviados por un navegador manipulado se ignoran.
+
+La numeración se asigna exclusivamente en PostgreSQL: **V-año-000001**, con contador anual privado y bloqueo transaccional. El año corresponde a la creación en Lima, independientemente de una fecha de venta anterior. La restricción única refuerza la protección concurrente. Un número de una venta borrada no se reutiliza. Las altas usan además un UUID de solicitud: reintentar el mismo formulario después de perder la respuesta devuelve la venta ya creada. Edición y cambios de estado verifican `updated_at` para detectar formularios obsoletos. Cabecera y reemplazo de ítems se guardan en una transacción; un error revierte ambos.
+
+### Permisos y conservación del historial
+
+| Acción | Administrador | Gerente | Vendedor |
+| --- | --- | --- | --- |
+| Leer todas, crear y editar Borrador/Pendiente | Sí | Sí | Sí |
+| Registrar pago | Sí | Sí | Sí |
+| Asignar y reasignar responsable | Sí | Sí | No; altas asignadas a sí mismo |
+| Cancelar con motivo | Sí | Sí | No |
+| Eliminar Borrador no emitido | Sí | Sí | No |
+| Editar o eliminar una Pagada | No; puede cancelarla | No; puede cancelarla | No |
+
+`ventas_read` exige uno de los tres roles activos. `venta_items_read` exige una venta visible por RLS. Anónimos e inactivos no tienen acceso. No hay permisos directos INSERT/UPDATE/DELETE sobre cabecera o ítems: todas las mutaciones usan `save_sale`, `set_sale_status` y `delete_sale`, que vuelven a comprobar rol, estado y relaciones en el servidor. `ventas_delete_draft` limita también la política DELETE a Administrador/Gerente y borradores no emitidos; la aplicación necesita la RPC autorizada para borrar. El contador y sus funciones privadas no están accesibles al cliente.
+
+`sale_responsibles()` entrega solo datos mínimos de perfiles activos y de responsables históricos. No amplía SELECT sobre Profiles. Una asignación nueva exige usuario activo; una relación previa puede conservarse después de inactivarlo. Las claves foráneas impiden borrar un cliente, oportunidad o perfil todavía referenciado. Eliminar un borrador seguro borra sus ítems en cascada y conserva cliente/oportunidad.
+
+### Listado y pruebas manuales
+
+El listado tiene búsqueda por número/cliente/referencia, filtros combinables por estado/responsable/cliente/método y rango inclusivo de fecha de venta, paginación de diez filas y detalle enlazado. Los indicadores son globales, independientes de los filtros:
+
+- **Ventas totales:** cantidad de registros no cancelados, incluidos borradores.
+- **Ingresos pagados:** suma histórica de Pagadas.
+- **Pendientes de pago:** importe y cantidad de Pendientes; excluye borradores.
+- **Ventas este mes:** registros no cancelados cuya fecha de venta pertenece al mes actual de Lima.
+
+El Dashboard conserva sus métricas actuales de Clientes. Los indicadores reales de ventas están en `/ventas`.
+
+1. **Administrador:** crea la venta del ejemplo con dos ítems; verifica S/ 259.60. Edita un precio, desactiva IGV y recarga. Marca Pagada con fecha/método/referencia: Editar y Eliminar deben desaparecer. Cancélala con un motivo y confirma que se conservan los ítems y el pago y bajan los ingresos pagados. Crea otro Borrador y elimínalo tras cancelar primero el diálogo.
+2. **Gerente:** repite creación, edición, pago y cancelación. Puede asignar responsables activos y eliminar borradores seguros; sigue sin tener acceso a Usuarios.
+3. **Vendedor:** crea y edita una venta Borrador/Pendiente y registra pago. El responsable nuevo debe ser su cuenta; no puede reasignar, cancelar ni eliminar. La Pagada debe quedar bloqueada para editar.
+4. **Desde oportunidad:** abre una Ganada y pulsa Nueva venta. Verifica los tres campos preseleccionados y el precio base propuesto, ajusta ítems/IGV y guarda. La oportunidad y el cliente deben conservar sus IDs. Una oportunidad abierta no ofrece esa acción ni se puede asociar mediante RPC.
+5. **Persistencia y responsables:** recarga listado y detalle. Inactiva a un responsable desde Usuarios: las ventas previas conservan su nombre, pero no se ofrece para nuevas asignaciones. Combina filtros y revisa los estados vacíos.
+6. **SQL real:** ejecuta opcionalmente [supabase/tests/sales.sql](supabase/tests/sales.sql) completo después de la migración. Comprueba los tres roles, anon/inactivos, pagos bloqueados, borrados, totales manipulados, reintentos, numeración, versiones obsoletas, asignaciones y trazabilidad. Termina en `ROLLBACK`; ante una excepción ejecuta `ROLLBACK`. Es una verificación, no una segunda migración.
+
+Comandos de verificación: `npm run typecheck`, `npm run lint`, `npm run build -- --webpack` y `npm run test:e2e`. Playwright añade pruebas de Ventas y conserva las regresiones de Auth, Clientes, Leads, Oportunidades y Usuarios. El navegador usa exclusivamente el servicio HTTP simulado local. En esta etapa también se validaron las migraciones y los SQL de permisos en un **clúster temporal PostgreSQL 17**, con funciones mínimas de Auth para las identidades ficticias. Se aplicó `sales.sql` dos veces y pasó la prueba de concurrencia: 24 solicitudes, 17 ventas/números únicos y ocho reintentos de la misma alta produciendo una sola venta. Estas pruebas locales no ejecutan ni sustituyen la activación y verificación del proyecto Supabase remoto.
+
+Archivos creados: `src/features/sales/` (tipos, cálculos, validación, estadísticas, permisos, servicios, hook, formulario, acciones, resumen, listado y detalle), `src/app/(crm)/ventas/`, `supabase/sales.sql`, `supabase/tests/sales.sql` y `tests/sales.spec.ts`. Se modifican tipos de Supabase, Sidebar/Header/aviso del layout, acción Nueva venta y mensaje de relaciones de Oportunidades, conservación del foco al mover tarjetas entre etapas, ESLint para ignorar reportes generados y este README. No se reconstruyen los módulos anteriores ni se utiliza `service_role` en Ventas.
