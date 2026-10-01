@@ -22,7 +22,12 @@ export function useLeads() {
       if (requestVersion === version.current) setLoading(false);
     }
   }, []);
-  useEffect(() => { queueMicrotask(() => void reload()); return () => { ++version.current; }; }, [reload]);
+  const invalidate = useCallback(() => { ++version.current; }, []);
+  useEffect(() => {
+    let active = true;
+    queueMicrotask(() => { if (active) void reload(); });
+    return () => { active = false; invalidate(); };
+  }, [reload, invalidate]);
   function saved(lead: Lead) {
     ++version.current; setLoading(false);
     setLeads((current) => current.some((item) => item.id === lead.id) ? current.map((item) => item.id === lead.id ? lead : item) : [lead, ...current]);

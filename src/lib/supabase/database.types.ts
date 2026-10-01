@@ -1,6 +1,7 @@
 import type { Profile } from "@/features/auth/types";
 import type { ClientStatus } from "@/features/clients/types";
 import type { Lead, NuevoLead, LeadConversion, LeadResponsable } from "@/features/leads/types";
+import type { OpportunityRow, CreateOpportunity, OpportunityResponsible } from "@/features/opportunities/types";
 
 export type ClientRow = {
   id: string; nombres: string; apellidos: string; empresa: string; correo: string;
@@ -12,6 +13,7 @@ export type ClientRow = {
 export type Database = {
   public: {
     Tables: {
+      oportunidades: { Row: OpportunityRow; Insert: CreateOpportunity; Update: Partial<CreateOpportunity>; Relationships: [] };
       leads: { Row: Lead; Insert: NuevoLead; Update: Partial<NuevoLead>; Relationships: [] };
       clientes: {
         Row: ClientRow;
@@ -28,6 +30,7 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      opportunity_responsibles: { Args: Record<string, never>; Returns: OpportunityResponsible[] };
       lead_responsibles: { Args: Record<string, never>; Returns: LeadResponsable[] };
       convert_lead: { Args: { p_lead_id: string; p_apellidos: string; p_correo: string; p_existing_client_id: string | null }; Returns: LeadConversion[] };
       admin_update_profile: {

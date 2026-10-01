@@ -17,7 +17,7 @@ const navigation = [
   { label: "Resumen", href: "/", icon: LayoutDashboard },
   { label: "Clientes", href: "/clientes", icon: UsersRound },
   { label: "Leads", href: "/leads", icon: UserRoundSearch },
-  { label: "Oportunidades", icon: GitBranch },
+  { label: "Oportunidades", href: "/oportunidades", icon: GitBranch },
   { label: "Ventas", icon: ShoppingBag },
   { label: "Tareas", icon: CheckSquare },
   { label: "Calendario", icon: CalendarDays },

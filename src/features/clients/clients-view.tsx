@@ -1,8 +1,10 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   Building2,
+  GitBranch,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -301,6 +303,7 @@ export function ClientsView({
                   </TableCell>
                   <TableCell className="pr-5 text-right">
                     <div className="flex justify-end gap-1">
+                    <Button asChild variant="ghost" size="icon" className="size-9 text-blue-600"><Link href={`/oportunidades?nueva=1&cliente=${encodeURIComponent(client.id)}`} aria-label={`Nueva oportunidad para ${client.name}`} title="Nueva oportunidad"><GitBranch className="size-3.5" /></Link></Button>
                     <ClientFormDialog client={client}>
                       <Button variant="ghost" size="icon" className="size-9 rounded-lg text-slate-500 hover:bg-blue-50 hover:text-blue-600" aria-label={`Editar a ${client.name}`} title={`Editar a ${client.name}`}>
                         <Pencil className="size-3.5" aria-hidden="true" />

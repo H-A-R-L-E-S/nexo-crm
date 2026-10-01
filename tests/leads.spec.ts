@@ -114,7 +114,7 @@ test("búsqueda, cuatro filtros, paginación, error y reintento", async ({ page 
   await expect(page.getByRole("heading", { name: "Sin resultados" })).toBeVisible();
   await page.getByRole("button", { name: "Limpiar filtros" }).click();
   db.fail(true); await page.getByRole("button", { name: "Actualizar", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("No se pudo completar");
+  await expect(page.getByRole("region", { name: "Listado de leads" }).getByRole("alert")).toContainText("No se pudo completar");
   db.fail(false); await page.getByRole("button", { name: "Reintentar" }).click();
   await expect(page.getByText("12 leads · Página 1 de 2")).toBeVisible();
 });

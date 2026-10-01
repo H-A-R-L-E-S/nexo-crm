@@ -1,6 +1,6 @@
 ﻿# Nexo CRM
 
-CRM con Next.js 16 App Router, TypeScript, Tailwind y shadcn/ui. Clientes conserva su CRUD persistente en Supabase. El acceso al CRM usa Supabase Auth, perfiles y permisos respaldados por RLS.
+CRM con Next.js 16 App Router, TypeScript, Tailwind y shadcn/ui. Clientes, Leads y Oportunidades guardan sus datos en Supabase. El acceso al CRM usa Supabase Auth, perfiles y permisos respaldados por RLS.
 
 ## Instalación y ejecución
 
@@ -34,7 +34,7 @@ En el proyecto Supabase existente abre **SQL Editor** y ejecuta completo [supaba
 - Reemplaza todas las políticas de `clientes` y revoca el acceso de `anon`.
 - Permite repetir la migración sobre el esquema de esta entrega.
 
-**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql` y finalmente `user_management.sql` antes de usar la aplicación.
+**No vuelvas a ejecutar `supabase/schema.sql` después:** contiene las políticas públicas temporales de la etapa anterior. Se conserva como historial. En un proyecto nuevo, el orden es `schema.sql`, opcionalmente `seed.sql`, después `auth_roles.sql`, `user_management.sql`, `leads.sql` y `opportunities.sql`.
 
 Este repositorio no ejecuta migraciones contra tu proyecto remoto. Hasta que apliques el SQL, las políticas anteriores seguirán vigentes y el acceso al CRM requerirá completar la configuración de perfiles.
 
@@ -114,7 +114,7 @@ Prueba manual final: inicia sesión con una cuenta de cada rol, registra y edita
 
 ## Siguientes etapas
 
-La siguiente etapa es Oportunidades. Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, seguimiento y tareas completos, cotizaciones, ventas, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
+La siguiente etapa es Ventas. Quedan recuperación de contraseña, cambio obligatorio de contraseña inicial, visibilidad individual por responsable, seguimiento y tareas completos, cotizaciones, productos, calendario y reportes. No se incorporan multiempresa, facturación ni pagos en esta etapa.
 
 
 ## Administración de usuarios
@@ -216,3 +216,54 @@ Prueba manual con **Administrador** y después **Gerente**: crea un lead, asigna
 Para probar **Lead → Cliente**, crea un lead con un correo nuevo, pulsa Convertir a cliente y completa apellidos/correo si faltan. Debe quedar Convertido y abrir su cliente desde el detalle. Repite con otro lead del mismo correo: debe ofrecer vincular al existente sin duplicarlo. Recarga para comprobar persistencia. Inactiva después a un responsable desde Usuarios y verifica que sus leads lo conservan, pero no aparece como opción para nuevas asignaciones.
 
 Archivos de esta etapa: `src/features/leads/` (tipos, validación, fechas, permisos, servicio, hook y componentes), `src/app/(crm)/leads/`, `supabase/leads.sql`, `supabase/tests/leads.sql` y `tests/leads.spec.ts`. Se actualizan los tipos de Supabase, Sidebar/Header, aviso del layout, búsqueda por ID y mensaje de relación de Clientes, y este README. Se conserva `package-lock.json` sin cambios y no se usa el cliente administrativo para Leads.
+
+## Oportunidades comerciales
+
+### Paso manual necesario
+
+Ejecuta completo [supabase/opportunities.sql](supabase/opportunities.sql) en **SQL Editor de tu proyecto Supabase existente**, después de `leads.sql`. Si Leads ya está instalado, **solo necesitas ejecutar `opportunities.sql`**. Si aún no aplicaste la entrega anterior de Leads, ejecuta primero `leads.sql`. No vuelvas a aplicar `schema.sql` ni cambies las políticas anteriores.
+
+La migración crea `public.oportunidades`, índices, constraints, cuatro políticas RLS, el trigger de validación/fechas y un directorio mínimo de responsables. Se puede volver a ejecutar sobre el esquema de esta entrega. No se ejecutó ningún SQL contra Supabase remoto desde el desarrollo. No hay nuevas dependencias, claves o variables de entorno; `package-lock.json` se conserva.
+
+Inicia el proyecto con `npm run dev -- --webpack` y abre **`/oportunidades`**. Sidebar ahora navega al módulo. Ventas y los demás módulos pendientes mantienen «Pronto».
+
+### Pipeline, Lista y cifras
+
+La vista inicial Pipeline tiene seis columnas: Nueva, Contacto, Propuesta, Negociación, Ganada y Perdida. Cada tarjeta muestra cliente, valor en soles, responsable, probabilidad y cierre estimado. La columna suma sus oportunidades visibles. El selector de etapa funciona con teclado y guarda inmediatamente; no se incorpora drag & drop. Si el guardado falla o detecta una edición concurrente, conserva la etapa anterior y muestra el error.
+
+Lista ofrece las mismas acciones y paginación de diez registros. Ambas vistas comparten búsqueda por título/cliente/origen y filtros combinables de etapa, responsable, cliente, abierta/cerrada y rango inclusivo de fecha estimada. Al usar rango de fechas se excluyen las oportunidades sin fecha. Las tarjetas superiores son **globales**, independientes de los filtros; columnas y número de resultados reflejan los filtros.
+
+- **Abiertas:** etapas distintas de Ganada y Perdida.
+- **Valor del pipeline:** suma exacta de los importes abiertos. El valor ponderado suma `valor × probabilidad / 100` y redondea el total al céntimo.
+- **Ganadas este mes:** etapa actual Ganada y fecha real de cierre dentro del mes de Lima.
+- **Tasa de cierre:** ganadas / (ganadas + perdidas), histórica; muestra 0% cuando no hay cerradas.
+
+El dinero se guarda como `numeric(14,2)`, no float. El campo generado `valor_decimal` permite recibir texto exacto desde PostgREST. TypeScript mantiene `valor` como cadena decimal y calcula sumas en céntimos `bigint`. Se admiten importes de 0 a 999999999999.99. El formulario acepta punto o coma decimal, hasta dos decimales y sin separadores de miles.
+
+Las probabilidades sugeridas son 10/25/50/75/100/0 por etapa. Cambiar etapa aplica su sugerencia; en etapas abiertas puede ajustarse manualmente entre 0 y 100. Ganada fija 100 y Perdida 0 también en SQL. `cerrada_at` se gestiona solo en el servidor: cambia al cerrar/cambiar a otra etapa cerrada, se borra al reabrir y se conserva al editar otros datos. `created_at`, `updated_at`, `cerrada_at` y el ID no se escriben desde formularios. El Dashboard permanece con sus estadísticas actuales de Clientes; no se reconstruye ni mezcla métricas de distinto significado.
+
+### Relaciones y permisos
+
+El formulario carga clientes, leads y perfiles reales. Desde una fila de Clientes, **Nueva oportunidad** abre el formulario con ese cliente. Desde el detalle de un lead convertido, la misma acción preselecciona cliente y lead. No crea ni duplica clientes. Solo se pueden asociar leads convertidos al cliente elegido, y SQL verifica esa relación. El detalle incluye cliente enlazado, lead de origen, fechas, importe y descripción.
+
+| Acción | Administrador | Gerente | Vendedor |
+| --- | --- | --- | --- |
+| Leer todas, crear, editar y cambiar etapa | Sí | Sí | Sí |
+| Asignar y reasignar responsable | Sí | Sí | No; nuevas asignadas a sí mismo |
+| Eliminar con confirmación | Sí | Sí | No |
+
+`oportunidades_read`, `oportunidades_create` y `oportunidades_edit` requieren uno de los tres roles activos; `oportunidades_delete` exige Administrador/Gerente. El trigger impide que Vendedor asigne a otra persona o cambie responsables. Las restricciones existen en PostgreSQL, además de los botones. `opportunity_responsibles()` solo expone datos mínimos a perfiles activos, sin ampliar SELECT de Profiles. Una nueva asignación exige perfil activo; un responsable posteriormente inactivado sigue relacionado y puede conservarse al editar. Las claves foráneas conservan trazabilidad: no se elimina un cliente, lead o perfil mientras tenga oportunidades asociadas.
+
+Leads, Clientes, Auth y Usuarios conservan sus flujos. Oportunidades no usa `service_role`. No se implementan Ventas, cotizaciones, productos, tareas completas, calendario, reportes ni multiempresa.
+
+### Cómo verificar esta entrega
+
+1. **Administrador:** crea una oportunidad desde Clientes; completa título, valor, etapa, probabilidad y responsable. Comprueba ambos modos y el detalle. Edita importe/fecha/descripción y recarga. Cambia a Ganada: debe mostrar 100%, salir del pipeline abierto y contar en el mes del cierre. Elimina otra oportunidad tras cancelar primero la confirmación.
+2. **Gerente:** repite alta, edición, cambio de etapa, asignación y eliminación. Debe conservar los mismos permisos comerciales sin acceso a Usuarios.
+3. **Vendedor:** crea y edita una oportunidad; el responsable nuevo debe ser su propia cuenta y no permitir reasignación. Cambia etapa y recarga para comprobar persistencia. No debe aparecer Eliminar.
+4. **Trazabilidad:** desde un lead convertido abre Nueva oportunidad y comprueba el cliente y lead preseleccionados. El cliente existente debe conservar su ID. Inactiva a un responsable desde Usuarios: debe seguir visible en las oportunidades previas y no ofrecerse para nuevas asignaciones.
+5. **RLS y precisión en PostgreSQL:** ejecuta opcionalmente [supabase/tests/opportunities.sql](supabase/tests/opportunities.sql) completo, después de la migración. Comprueba CRUD por rol, bloqueo de reasignación/borrado, dinero, probabilidad, consistencia lead-cliente, fechas de cierre e inactivos. Termina con `ROLLBACK`; ante una excepción ejecuta `ROLLBACK`. No es una migración y no se ejecuta automáticamente.
+
+Comprobaciones locales: `npm run typecheck`, `npm run lint`, `npm run build -- --webpack` y `npm run test:e2e`. Playwright añade los flujos anteriores, filtros/paginación, cambios obsoletos, error/reintento, móvil, importes exactos y límite mensual de Lima. Conserva las regresiones de Clientes, Leads, Auth y Usuarios. Usa exclusivamente el servicio Supabase simulado local: **la persistencia y RLS del proyecto remoto requieren aplicar el SQL y realizar la prueba manual**. No se ejecutaron los SQL de verificación en PostgreSQL local porque este entorno no tiene `psql` ni Docker.
+
+Archivos creados: `src/features/opportunities/` (tipos, dinero, estadísticas, validación, permisos, servicio, hook, formularios, detalle, acciones y vistas), `src/app/(crm)/oportunidades/`, `supabase/opportunities.sql`, `supabase/tests/opportunities.sql` y `tests/opportunities.spec.ts`. Archivos modificados: tipos de Supabase, Sidebar/Header/aviso de layout, acciones de Clientes y detalle de Leads, mensajes al eliminar registros relacionados y README. La prueba de inactivación de Usuarios navega directamente a la ruta para evitar una carrera con su redirección periódica; no se modifica la autenticación.

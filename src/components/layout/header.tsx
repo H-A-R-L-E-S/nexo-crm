@@ -20,7 +20,7 @@ export function Header() {
   return (
     <header className="border-b border-slate-200/80 bg-white px-4 sm:px-8 lg:px-9">
       <div className="flex min-h-[76px] flex-wrap items-center gap-x-4 gap-y-2 py-3">
-        <div className="flex shrink-0 items-center gap-3"><MobileNavigation /><span className="text-sm font-semibold text-slate-800">{{ "/clientes": "Clientes", "/leads": "Leads", "/perfil": "Mi perfil", "/configuracion": "Configuración", "/configuracion/usuarios": "Usuarios" }[pathname] ?? "Resumen"}</span></div>
+        <div className="flex shrink-0 items-center gap-3"><MobileNavigation /><span className="text-sm font-semibold text-slate-800">{{ "/clientes": "Clientes", "/leads": "Leads", "/oportunidades": "Oportunidades", "/perfil": "Mi perfil", "/configuracion": "Configuración", "/configuracion/usuarios": "Usuarios" }[pathname] ?? "Resumen"}</span></div>
         <form role="search" onSubmit={search} className="relative order-last w-full sm:order-none sm:ml-auto sm:w-[min(30vw,320px)]">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
           <input aria-label="Buscar en Nexo" placeholder="Buscar clientes..." value={query} onChange={(event) => setQuery(event.target.value)} className="h-10 w-full rounded-lg border border-slate-200 bg-slate-50/70 pl-9 pr-3 text-xs outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />

@@ -3,6 +3,7 @@ import type { ActualizarLead, Lead, LeadConversion, LeadResponsable, NuevoLead }
 import { validateLead } from "../validation";
 
 function fail(error: { code?: string; message: string }): never {
+  if (error.code === "23503") throw new Error("Este lead tiene oportunidades relacionadas. Conserva el historial o modifica primero esas relaciones.");
   if (["42501", "22023", "P0002"].includes(error.code ?? "")) throw new Error(error.code === "42501" ? "No tienes permiso para esta operación. Verifica tu sesión y rol." : error.message);
   if (error.code === "PGRST301" || error.code === "PGRST303") {
     window.location.replace("/login?motivo=sesion");

@@ -146,7 +146,8 @@ test("un alta incompleta conserva una cuenta inactiva y no permite repetir el en
 test("inactivar un usuario con sesión abierta bloquea su siguiente navegación", async ({ page, request }) => {
   await login(page, "vendedor@example.test");
   await request.post("http://127.0.0.1:54321/__test/control", { data: { email: "vendedor@example.test", activo: false } });
-  await page.locator("aside").getByRole("link", { name: "Clientes", exact: true }).click();
+  // Puede redirigirse por la comprobación periódica antes de hacer clic en el enlace.
+  await page.goto("/clientes");
   await expect(page).toHaveURL(/\/acceso-restringido$/);
   await expect(page.getByRole("heading", { name: "Tu acceso necesita revisión" })).toBeVisible();
 });
