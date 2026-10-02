@@ -19,5 +19,22 @@ export function TasksOverview() {
   }, [attempt]);
   const stats = tasks && now ? taskStats(tasks, now) : null;
   const upcoming = tasks?.filter(isOpenTask).sort((a, b) => Date.parse(a.fecha_vencimiento) - Date.parse(b.fecha_vencimiento)).slice(0, 3) ?? [];
-  return <section aria-label="Seguimiento comercial" className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6"><div className="flex items-center justify-between gap-3"><h2 className="text-sm font-semibold">Seguimiento comercial</h2><Link href="/tareas" className="text-xs text-blue-700 underline">Ver tareas</Link></div>{error ? <div className="mt-4 space-y-3"><p className="text-xs text-slate-500">{error}</p><Button size="sm" variant="outline" onClick={() => setAttempt(attempt + 1)}>Reintentar tareas</Button></div> : !stats ? <p className="mt-4 text-xs text-slate-500">Cargando seguimiento...</p> : <><div className="mt-4 flex flex-wrap gap-5"><Link href="/tareas?vencimiento=today" className="text-sm text-blue-700">{stats.today} para hoy</Link><Link href="/tareas?vencimiento=overdue" className="text-sm text-red-700">{stats.overdue} vencidas</Link></div><p className="mt-4 text-xs text-slate-500">Próximos seguimientos · Incluye tareas vencidas</p>{upcoming.length ? <ul className="mt-3 space-y-3">{upcoming.map((task) => <li key={task.id} className="flex flex-wrap justify-between gap-2"><Link href={`/tareas/${task.id}`} className="min-w-0 break-words text-xs font-medium text-slate-800 hover:text-blue-700">{task.titulo}</Link><span className="text-xs text-slate-500">{formatLeadDate(task.fecha_vencimiento)}</span></li>)}</ul> : <p className="mt-3 text-xs text-slate-500">No hay seguimientos abiertos.</p>}</>}</section>;
+  return (
+    <section aria-label="Seguimiento comercial" className="overview-panel p-5 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div><h2 className="text-[15px] font-semibold">Seguimiento comercial</h2><p className="mt-1 text-sm text-slate-600">Próximas tareas, incluidas las vencidas</p></div>
+        <Link href="/tareas" className="overview-link">Ver tareas</Link>
+      </div>
+      {error ? <div className="mt-4 space-y-3"><p role="alert" className="break-words text-sm text-red-700">{error}</p><Button className="h-11" variant="outline" onClick={() => setAttempt(attempt + 1)}>Reintentar tareas</Button></div>
+        : !stats ? <p role="status" className="mt-5 text-sm text-slate-600">Cargando seguimiento...</p>
+        : <>
+          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 border-b border-slate-200 pb-3">
+            <Link href="/tareas?vencimiento=today" className="overview-link gap-2"><span className="text-xl font-semibold tabular-nums">{stats.today}</span> para hoy</Link>
+            <Link href="/tareas?vencimiento=overdue" className="overview-link gap-2 text-red-700 hover:text-red-800"><span className="text-xl font-semibold tabular-nums">{stats.overdue}</span> vencidas</Link>
+          </div>
+          {upcoming.length ? <ul className="mt-1 divide-y divide-slate-100">{upcoming.map((task) => <li key={task.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2"><Link href={`/tareas/${task.id}`} className="overview-link min-w-0 break-words text-slate-800">{task.titulo}</Link><span className="text-xs tabular-nums text-slate-600">{formatLeadDate(task.fecha_vencimiento)}</span></li>)}</ul>
+            : <p className="mt-4 text-sm text-slate-600">No hay seguimientos abiertos. Puedes registrar una tarea desde el módulo Tareas.</p>}
+        </>}
+    </section>
+  );
 }
