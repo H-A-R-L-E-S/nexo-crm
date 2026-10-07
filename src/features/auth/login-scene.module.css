@@ -1,0 +1,147 @@
+.scene {
+  --scene-off: #292b30;
+  --scene-on: #eae7e1;
+  --scene-text: #20242c;
+  --scene-muted: #555b64;
+  --scene-field: #f6f4ef;
+  --scene-field-border: #737b86;
+  --scene-hint: #dddeda;
+  --scene-control: #e4e5e8;
+  --scene-focus: #aac4ff;
+  --scene-light: .15;
+  --composition-width: min(100vw, 1200px);
+  --lamp-width: min(38rem, calc((var(--composition-width) - 8rem) * 1.35 / 2.35));
+  --source-x: calc(50% - var(--composition-width) / 2 + 2.5rem + var(--lamp-width) / 2);
+  --source-y: calc(var(--lamp-width) * .625);
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  background: var(--scene-off);
+  color: var(--scene-text);
+  transition: background-color 850ms cubic-bezier(.22, 1, .36, 1) 150ms;
+}
+
+:global(.dark) .scene {
+  --scene-off: #101215;
+  --scene-on: #17191e;
+  --scene-text: #eceef2;
+  --scene-muted: #b6bec9;
+  --scene-field: #20232a;
+  --scene-field-border: #8992a0;
+  --scene-light: .19;
+}
+
+.scene[data-lit="true"] {
+  --scene-hint: #555b64;
+  --scene-control: #454b56;
+  --scene-focus: #2563eb;
+  background: var(--scene-on);
+}
+:global(.dark) .scene[data-lit="true"] { --scene-hint: #b6bec9; --scene-control: #b6bec9; --scene-focus: #9bbaff; }
+
+.lighting { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.beam {
+  position: absolute;
+  left: var(--source-x);
+  top: var(--source-y);
+  width: 78rem;
+  height: 64rem;
+  transform: translateX(-50%) rotate(-32deg);
+  transform-origin: 50% 0;
+  clip-path: polygon(49% 0, 51% 0, 100% 100%, 0 100%);
+  background: radial-gradient(ellipse at 50% 0, rgb(255 211 144 / 52%), rgb(240 191 126 / 16%) 45%, transparent 73%);
+  filter: blur(24px);
+  opacity: 0;
+  transition: opacity 650ms ease-out 220ms;
+}
+.ambient { position: absolute; inset: 0; background: radial-gradient(ellipse at 65% 60%, rgb(246 212 162 / var(--scene-light)), transparent 65%); opacity: 0; transition: opacity 750ms ease-out 300ms; }
+.floor { position: absolute; left: 12%; right: 0; bottom: -13rem; height: 32rem; background: radial-gradient(ellipse at 60% 50%, rgb(213 171 111 / 10%), transparent 65%); opacity: 0; transition: opacity 800ms ease-out 300ms; }
+.scene[data-lit="true"] :is(.beam, .ambient, .floor) { opacity: 1; }
+
+.tools { position: absolute; right: max(1.5rem, calc((100vw - 1280px) / 2)); top: 1.5rem; z-index: 2; display: flex; align-items: center; gap: .625rem; color: var(--scene-control); }
+.tools > span { font-size: .75rem; }
+.scene .tools button { color: var(--scene-control); min-width: 44px; min-height: 44px; }
+.scene .tools button:hover, .scene .tools button[aria-expanded="true"] { color: var(--scene-control); background: rgb(128 128 128 / 14%); }
+.scene :focus-visible { outline: 2px solid var(--scene-focus); outline-offset: 4px; }
+
+.composition { position: relative; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 3rem; width: min(100%, 1200px); min-height: 100svh; margin: auto; padding: 0 2.5rem 3rem; }
+.lampArea { min-width: 0; padding-top: 0; align-self: start; }
+.lampButton { display: block; width: 100%; max-width: 38rem; padding: 0; border: 0; border-radius: 1rem; background: none; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.lampButton:focus-visible { outline-offset: -12px; }
+.lampButton:disabled { cursor: default; }
+.fixture { display: block; transform-origin: 50% 0; transition: transform 200ms ease-out; }
+.fixture svg { display: block; width: 100%; height: auto; }
+.lampButton:active .fixture { transform: rotate(.45deg) translateY(2px); }
+.lampButton:hover .fixture { transform: rotate(-.2deg); }
+.instruction { margin: -.5rem 0 0; text-align: center; font-size: .8125rem; color: var(--scene-hint); transition: color 600ms; }
+.instruction span { display: block; margin-top: .5rem; font-size: .75rem; }
+
+.fixture :global([data-lamp-part="reflector"]) { opacity: 0; transition: opacity 420ms ease-out 130ms; }
+.fixture :global([data-lamp-part="halo"]) { opacity: 0; transition: opacity 500ms ease-out 200ms; }
+.fixture :global([data-lamp-part="glass-light"]) { opacity: 0; transition: opacity 400ms ease-out 100ms; }
+.fixture :global([data-lamp-part="filament-glow"]) { opacity: 0; transition: opacity 350ms ease-out 80ms; }
+.fixture :global([data-lamp-part="filament"]) { stroke: #877451; transition: stroke 250ms ease-out 60ms; }
+.scene[data-lit="true"] .fixture :global([data-lamp-part="filament"]) { stroke: #fff6d9; }
+.scene[data-lit="true"] .fixture :global([data-lamp-part="reflector"]),
+.scene[data-lit="true"] .fixture :global([data-lamp-part="halo"]),
+.scene[data-lit="true"] .fixture :global([data-lamp-part="glass-light"]),
+.scene[data-lit="true"] .fixture :global([data-lamp-part="filament-glow"]) { opacity: 1; }
+
+.formStage { display: grid; grid-template-rows: 1fr; width: 100%; max-width: 26rem; align-self: start; margin-top: clamp(13rem, 30vh, 18rem); opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 220ms ease-out, transform 220ms ease-out, visibility 0s linear 220ms; }
+.formContent { min-width: 0; min-height: 0; padding: .5rem; }
+.scene[data-lit="true"] .formStage { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity 500ms cubic-bezier(.22, 1, .36, 1) 480ms, transform 550ms cubic-bezier(.22, 1, .36, 1) 480ms, visibility 0s; }
+.formContent h1 { margin-top: 2rem; font-size: clamp(1.5rem, 2.3vw, 1.875rem); font-weight: 600; line-height: 1.2; letter-spacing: -.035em; }
+.description { margin-top: .75rem; font-size: .875rem; line-height: 1.65; color: var(--scene-muted); max-width: 23rem; }
+.scene .formContent :is(.text-slate-500, .text-slate-600) { color: var(--scene-muted); }
+.scene .formContent :is(input, [data-slot="textarea"]) { height: 3rem; background: var(--scene-field); border-color: var(--scene-field-border); color: var(--scene-text); border-radius: .375rem; box-shadow: none; font-size: 1rem; }
+.scene .formContent input[aria-invalid="true"] { border-color: var(--danger); }
+.scene .formContent input::placeholder { color: var(--scene-muted); opacity: 1; }
+.scene .formContent button[aria-pressed] { top: 2px; right: 2px; width: 44px; height: 44px; color: var(--scene-muted); }
+.scene .formContent button[type="submit"] { height: 3rem; border-radius: .375rem; }
+.scene .formContent button[type="submit"]:hover { background: var(--primary-hover); }
+.scene .formContent form { margin-top: 2rem; }
+.signature { margin-top: 2rem; font-size: .75rem; color: var(--scene-muted); }
+
+@media (min-width: 1440px) {
+  .scene { --lamp-width: min(38rem, calc((var(--composition-width) - 9.5rem) * 1.35 / 2.35)); }
+  .composition { gap: 4.5rem; }
+}
+
+@media (max-width: 1023px) {
+  .scene { --source-x: 50%; --source-y: calc(min(23rem, 100vw - 3rem) * .625 + 2rem); }
+  .composition { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; justify-items: center; align-content: start; min-height: 100svh; padding: 2rem 1.5rem 3rem; }
+  .lampArea { width: 23rem; max-width: 100%; }
+  .beam { transform: translateX(-50%); width: 62rem; height: 62rem; }
+  .ambient { background-position: center; }
+  .formStage { margin-top: 0; grid-template-rows: 0fr; transition: grid-template-rows 300ms 220ms, opacity 220ms ease-out, transform 220ms, visibility 0s 220ms; }
+  .formContent { overflow: hidden; }
+  .scene[data-lit="true"] .formStage { grid-template-rows: 1fr; transition: grid-template-rows 350ms, opacity 500ms ease-out 450ms, transform 500ms ease-out 450ms, visibility 0s; }
+  .scene[data-lit="true"] .formContent { overflow: visible; }
+  .formContent h1 { margin-top: 1.5rem; }
+  .tools > span { display: none; }
+}
+
+@media (max-width: 639px) {
+  .scene { --source-y: calc(min(17rem, 100vw - 2rem) * .625 + 1.5rem); }
+  .composition { padding: 1.5rem 1rem 2rem; gap: 1.25rem; }
+  .lampArea { width: 17rem; }
+  .tools { top: 1rem; right: 1rem; }
+  .instruction { margin-top: -1rem; }
+  .instruction span { margin-top: .375rem; }
+  .formContent h1 { font-size: 1.5rem; }
+  .formContent { padding: .5rem; }
+  .signature { margin-top: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene, .scene *, .scene *::before, .scene *::after { transition-duration: .01ms !important; transition-delay: 0ms !important; animation: none !important; }
+  .scene[data-lit] .fixture, .scene[data-lit] .formStage { transform: none; }
+}
+
+@media (forced-colors: active) {
+  .scene { background: Canvas; color: CanvasText; }
+  .instruction, .tools, .scene[data-lit="true"] .instruction, .scene .tools button { color: CanvasText; }
+  .lampButton { border: 1px solid ButtonText; }
+  .scene :focus-visible { outline-color: Highlight; }
+  .lighting { display: none; }
+}

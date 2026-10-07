@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { login } from "./support/login";
+import { enableLogin, login } from "./support/login";
 
 test.beforeEach(async ({ request }) => {
   await request.post("http://127.0.0.1:54321/__test/reset");
@@ -9,13 +9,14 @@ test("las rutas del CRM redirigen al login sin revelar contenido", async ({ page
   for (const route of ["/", "/clientes", "/perfil", "/configuracion", "/leads", "/oportunidades", "/ventas", "/tareas", "/calendario", "/reportes"]) {
     await page.goto(route);
     await expect(page).toHaveURL(/\/login$/);
-    await expect(page.getByRole("heading", { name: "Bienvenido a tu espacio" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Encender lámpara", exact: true })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Navegación principal" })).toHaveCount(0);
   }
 });
 
 test("valida formulario, muestra contraseña y maneja credenciales incorrectas", async ({ page }) => {
   await page.goto("/login");
+  await enableLogin(page);
   await page.getByRole("button", { name: "Iniciar sesión", exact: true }).click();
   await expect(page.getByText("Ingresa un correo electrónico válido.")).toBeVisible();
   await expect(page.getByLabel("Correo electrónico")).toBeFocused();
@@ -58,12 +59,14 @@ test("rechaza sesiones revocadas y evita usar cookies falsas", async ({ page, co
   await request.post("http://127.0.0.1:54321/__test/reset");
   await page.goto("/clientes");
   await expect(page).toHaveURL(/\/login/);
+  await enableLogin(page);
   await expect(page.getByText("Tu sesión terminó. Inicia sesión para continuar.")).toBeVisible();
 });
 
 for (const email of ["inactivo@example.test", "sinperfil@example.test"]) {
   test(`bloquea acceso a cuenta ${email}`, async ({ page }) => {
     await page.goto("/login");
+    await enableLogin(page);
     await page.getByLabel("Correo electrónico").fill(email);
     await page.getByLabel("Contraseña", { exact: true }).fill("Nexo-prueba-local-2026!");
     await page.getByRole("button", { name: "Iniciar sesión", exact: true }).click();
