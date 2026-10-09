@@ -1,5 +1,23 @@
 # Nexo CRM · Sistema visual
 
+## Login vigente: referencia fotográfica industrial
+
+Esta pasada afecta únicamente al login. La fotografía adjunta del usuario fija el estándar: metal negro con textura y reflejos, latón, vidrio realista, filamento cálido, luz volumétrica suave, polvo y neblina ligera. Sustituye la lámpara vectorial anterior mediante un atlas raster transparente con dos estados alineados; la luz y la atmósfera permanecen en capas interactivas.
+
+Design Read: acceso de Nexo para equipos comerciales, como escena fotográfica industrial nocturna con luz dorada que revela el formulario. ENERGY 3 / RHYTHM 2 / MOTION 3. La identidad Nexo conserva azul en CTA y foco. Claro adapta el ambiente a azul mineral; Oscuro mantiene noche profunda; Sistema conserva el provider existente.
+
+Los tiempos se derivan del motion system actual, con acceso disponible al terminar una secuencia de 1100 ms, foco contextual y reduced motion inmediato. Decisiones, assets, pruebas y límites en [auditoría del login fotográfico](anti-slop/login-photographic-2026-10-09.md). Las direcciones y cambios de CRM siguientes son antecedentes y quedan fuera de esta pasada.
+
+## Dirección vigente: impacto visual y motion, Fase 1
+
+El brief del usuario de esta sesión sustituye la dirección sobria de las iteraciones anteriores. Nexo mantiene su identidad comercial y su azul, con más presencia cromática, profundidad, vidrio selectivo y una entrada cinematográfica mediante lámpara metálica. Antislop, UI, human y layoutmobile se aplican durante planificación, diseño, implementación y auditoría final.
+
+Diales vigentes: ENERGY 3 / RHYTHM 2 / MOTION 3 en login; ENERGY 3 / RHYTHM 2 / MOTION 2 en CRM. La lámpara concentra la coreografía; la información comercial permanece estable y las interacciones responden con movimientos breves.
+
+Decisiones, alcance y evidencia de esta fase: [Fase 1, dirección visual](anti-slop/phase-1-design-2026-10-08.md). Supabase, autenticación, permisos, contratos y cálculos quedan fuera de las ediciones. Las secciones siguientes documentan antecedentes de diseño; sus restricciones estéticas no sustituyen el brief vigente.
+
+## Antecedentes de las iteraciones anteriores
+
 ## Dirección y alcance
 
 Segunda pasada visual: espacio de trabajo comercial preciso, compacto y sereno. La decisión principal del resumen es qué relación o seguimiento atender. Se conservan el monograma y el azul Nexo. Attio aporta precisión en tipografía, navegación, controles y separación por espacio; no se trasladan su marca, contenido ni composición de marketing.

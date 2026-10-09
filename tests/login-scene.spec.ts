@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { enableLogin } from "./support/login";
 
 async function sceneTheme(page: Page, theme: "light" | "dark" | "system") {
@@ -14,8 +14,23 @@ async function noOverflow(page: Page) {
 async function capture(page: Page, path: string) {
   await page.screenshot({
     path, fullPage: true, animations: "disabled",
-    style: "[data-nextjs-dev-tools-button] { visibility: hidden; }",
+    style: "nextjs-portal { display: none !important; }",
   });
+}
+
+async function contextualLampFocus(lamp: Locator) {
+  await expect(lamp).toBeFocused();
+  const cue = lamp.locator("[data-lamp-focus]");
+  await expect(cue).toHaveCSS("opacity", "1");
+  await expect(cue).toHaveCSS("outline-style", "solid");
+  const width = await lamp.evaluate(() => matchMedia("(forced-colors: active)").matches ? "3px" : "2px");
+  await expect(cue).toHaveCSS("outline-width", width);
+  const bounds = await lamp.boundingBox();
+  const cueBounds = await cue.boundingBox();
+  expect(bounds).not.toBeNull();
+  expect(cueBounds).not.toBeNull();
+  expect(cueBounds!.width).toBeLessThan(bounds!.width / 2);
+  expect(cueBounds!.height).toBeGreaterThanOrEqual(24);
 }
 
 test.beforeEach(async ({ request }) => {
@@ -34,13 +49,16 @@ test("apagada sin foco oculto, Enter y Space, apagar y conservar campos", async 
   await expect(page.locator("#login-access")).toHaveAttribute("inert", "");
   await expect(page.getByRole("textbox", { name: "Correo electrónico" })).toHaveCount(0);
   await capture(page, testInfo.outputPath("dark-off.png"));
-  await lamp.focus();
-  expect(await lamp.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe("solid");
   await page.keyboard.press("Tab");
+  await lamp.focus();
+  await contextualLampFocus(lamp);
+  await page.keyboard.press("Tab");
+  await expect(lamp.locator("[data-lamp-focus]")).toHaveCSS("opacity", "0");
   expect(await page.evaluate(() => document.activeElement?.closest("#login-access") !== null)).toBe(false);
   await lamp.focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("#login-access")).toHaveCSS("opacity", "1");
+  await expect(page.locator("#login-access")).not.toHaveAttribute("inert", "");
   await expect(lamp).toHaveAttribute("aria-pressed", "true");
   await expect(lamp).toHaveAccessibleName("Apagar lámpara");
   await expect(lamp).toBeFocused();
@@ -170,8 +188,9 @@ test("reduced motion y conmutación rápida sin bloqueo de foco", async ({ page 
   await expect(stage).toHaveCSS("opacity", "1");
   await page.emulateMedia({ forcedColors: "active" });
   await expect(page.getByRole("button", { name: "Apagar lámpara", exact: true })).toBeVisible();
+  await page.keyboard.press("Tab");
   await page.getByRole("button", { name: "Apagar lámpara", exact: true }).focus();
-  expect(await page.getByRole("button", { name: "Apagar lámpara", exact: true }).evaluate((element) => getComputedStyle(element).outlineStyle)).toBe("solid");
+  await contextualLampFocus(page.getByRole("button", { name: "Apagar lámpara", exact: true }));
 });
 
 test("sesión expirada, envío pendiente y error conservan comportamiento", async ({ page }, testInfo) => {

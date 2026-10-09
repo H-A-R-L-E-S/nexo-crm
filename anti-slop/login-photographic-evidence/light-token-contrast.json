@@ -1,0 +1,42 @@
+[
+  {
+    "pair": "text/canvas",
+    "ratio": 9.396687558154396,
+    "minimum": 4.5
+  },
+  {
+    "pair": "muted/canvas",
+    "ratio": 8.738707553881985,
+    "minimum": 4.5
+  },
+  {
+    "pair": "input text",
+    "ratio": 9.618570930793247,
+    "minimum": 4.5
+  },
+  {
+    "pair": "placeholder",
+    "ratio": 8.94505408744075,
+    "minimum": 4.5
+  },
+  {
+    "pair": "input boundary",
+    "ratio": 5.807265914900195,
+    "minimum": 3
+  },
+  {
+    "pair": "input boundary canvas",
+    "ratio": 5.673302589549697,
+    "minimum": 3
+  },
+  {
+    "pair": "focus",
+    "ratio": 6.711976045508836,
+    "minimum": 3
+  },
+  {
+    "pair": "submit",
+    "ratio": 5.168555560022562,
+    "minimum": 4.5
+  }
+]

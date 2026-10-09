@@ -1,0 +1,1356 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\Usuario\\Downloads\\nexo-crm\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/login-scene.spec.ts",
+      "tests/motion-system.spec.ts",
+      "tests/overview-ui.spec.ts",
+      "tests/tasks.spec.ts",
+      "tests/themes.spec.ts",
+      "--reporter=list,json"
+    ],
+    "configFile": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\playwright.config.ts",
+    "rootDir": "C:/Users/Usuario/Downloads/nexo-crm/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Usuario/Downloads/nexo-crm/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Usuario/Downloads/nexo-crm/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "login-scene.spec.ts",
+      "file": "login-scene.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "apagada sin foco oculto, Enter y Space, apagar y conservar campos",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5987,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:12.502Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6359cf701c18f4630418-b82937a226464929115a",
+          "file": "login-scene.spec.ts",
+          "line": 25,
+          "column": 5
+        },
+        {
+          "title": "light: escena, ocho anchos, contraste, objetivos y texto al 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4061,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:18.785Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contrast.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJwYWlyIjogInRleHQvY2FudmFzIiwKICAgICJyYXRpbyI6IDEzLjEwMjE4ODQxNzUxOTQ1NywKICAgICJtaW5pbXVtIjogNC41CiAgfSwKICB7CiAgICAicGFpciI6ICJtdXRlZC9jYW52YXMiLAogICAgInJhdGlvIjogNS45NTQ5NzExOTU1MDEwNywKICAgICJtaW5pbXVtIjogNC41CiAgfSwKICB7CiAgICAicGFpciI6ICJpbnB1dCB0ZXh0IiwKICAgICJyYXRpbyI6IDE0LjEwMzIxODc2ODIyODc4NywKICAgICJtaW5pbXVtIjogNC41CiAgfSwKICB7CiAgICAicGFpciI6ICJwbGFjZWhvbGRlciIsCiAgICAicmF0aW8iOiA2LjQwOTk0MTUxOTEwOTQxODUsCiAgICAibWluaW11bSI6IDQuNQogIH0sCiAgewogICAgInBhaXIiOiAiaW5wdXQgYm91bmRhcnkiLAogICAgInJhdGlvIjogMy44MjA4MzA2MzMzMDg1MzYsCiAgICAibWluaW11bSI6IDMKICB9LAogIHsKICAgICJwYWlyIjogImlucHV0IGJvdW5kYXJ5IGNhbnZhcyIsCiAgICAicmF0aW8iOiAzLjU0OTYzMjQ0MTQ4MzEyODYsCiAgICAibWluaW11bSI6IDMKICB9LAogIHsKICAgICJwYWlyIjogImZvY3VzIiwKICAgICJyYXRpbyI6IDUuNDAwNjM2OTI4MzIwNzU1LAogICAgIm1pbmltdW0iOiAzCiAgfSwKICB7CiAgICAicGFpciI6ICJzdWJtaXQiLAogICAgInJhdGlvIjogNS4xNjg1NTU1NjAwMjI1NjIsCiAgICAibWluaW11bSI6IDQuNQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6359cf701c18f4630418-0fad8e40664e2f170fba",
+          "file": "login-scene.spec.ts",
+          "line": 69,
+          "column": 7
+        },
+        {
+          "title": "dark: escena, ocho anchos, contraste, objetivos y texto al 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3737,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:22.861Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contrast.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJwYWlyIjogInRleHQvY2FudmFzIiwKICAgICJyYXRpbyI6IDE1LjMwNjYwNzA1NDEyNjMxMiwKICAgICJtaW5pbXVtIjogNC41CiAgfSwKICB7CiAgICAicGFpciI6ICJtdXRlZC9jYW52YXMiLAogICAgInJhdGlvIjogOS41Nzc2MTY4ODI0NTcyNzQsCiAgICAibWluaW11bSI6IDQuNQogIH0sCiAgewogICAgInBhaXIiOiAiaW5wdXQgdGV4dCIsCiAgICAicmF0aW8iOiAxNC4wMjM1Mzc5OTA2OTcyLAogICAgIm1pbmltdW0iOiA0LjUKICB9LAogIHsKICAgICJwYWlyIjogInBsYWNlaG9sZGVyIiwKICAgICJyYXRpbyI6IDguNzc0Nzc3Njk4MDU3ODQ2LAogICAgIm1pbmltdW0iOiA0LjUKICB9LAogIHsKICAgICJwYWlyIjogImlucHV0IGJvdW5kYXJ5IiwKICAgICJyYXRpbyI6IDUuMzAxMjIwODM2MzIyMjg4LAogICAgIm1pbmltdW0iOiAzCiAgfSwKICB7CiAgICAicGFpciI6ICJpbnB1dCBib3VuZGFyeSBjYW52YXMiLAogICAgInJhdGlvIjogNS43ODYyNTA1MzgzODQ4NTIsCiAgICAibWluaW11bSI6IDMKICB9LAogIHsKICAgICJwYWlyIjogImZvY3VzIiwKICAgICJyYXRpbyI6IDEwLjEzMDQ4ODY4NTkyNDAyLAogICAgIm1pbmltdW0iOiAzCiAgfSwKICB7CiAgICAicGFpciI6ICJzdWJtaXQiLAogICAgInJhdGlvIjogNS4xNjg1NTU1NjAwMjI1NjIsCiAgICAibWluaW11bSI6IDQuNQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6359cf701c18f4630418-7d467f6cb169824b80a3",
+          "file": "login-scene.spec.ts",
+          "line": 69,
+          "column": 7
+        },
+        {
+          "title": "Sistema, elección de tema independiente de la lámpara y persistencia",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5721,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:26.609Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6359cf701c18f4630418-4c36d5f7a0cfa7d78181",
+          "file": "login-scene.spec.ts",
+          "line": 119,
+          "column": 5
+        },
+        {
+          "title": "reduced motion y conmutación rápida sin bloqueo de foco",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:32.342Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6359cf701c18f4630418-7e0cf1305eb50ed7b950",
+          "file": "login-scene.spec.ts",
+          "line": 158,
+          "column": 5
+        },
+        {
+          "title": "sesión expirada, envío pendiente y error conservan comportamiento",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3465,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:34.410Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6359cf701c18f4630418-ed7e58ac4e91b2c1f3b9",
+          "file": "login-scene.spec.ts",
+          "line": 177,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "motion-system.spec.ts",
+      "file": "motion-system.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "movimiento reducido elimina esperas en login, decoración, controles y portales",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 21136,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('menu')\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('menu') with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('menu')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('menu')\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('menu') with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('menu')\u001b[22m\n\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts:65:40",
+                    "location": {
+                      "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                      "column": 40,
+                      "line": 65
+                    },
+                    "snippet": "  63 |   await login(page);\n  64 |   await page.getByRole(\"button\", { name: /^Cambiar tema/ }).press(\"Enter\");\n> 65 |   await expect(page.getByRole(\"menu\")).toBeVisible();\n     |                                        ^\n  66 |   expect(await reducedMotionViolations(page)).toEqual([]);\n  67 |   await page.keyboard.press(\"Escape\");\n  68 |   await page.getByRole(\"button\", { name: \"Notificaciones\", exact: true }).press(\"Enter\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                        "column": 40,
+                        "line": 65
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('menu')\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('menu') with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('menu')\u001b[22m\n\n\n  63 |   await login(page);\n  64 |   await page.getByRole(\"button\", { name: /^Cambiar tema/ }).press(\"Enter\");\n> 65 |   await expect(page.getByRole(\"menu\")).toBeVisible();\n     |                                        ^\n  66 |   expect(await reducedMotionViolations(page)).toEqual([]);\n  67 |   await page.keyboard.press(\"Escape\");\n  68 |   await page.getByRole(\"button\", { name: \"Notificaciones\", exact: true }).press(\"Enter\");\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts:65:40"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:37.895Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-movimiento-r-2ec17-ración-controles-y-portales-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-movimiento-r-2ec17-ración-controles-y-portales-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-movimiento-r-2ec17-ración-controles-y-portales-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                    "column": 40,
+                    "line": 65
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-662c3bd381f70bba5975",
+          "file": "motion-system.spec.ts",
+          "line": 56,
+          "column": 5
+        },
+        {
+          "title": "no-preference: dropdown y diálogo conservan posición, foco y temas al animar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7185,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:18:59.829Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-99796a9562854f8a621b",
+          "file": "motion-system.spec.ts",
+          "line": 81,
+          "column": 7
+        },
+        {
+          "title": "reduce: dropdown y diálogo conservan posición, foco y temas al animar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4192,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:07.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-6e90d1327807389d5cad",
+          "file": "motion-system.spec.ts",
+          "line": 81,
+          "column": 7
+        },
+        {
+          "title": "la navegación móvil sigue accesible al cambiar de ancho y con movimiento reducido",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5443,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:11.434Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-ef012be5f5eec17d6eca",
+          "file": "motion-system.spec.ts",
+          "line": 135,
+          "column": 5
+        },
+        {
+          "title": "la entrada de página termina y se cancela al activar movimiento reducido",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5339,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:16.889Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-d94e199ad56a8f579f5f",
+          "file": "motion-system.spec.ts",
+          "line": 169,
+          "column": 5
+        },
+        {
+          "title": "no-preference: aviso real conserva tema, contraste y tiempos de motion",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5880,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"solid\"\u001b[39m\nReceived: \u001b[31m\"none\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"solid\"\u001b[39m\nReceived: \u001b[31m\"none\"\u001b[39m\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts:195:87",
+                    "location": {
+                      "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                      "column": 87,
+                      "line": 195
+                    },
+                    "snippet": "  193 |     await expect(toast).toBeVisible();\n  194 |     await toast.focus();\n> 195 |     expect(await toast.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(\"solid\");\n      |                                                                                       ^\n  196 |     const timings = await toast.evaluate((element) => {\n  197 |       const style = getComputedStyle(element);\n  198 |       return { duration: style.transitionDuration.split(\",\").map(parseFloat), radius: style.borderRadius, color: style.color };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                        "column": 87,
+                        "line": 195
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"solid\"\u001b[39m\nReceived: \u001b[31m\"none\"\u001b[39m\n\n  193 |     await expect(toast).toBeVisible();\n  194 |     await toast.focus();\n> 195 |     expect(await toast.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(\"solid\");\n      |                                                                                       ^\n  196 |     const timings = await toast.evaluate((element) => {\n  197 |       const style = getComputedStyle(element);\n  198 |       return { duration: style.transitionDuration.split(\",\").map(parseFloat), radius: style.borderRadius, color: style.color };\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts:195:87"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:22.241Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-no-preferenc-ea6d9-ntraste-y-tiempos-de-motion-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-no-preferenc-ea6d9-ntraste-y-tiempos-de-motion-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-no-preferenc-ea6d9-ntraste-y-tiempos-de-motion-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                    "column": 87,
+                    "line": 195
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-e30d16bfe0bbbae0c629",
+          "file": "motion-system.spec.ts",
+          "line": 185,
+          "column": 7
+        },
+        {
+          "title": "reduce: aviso real conserva tema, contraste y tiempos de motion",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 4803,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"solid\"\u001b[39m\nReceived: \u001b[31m\"none\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"solid\"\u001b[39m\nReceived: \u001b[31m\"none\"\u001b[39m\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts:195:87",
+                    "location": {
+                      "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                      "column": 87,
+                      "line": 195
+                    },
+                    "snippet": "  193 |     await expect(toast).toBeVisible();\n  194 |     await toast.focus();\n> 195 |     expect(await toast.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(\"solid\");\n      |                                                                                       ^\n  196 |     const timings = await toast.evaluate((element) => {\n  197 |       const style = getComputedStyle(element);\n  198 |       return { duration: style.transitionDuration.split(\",\").map(parseFloat), radius: style.borderRadius, color: style.color };"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                        "column": 87,
+                        "line": 195
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"solid\"\u001b[39m\nReceived: \u001b[31m\"none\"\u001b[39m\n\n  193 |     await expect(toast).toBeVisible();\n  194 |     await toast.focus();\n> 195 |     expect(await toast.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe(\"solid\");\n      |                                                                                       ^\n  196 |     const timings = await toast.evaluate((element) => {\n  197 |       const style = getComputedStyle(element);\n  198 |       return { duration: style.transitionDuration.split(\",\").map(parseFloat), radius: style.borderRadius, color: style.color };\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts:195:87"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:28.924Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-reduce-aviso-8238a-ntraste-y-tiempos-de-motion-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-reduce-aviso-8238a-ntraste-y-tiempos-de-motion-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\motion-system-reduce-aviso-8238a-ntraste-y-tiempos-de-motion-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\motion-system.spec.ts",
+                    "column": 87,
+                    "line": 195
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "2fc3fcdbbebc8d1c432c-8e0eb9a4f3f807f921f7",
+          "file": "motion-system.spec.ts",
+          "line": 185,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "overview-ui.spec.ts",
+      "file": "overview-ui.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "resumen con datos, filtros, edición y navegación por teclado",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17518,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:34.545Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "afcb74204e35d97ad992-10e4c57a5b807a886212",
+          "file": "overview-ui.spec.ts",
+          "line": 34,
+          "column": 5
+        },
+        {
+          "title": "reflow de móvil a escritorio y texto al 200%",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8024,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:19:52.282Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "afcb74204e35d97ad992-8b755b46a6a69ee08f54",
+          "file": "overview-ui.spec.ts",
+          "line": 82,
+          "column": 5
+        },
+        {
+          "title": "carga y error no muestran cifras ni vacío; reintento recupera datos",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12264,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:20:00.322Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "afcb74204e35d97ad992-ea79733d770e96fd5708",
+          "file": "overview-ui.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "cartera vacía con acción y recuperación del seguimiento",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11519,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:20:12.601Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "afcb74204e35d97ad992-44e45f251add5c84cf7d",
+          "file": "overview-ui.spec.ts",
+          "line": 131,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "tasks.spec.ts",
+      "file": "tasks.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Administrador: crear, editar, asignación, completar, reabrir y cancelar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12523,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:20:24.159Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-f42a74051fd5af3f6eca",
+          "file": "tasks.spec.ts",
+          "line": 71,
+          "column": 7
+        },
+        {
+          "title": "Gerente: crear, editar, asignación, completar, reabrir y cancelar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10285,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:20:36.694Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-3d383434071f25c832e5",
+          "file": "tasks.spec.ts",
+          "line": 71,
+          "column": 7
+        },
+        {
+          "title": "Vendedor: crear, editar, asignación, completar, reabrir y cancelar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11126,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:20:46.991Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-47e9d1f50db93e4abd2f",
+          "file": "tasks.spec.ts",
+          "line": 71,
+          "column": 7
+        },
+        {
+          "title": "Lista, tablero, filtros combinados, búsqueda, paginación y métricas reales",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6012,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:20:58.128Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-e708461f0bd5ec69fe9f",
+          "file": "tasks.spec.ts",
+          "line": 110,
+          "column": 5
+        },
+        {
+          "title": "Nueva tarea desde Cliente, relación persistente y enlace al registro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8396,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:04.151Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-9948df86b9439f6e0397",
+          "file": "tasks.spec.ts",
+          "line": 135,
+          "column": 7
+        },
+        {
+          "title": "Nueva tarea desde Lead, relación persistente y enlace al registro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8507,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:12.561Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-a687c51fc99067735474",
+          "file": "tasks.spec.ts",
+          "line": 135,
+          "column": 7
+        },
+        {
+          "title": "Nueva tarea desde Oportunidad, relación persistente y enlace al registro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8052,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:21.081Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-bb8a510fed095ce597cc",
+          "file": "tasks.spec.ts",
+          "line": 135,
+          "column": 7
+        },
+        {
+          "title": "Nueva tarea desde Venta, relación persistente y enlace al registro",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10313,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:29.145Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-207d9fa3a332654dc88a",
+          "file": "tasks.spec.ts",
+          "line": 135,
+          "column": 7
+        },
+        {
+          "title": "Carga vacía, error recuperable, conflicto y reintento de alta sin duplicar",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12814,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:39.469Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-a8f989695625be0a425e",
+          "file": "tasks.spec.ts",
+          "line": 153,
+          "column": 5
+        },
+        {
+          "title": "Móvil, teclado y formulario sin desbordamiento",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5127,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:52.294Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-4a02577cdc740d21d429",
+          "file": "tasks.spec.ts",
+          "line": 161,
+          "column": 5
+        },
+        {
+          "title": "Fechas de Lima, límites de medianoche, finalización y validación",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:57.434Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d2d3f88df070d751ab05-5153824a1d5fb9d261e8",
+          "file": "tasks.spec.ts",
+          "line": 174,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "themes.spec.ts",
+      "file": "themes.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "tema por teclado, persistencia al recargar, navegar y abrir otro contexto",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:21:57.459Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-4b205913157e70376d76",
+          "file": "themes.spec.ts",
+          "line": 65,
+          "column": 5
+        },
+        {
+          "title": "Sistema sigue los cambios del dispositivo y el tema guardado se aplica antes del contenido",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6610,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:22:05.961Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-7ec9cb7de675640fc9b5",
+          "file": "themes.spec.ts",
+          "line": 102,
+          "column": 5
+        },
+        {
+          "title": "ambos temas: reflow, contraste de tokens, controles y portales",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10616,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:22:12.587Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contrast-Claro.json",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    },
+                    {
+                      "name": "contrast-Oscuro.json",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-ee3db51f1e202ec5f919",
+          "file": "themes.spec.ts",
+          "line": 131,
+          "column": 5
+        },
+        {
+          "title": "oscuro: primitivas heredadas, menú, estados y enlaces del resumen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 50892,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-08T23:22:23.214Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "fonts.json",
+                      "contentType": "application/json",
+                      "body": "W3siZWxlbWVudCI6IkJPRFkiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn0seyJlbGVtZW50IjoiSDEiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn0seyJlbGVtZW50IjoiSDIiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn0seyJlbGVtZW50IjoiSDIiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn0seyJlbGVtZW50IjoiSDIiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn0seyJlbGVtZW50IjoiSDIiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn0seyJlbGVtZW50IjoiSDIiLCJmb250IjoiXCJTZWdvZSBVSVwiLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIn1d"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d9a1a05a5866edb60a2f-96d446c7ff5a60c78f01",
+          "file": "themes.spec.ts",
+          "line": 214,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-08T23:18:02.691Z",
+    "duration": 312537.341,
+    "expected": 29,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}

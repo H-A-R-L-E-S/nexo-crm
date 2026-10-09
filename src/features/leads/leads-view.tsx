@@ -1,20 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Pencil, Search, UserRoundSearch } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NewTaskLink } from "@/features/tasks/task-link";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ActiveFilter, DirectoryEmpty, DirectoryHeader, DirectoryLoading, DirectorySummary, DirectoryToolbar } from "@/components/crm/directory";
+import styles from "@/components/crm/directory.module.css";
 import { useAuth } from "@/features/auth/auth-provider";
 import { useLeads } from "./use-leads";
 import { canManageLeads } from "./permissions";
 import { isPendingFollowup } from "./dates";
 import { LEAD_ESTADOS, LEAD_FUENTES, LEAD_PRIORIDADES, leadName, responsableName } from "./types";
 import { LeadFormDialog } from "./lead-form";
-import { LeadConvertDialog } from "./lead-convert";
 import { LeadDetail } from "./lead-detail";
-import { LeadDelete } from "./lead-delete";
+import { LeadActions } from "./lead-actions";
 import { FollowupLabel, LeadPriorityBadge, LeadStateBadge } from "./lead-badges";
 
 const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -32,7 +31,7 @@ export function LeadsView({ initialNow, initialSearch = "" }: { initialNow: stri
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, pages);
   const rows = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const stats = [{ label: "Total de leads", value: leads.length }, { label: "Nuevos", value: leads.filter((lead) => lead.estado === "Nuevo").length }, { label: "Calificados", value: leads.filter((lead) => lead.estado === "Calificado").length }, { label: "Seguimientos pendientes", value: leads.filter((lead) => isPendingFollowup(lead, now)).length }];
+  const stats = [{ label: "Total de leads", value: leads.length }, { label: "Nuevos", value: leads.filter((lead) => lead.estado === "Nuevo").length }, { label: "Calificados", value: leads.filter((lead) => lead.estado === "Calificado").length }, { label: "Seguimientos pendientes", value: leads.filter((lead) => isPendingFollowup(lead, now)).length, detail: "Hoy y vencidos · Leads abiertos · Lima" }];
   const filterOptions = [
     { key: "estado", label: "Estado", values: LEAD_ESTADOS.map((value) => ({ value, label: value })) },
     { key: "prioridad", label: "Prioridad", values: LEAD_PRIORIDADES.map((value) => ({ value, label: value })) },
@@ -40,12 +39,61 @@ export function LeadsView({ initialNow, initialSearch = "" }: { initialNow: stri
     { key: "responsable", label: "Responsable", values: [{ value: "none", label: "Sin asignar" }, ...responsibles.map((person) => ({ value: person.id, label: `${responsableName(person)}${person.activo ? "" : " (inactivo)"}` }))] },
   ] as const;
   function clear() { setQuery(""); setFilters({ estado: "", prioridad: "", fuente: "", responsable: "" }); setPage(1); }
-  return <div className="space-y-6"><div className="flex flex-wrap items-center justify-between gap-4"><div><h1 className="text-2xl font-semibold tracking-tight text-slate-900">Leads</h1><p className="mt-2 text-sm text-slate-500">Convierte nuevos contactos en relaciones comerciales.</p></div><LeadFormDialog responsibles={responsibles} onSaved={saved} disabled={loading || Boolean(error)} /></div>
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map((stat) => <div key={stat.label} className="rounded-xl border border-slate-200 bg-white p-5"><p className="text-xs font-medium text-slate-500">{stat.label}</p><p className="mt-3 text-2xl font-semibold">{loading && !leads.length ? "—" : error ? "—" : stat.value}</p>{stat.label === "Seguimientos pendientes" && <p className="mt-2 text-[11px] text-slate-500">Hoy y vencidos · Leads abiertos · Lima</p>}</div>)}</div>
-    <section aria-label="Listado de leads" className="min-w-0 rounded-xl border border-slate-200 bg-white"><div className="space-y-4 border-b border-slate-100 p-4 sm:p-5"><div className="flex flex-wrap gap-3"><div className="relative min-w-0 flex-1"><Search aria-hidden="true" className="absolute left-3 top-3 size-4 text-slate-400" /><Input aria-label="Buscar leads" placeholder="Buscar por nombre, empresa, correo o teléfono..." value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} className="h-10 min-w-48 pl-9" /></div><Button variant="outline" onClick={() => void reload()} disabled={loading}>{loading ? "Cargando..." : "Actualizar"}</Button></div><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">{filterOptions.map((filter) => <label key={filter.key} className="space-y-1 text-xs text-slate-500"><span>{filter.label}</span><select aria-label={`Filtrar por ${filter.label.toLowerCase()}`} className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus-visible:outline-blue-600" value={filters[filter.key]} onChange={(event) => { setFilters({ ...filters, [filter.key]: event.target.value }); setPage(1); }}><option value="">Todos</option>{filter.values.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>)}<Button className="self-end" variant="ghost" onClick={clear}>Limpiar filtros</Button></div></div>
-      {error ? <div role="alert" className="p-8 text-center"><p className="text-sm text-red-700">{error}</p><Button onClick={() => void reload()} variant="outline" className="mt-4">Reintentar</Button></div> : loading && !leads.length ? <p role="status" className="p-12 text-center text-sm text-slate-500">Cargando leads...</p> : !filtered.length ? <div className="p-12 text-center"><UserRoundSearch className="mx-auto mb-3 size-8 text-slate-400" /><h2 className="font-semibold">{leads.length ? "Sin resultados" : "Todavía no hay leads"}</h2><p className="mt-2 text-sm text-slate-500">{leads.length ? "Prueba otra búsqueda o limpia los filtros." : "Registra tu primer contacto con Nuevo lead."}</p></div> : <><Table><TableHeader><TableRow>{["Lead", "Empresa", "Fuente", "Estado", "Prioridad", "Responsable", "Próximo seguimiento", "Acciones"].map((label) => <TableHead key={label} className="px-4 text-xs">{label}</TableHead>)}</TableRow></TableHeader><TableBody>{rows.map((lead) => {
-        const owner = responsibles.find((person) => person.id === lead.responsable_id);
-        return <TableRow key={lead.id}><TableCell className="max-w-64 px-4 py-4"><p className="truncate font-medium" title={leadName(lead)}>{leadName(lead)}</p><p className="mt-1 truncate text-xs text-slate-500" title={lead.correo}>{lead.correo || "Sin correo"}</p></TableCell><TableCell className="max-w-40 truncate px-4 text-xs" title={lead.empresa}>{lead.empresa || "Sin empresa"}</TableCell><TableCell className="px-4 text-xs">{lead.fuente}</TableCell><TableCell className="px-4"><LeadStateBadge state={lead.estado} /></TableCell><TableCell className="px-4"><LeadPriorityBadge priority={lead.prioridad} /></TableCell><TableCell className="px-4 text-xs">{owner ? responsableName(owner) : "Sin asignar"}{owner && !owner.activo && <span className="block text-amber-700">Inactivo</span>}</TableCell><TableCell className="px-4"><FollowupLabel lead={lead} now={now} /></TableCell><TableCell className="px-3"><div className="flex"><NewTaskLink type="Lead" id={lead.id} label={leadName(lead)} /><LeadDetail lead={lead} owner={owner} /><LeadFormDialog lead={lead} responsibles={responsibles} onSaved={saved}><Button variant="ghost" size="icon" aria-label={`Editar lead: ${leadName(lead)}`} title="Editar lead"><Pencil className="size-4" /></Button></LeadFormDialog><LeadConvertDialog lead={lead} onSaved={saved} />{canManageLeads(profile.rol) && <LeadDelete lead={lead} onDeleted={removed} />}</div></TableCell></TableRow>;
-      })}</TableBody></Table><div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 p-4"><p role="status" className="text-xs text-slate-500">{filtered.length} leads · Página {currentPage} de {pages}</p><div className="flex gap-2"><Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Anterior</Button><Button variant="outline" size="sm" disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>Siguiente</Button></div></div></>}
-    </section><p className="text-xs text-slate-400">Los cambios se guardan en Supabase. Las fechas se muestran en hora de Lima.</p></div>;
+  const hasFilters = Boolean(query || Object.values(filters).some(Boolean));
+
+  return <div className={styles.page}>
+    <DirectoryHeader title="Leads" description="Contactos, calificación y próximos seguimientos." count={leads.length} loading={(loading && !leads.length) || Boolean(error)} actions={<LeadFormDialog responsibles={responsibles} onSaved={saved} disabled={loading || Boolean(error)} />} />
+    <DirectorySummary items={stats} loading={loading && !leads.length} error={Boolean(error)} />
+    <section aria-label="Listado de leads" className={styles.section} aria-busy={loading}>
+      <DirectoryToolbar label="Buscar y filtrar leads">
+        <div className={styles.search}><Search aria-hidden="true" /><Input aria-label="Buscar leads" placeholder="Buscar nombre, empresa, correo o teléfono" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} /></div>
+        <div className={styles.filters}>{filterOptions.map((filter) => <label key={filter.key} className={styles.filter}>
+          <span>{filter.label}</span><select aria-label={`Filtrar por ${filter.label.toLowerCase()}`} className={styles.select} value={filters[filter.key]} onChange={(event) => { setFilters({ ...filters, [filter.key]: event.target.value }); setPage(1); }}>
+            <option value="">Todos</option>{filter.values.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+          </select>
+        </label>)}</div>
+        <Button variant="ghost" onClick={() => void reload()} disabled={loading}>{loading ? "Cargando..." : "Actualizar"}</Button>
+      </DirectoryToolbar>
+      {hasFilters && <div className={styles.activeFilters} aria-label="Filtros activos">
+        {query && <ActiveFilter label={`Búsqueda: ${query}`} onRemove={() => { setQuery(""); setPage(1); }} />}
+        {filterOptions.filter((filter) => filters[filter.key]).map((filter) => <ActiveFilter key={filter.key} label={`${filter.label}: ${filter.values.find((item) => item.value === filters[filter.key])?.label ?? filters[filter.key]}`} onRemove={() => { setFilters({ ...filters, [filter.key]: "" }); setPage(1); }} />)}
+        <Button variant="ghost" size="sm" onClick={clear}>Limpiar filtros</Button>
+      </div>}
+      {error ? <div role="alert" className={styles.formError}><p>{error}</p><Button onClick={() => void reload()} variant="outline">Reintentar</Button></div>
+        : loading && !leads.length ? <DirectoryLoading label="Cargando leads..." />
+          : !filtered.length ? <DirectoryEmpty title={leads.length ? "Sin resultados" : "Todavía no hay leads"} description={leads.length ? "Prueba otro nombre, empresa o contacto, o limpia los filtros." : "Registra un contacto para calificarlo y programar su seguimiento."} />
+            : <>
+              <div className={styles.tableWrap} data-leads-table><table className={styles.table}>
+                <caption className="sr-only">Leads con estado, información comercial y próximo seguimiento</caption>
+                <colgroup><col style={{ width: "24%" }} /><col style={{ width: "12%" }} /><col style={{ width: "16%" }} /><col style={{ width: "9%" }} /><col style={{ width: "14%" }} /><col style={{ width: "16%" }} /><col style={{ width: "4rem" }} /></colgroup>
+                <thead><tr>{["Lead", "Estado", "Empresa / fuente", "Prioridad", "Responsable", "Próximo seguimiento", "Acciones"].map((label) => <th key={label} scope="col">{label === "Acciones" ? <span className="sr-only">Acciones</span> : label}</th>)}</tr></thead>
+                <tbody>{rows.map((lead) => {
+                  const owner = responsibles.find((person) => person.id === lead.responsable_id);
+                  return <tr key={lead.id}>
+                    <th scope="row"><LeadDetail lead={lead} owner={owner}><button type="button" className={styles.name} title={leadName(lead)}>{leadName(lead)}</button></LeadDetail><p className={styles.secondary} title={lead.correo}>{lead.correo || "Sin correo"}</p></th>
+                    <td><LeadStateBadge state={lead.estado} /></td>
+                    <td><p className={styles.company} title={lead.empresa}>{lead.empresa || "Sin empresa"}</p><p className={styles.secondary}>{lead.fuente}</p></td>
+                    <td><LeadPriorityBadge priority={lead.prioridad} /></td>
+                    <td><p className={styles.company} title={owner ? responsableName(owner) : undefined}>{owner ? responsableName(owner) : "Sin asignar"}</p>{owner && !owner.activo && <p className="text-xs text-[var(--status-prospect)]">Inactivo</p>}</td>
+                    <td><FollowupLabel lead={lead} now={now} /></td>
+                    <td><LeadActions lead={lead} owner={owner} responsibles={responsibles} onSaved={saved} onDeleted={removed} canDelete={canManageLeads(profile.rol)} /></td>
+                  </tr>;
+                })}</tbody>
+              </table></div>
+              <ul className={styles.mobileList} data-leads-mobile aria-label="Leads">{rows.map((lead) => {
+                const owner = responsibles.find((person) => person.id === lead.responsable_id);
+                return <li key={lead.id} className={styles.mobileRow} aria-label={leadName(lead)}>
+                  <div className={styles.rowTop}><div className={styles.rowIdentity}><div><LeadDetail lead={lead} owner={owner}><button type="button" className={styles.name}>{leadName(lead)}</button></LeadDetail><p className={styles.secondary}>{lead.empresa || "Sin empresa"}{lead.cargo ? ` · ${lead.cargo}` : ""}</p></div></div><LeadActions lead={lead} owner={owner} responsibles={responsibles} onSaved={saved} onDeleted={removed} canDelete={canManageLeads(profile.rol)} /></div>
+                  <div className={styles.rowMeta}><LeadStateBadge state={lead.estado} /><LeadPriorityBadge priority={lead.prioridad} /></div>
+                  <dl className={styles.rowDetails}>
+                    <div><dt>Correo</dt><dd>{lead.correo || "Sin correo"}</dd></div><div><dt>Teléfono</dt><dd>{lead.telefono || "Sin registrar"}</dd></div>
+                    <div><dt>Fuente</dt><dd>{lead.fuente}</dd></div><div><dt>Responsable</dt><dd>{owner ? `${responsableName(owner)}${owner.activo ? "" : " (inactivo)"}` : "Sin asignar"}</dd></div>
+                    <div className="col-span-full"><dt>Próximo seguimiento</dt><dd><FollowupLabel lead={lead} now={now} /></dd></div>
+                  </dl>
+                </li>;
+              })}</ul>
+              <div className={styles.pagination}><p role="status">{filtered.length} leads · Página {currentPage} de {pages}</p><div className={styles.paginationControls}><Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Anterior</Button><Button variant="outline" size="sm" disabled={currentPage === pages} onClick={() => setPage(currentPage + 1)}>Siguiente</Button></div></div>
+            </>}
+    </section><p className={styles.formHelp}>Fechas y seguimientos en hora de Lima.</p>
+  </div>;
 }

@@ -1,5 +1,6 @@
 import { DesktopSidebar } from "./sidebar";
 import { Header } from "./header";
+import { PageMotion } from "./page-motion";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -9,7 +10,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-h-svh min-w-0 lg:pl-56">
         <Header />
         <main id="contenido" tabIndex={-1} className="mx-auto max-w-[1480px] px-4 py-6 sm:px-6 lg:px-9 lg:py-8">
-          {children}
+          <PageMotion>{children}</PageMotion>
           <footer className="mt-10 border-t border-border pt-4 text-xs text-muted-foreground">Nexo CRM · Hecho para conectar</footer>
         </main>
       </div>

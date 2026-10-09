@@ -65,13 +65,15 @@ for (const [role, email] of [["Administrador", "admin@example.test"], ["Gerente"
     await dialog.getByRole("button", { name: "Crear lead", exact: true }).click();
     await expect(dialog).toBeHidden();
     const row = page.getByRole("row").filter({ hasText: "María" });
-    await row.getByRole("button", { name: "Editar lead:" }).click();
+    await row.getByRole("button", { name: /^Acciones de María/ }).click();
+    await page.getByRole("menuitem", { name: /^Editar lead: María/ }).click();
     await dialog.getByLabel("Empresa", { exact: true }).fill("Horizonte");
     await dialog.getByLabel("Estado *", { exact: true }).selectOption("Calificado");
     await dialog.getByRole("button", { name: "Guardar cambios", exact: true }).click();
     await expect(row).toContainText("Horizonte");
     await expect(row).toContainText("Calificado");
-    await row.getByRole("button", { name: "Convertir a cliente:" }).click();
+    await row.getByRole("button", { name: /^Acciones de María/ }).click();
+    await page.getByRole("menuitem", { name: /^Convertir a cliente: María/ }).click();
     await dialog.getByRole("button", { name: "Convertir a cliente", exact: true }).click();
     await expect(dialog.getByRole("alert")).toContainText("Completa los apellidos");
     await dialog.getByLabel("Apellidos", { exact: true }).fill("Torres");
@@ -79,19 +81,26 @@ for (const [role, email] of [["Administrador", "admin@example.test"], ["Gerente"
     await dialog.getByRole("button", { name: "Convertir a cliente", exact: true }).click();
     await expect(dialog).toBeHidden();
     await expect(row).toContainText("Convertido");
-    await expect(row.getByRole("button", { name: "Convertir a cliente:" })).toHaveCount(0);
+    await row.getByRole("button", { name: "Acciones de María Torres", exact: true }).click();
+    await expect(page.getByRole("menuitem", { name: "Convertir a cliente: María Torres", exact: true })).toHaveCount(0);
     expect(db.conversions()).toBe(1);
-    await row.getByRole("button", { name: "Ver detalle:" }).click();
+    await page.getByRole("menuitem", { name: "Ver detalle: María Torres", exact: true }).click();
     await expect(dialog.getByRole("link", { name: "Ver cliente vinculado" })).toHaveAttribute("href", /\/clientes\?buscar=/);
     await page.keyboard.press("Escape");
-    if (role === "Vendedor") await expect(page.getByRole("button", { name: "Eliminar lead:" })).toHaveCount(0);
+    await row.getByRole("button", { name: "Acciones de María Torres", exact: true }).click();
+    if (role === "Vendedor") {
+      await expect(page.getByRole("menuitem", { name: "Eliminar lead: María Torres", exact: true })).toHaveCount(0);
+      await page.keyboard.press("Escape");
+    }
     else {
-      await row.getByRole("button", { name: "Eliminar lead:" }).click();
+      await page.getByRole("menuitem", { name: "Eliminar lead: María Torres", exact: true }).click();
       await page.getByRole("alertdialog").getByRole("button", { name: "Cancelar" }).click();
       await expect(row).toBeVisible();
-      await row.getByRole("button", { name: "Eliminar lead:" }).click();
+      await row.getByRole("button", { name: "Acciones de María Torres", exact: true }).click();
+      await page.getByRole("menuitem", { name: "Eliminar lead: María Torres", exact: true }).click();
       await page.getByRole("alertdialog").getByRole("button", { name: "Eliminar lead", exact: true }).click();
       await expect(row).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Nuevo lead", exact: true })).toBeFocused();
     }
     await page.reload();
     await expect(page.getByRole("row").filter({ hasText: "Elena Ríos" })).toBeVisible();
@@ -122,7 +131,8 @@ test("búsqueda, cuatro filtros, paginación, error y reintento", async ({ page 
 test("correo existente exige confirmación antes de vincular", async ({ page }) => {
   const db = await mockLeads(page); db.duplicate();
   await login(page); await page.goto("/leads");
-  await page.getByRole("button", { name: "Convertir a cliente: Elena" }).click();
+  await page.getByRole("button", { name: "Acciones de Elena Ríos", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Convertir a cliente: Elena Ríos", exact: true }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByRole("button", { name: "Convertir a cliente", exact: true }).click();
   await expect(dialog.getByText("Ya existe un cliente con este correo")).toBeVisible();

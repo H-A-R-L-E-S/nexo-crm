@@ -1,0 +1,253 @@
+{
+  "initial": {
+    "registered": 95,
+    "passed": 90,
+    "failed": 5
+  },
+  "affectedRerun": {
+    "startTime": "2026-10-08T23:18:02.691Z",
+    "duration": 312537.341,
+    "expected": 29,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "motionFinal": {
+    "startTime": "2026-10-08T23:23:31.576Z",
+    "duration": 43941.314,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "latestAffected": [
+    {
+      "id": "6359cf701c18f4630418-b82937a226464929115a",
+      "title": "apagada sin foco oculto, Enter y Space, apagar y conservar campos",
+      "file": "login-scene.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-0fad8e40664e2f170fba",
+      "title": "light: escena, ocho anchos, contraste, objetivos y texto al 200%",
+      "file": "login-scene.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-7d467f6cb169824b80a3",
+      "title": "dark: escena, ocho anchos, contraste, objetivos y texto al 200%",
+      "file": "login-scene.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-4c36d5f7a0cfa7d78181",
+      "title": "Sistema, elección de tema independiente de la lámpara y persistencia",
+      "file": "login-scene.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-7e0cf1305eb50ed7b950",
+      "title": "reduced motion y conmutación rápida sin bloqueo de foco",
+      "file": "login-scene.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-ed7e58ac4e91b2c1f3b9",
+      "title": "sesión expirada, envío pendiente y error conservan comportamiento",
+      "file": "login-scene.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-662c3bd381f70bba5975",
+      "title": "movimiento reducido elimina esperas en login, decoración, controles y portales",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-99796a9562854f8a621b",
+      "title": "no-preference: dropdown y diálogo conservan posición, foco y temas al animar",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-6e90d1327807389d5cad",
+      "title": "reduce: dropdown y diálogo conservan posición, foco y temas al animar",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-ef012be5f5eec17d6eca",
+      "title": "la navegación móvil sigue accesible al cambiar de ancho y con movimiento reducido",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-d94e199ad56a8f579f5f",
+      "title": "la entrada de página termina y se cancela al activar movimiento reducido",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-e30d16bfe0bbbae0c629",
+      "title": "no-preference: aviso real conserva tema, contraste y tiempos de motion",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-8e0eb9a4f3f807f921f7",
+      "title": "reduce: aviso real conserva tema, contraste y tiempos de motion",
+      "file": "motion-system.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "afcb74204e35d97ad992-10e4c57a5b807a886212",
+      "title": "resumen con datos, filtros, edición y navegación por teclado",
+      "file": "overview-ui.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "afcb74204e35d97ad992-8b755b46a6a69ee08f54",
+      "title": "reflow de móvil a escritorio y texto al 200%",
+      "file": "overview-ui.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "afcb74204e35d97ad992-ea79733d770e96fd5708",
+      "title": "carga y error no muestran cifras ni vacío; reintento recupera datos",
+      "file": "overview-ui.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "afcb74204e35d97ad992-44e45f251add5c84cf7d",
+      "title": "cartera vacía con acción y recuperación del seguimiento",
+      "file": "overview-ui.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-f42a74051fd5af3f6eca",
+      "title": "Administrador: crear, editar, asignación, completar, reabrir y cancelar",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-3d383434071f25c832e5",
+      "title": "Gerente: crear, editar, asignación, completar, reabrir y cancelar",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-47e9d1f50db93e4abd2f",
+      "title": "Vendedor: crear, editar, asignación, completar, reabrir y cancelar",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-e708461f0bd5ec69fe9f",
+      "title": "Lista, tablero, filtros combinados, búsqueda, paginación y métricas reales",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-9948df86b9439f6e0397",
+      "title": "Nueva tarea desde Cliente, relación persistente y enlace al registro",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-a687c51fc99067735474",
+      "title": "Nueva tarea desde Lead, relación persistente y enlace al registro",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-bb8a510fed095ce597cc",
+      "title": "Nueva tarea desde Oportunidad, relación persistente y enlace al registro",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-207d9fa3a332654dc88a",
+      "title": "Nueva tarea desde Venta, relación persistente y enlace al registro",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-a8f989695625be0a425e",
+      "title": "Carga vacía, error recuperable, conflicto y reintento de alta sin duplicar",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-4a02577cdc740d21d429",
+      "title": "Móvil, teclado y formulario sin desbordamiento",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d2d3f88df070d751ab05-5153824a1d5fb9d261e8",
+      "title": "Fechas de Lima, límites de medianoche, finalización y validación",
+      "file": "tasks.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d9a1a05a5866edb60a2f-4b205913157e70376d76",
+      "title": "tema por teclado, persistencia al recargar, navegar y abrir otro contexto",
+      "file": "themes.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d9a1a05a5866edb60a2f-7ec9cb7de675640fc9b5",
+      "title": "Sistema sigue los cambios del dispositivo y el tema guardado se aplica antes del contenido",
+      "file": "themes.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d9a1a05a5866edb60a2f-ee3db51f1e202ec5f919",
+      "title": "ambos temas: reflow, contraste de tokens, controles y portales",
+      "file": "themes.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    },
+    {
+      "id": "d9a1a05a5866edb60a2f-96d446c7ff5a60c78f01",
+      "title": "oscuro: primitivas heredadas, menú, estados y enlaces del resumen",
+      "file": "themes.spec.ts",
+      "status": "expected",
+      "result": "passed"
+    }
+  ],
+  "unresolvedInitialFailures": [],
+  "unresolvedLatest": [],
+  "uniqueCasesVerified": 95,
+  "finalStatus": "passed"
+}

@@ -130,13 +130,15 @@ test("filtros combinados, estadísticas y lista paginada", async ({ page }) => {
 
 test("crear desde Cliente y desde Lead convertido preselecciona relaciones", async ({ page }) => {
   await mockOpportunities(page); await login(page); await page.goto("/clientes");
-  await page.getByRole("link", { name: "Nueva oportunidad para Ana García" }).click();
+  await page.getByRole("button", { name: "Acciones de Ana García", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Nueva oportunidad para Ana García", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Nueva oportunidad", exact: true });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByLabel("Cliente *", { exact: true })).toHaveValue(clientId);
   await page.keyboard.press("Escape");
   await page.goto("/leads");
-  await page.getByRole("button", { name: "Ver detalle: Ana García" }).click();
+  await page.getByRole("button", { name: "Acciones de Ana García", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Ver detalle: Ana García", exact: true }).click();
   await page.getByRole("dialog").getByRole("link", { name: "Nueva oportunidad", exact: true }).click();
   await expect(dialog).toBeVisible();
   await expect(dialog.getByLabel("Cliente *", { exact: true })).toHaveValue(clientId);

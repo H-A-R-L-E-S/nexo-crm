@@ -20,7 +20,7 @@ export function Header() {
     router.push(query.trim() ? `/clientes?buscar=${encodeURIComponent(query.trim())}` : "/clientes");
   }
   return (
-    <header className="crm-header border-b border-border bg-background px-4 sm:px-6 lg:px-9">
+    <header className="crm-header border-b border-border px-4 sm:px-6 lg:px-9">
       <div className="mx-auto flex min-h-14 max-w-[1408px] flex-wrap items-center gap-x-2 gap-y-1 py-2 sm:flex-nowrap sm:gap-x-3">
         <div className="flex min-w-0 items-center gap-2"><MobileNavigation /><span className="hidden text-xs text-muted-foreground xl:block">Mi empresa</span><ChevronRight className="hidden size-3.5 text-muted-foreground xl:block" aria-hidden="true" /><span className="text-sm font-medium">{{ "/clientes": "Clientes", "/leads": "Leads", "/oportunidades": "Oportunidades", "/ventas": "Ventas", "/tareas": "Tareas", "/perfil": "Mi perfil", "/configuracion": "Configuración", "/configuracion/usuarios": "Usuarios" }[pathname] ?? (pathname.startsWith("/ventas/") ? "Detalle de venta" : pathname.startsWith("/tareas/") ? "Detalle de tarea" : "Resumen")}</span></div>
         <form role="search" aria-label="Búsqueda de clientes" onSubmit={search} className="relative order-last w-full sm:order-none sm:ml-auto sm:w-[min(30vw,300px)]">

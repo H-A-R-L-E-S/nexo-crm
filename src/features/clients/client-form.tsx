@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ChevronDown, Plus, UserRoundPen, UserRoundPlus } from "lucide-react";
+import { useId, useRef, useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -12,14 +12,15 @@ import { OWNERS } from "./demo-data";
 import { useClients } from "./clients-provider";
 import { CLIENT_FIELD_ORDER, CLIENT_STATUSES, clientInitialValues, normalizeClientInput, validateClient, type ClientFormErrors } from "./client-validation";
 import type { Client, ClientInput, ClientStatus } from "./types";
+import styles from "@/components/crm/directory.module.css";
 
 const TEXT_FIELDS: { field: "firstName" | "lastName" | "company" | "position" | "email" | "phone"; label: string; placeholder: string; autoComplete: string; maxLength: number; required?: boolean; type?: string }[] = [
-  { field: "firstName", label: "Nombres", placeholder: "Ej. Valeria", autoComplete: "given-name", maxLength: 80, required: true },
-  { field: "lastName", label: "Apellidos", placeholder: "Ej. Rojas", autoComplete: "family-name", maxLength: 100, required: true },
-  { field: "company", label: "Empresa", placeholder: "Ej. Andes Estudio", autoComplete: "organization", maxLength: 100 },
-  { field: "position", label: "Cargo", placeholder: "Ej. Gerente comercial", autoComplete: "organization-title", maxLength: 100 },
+  { field: "firstName", label: "Nombres", placeholder: "Nombres del cliente", autoComplete: "given-name", maxLength: 80, required: true },
+  { field: "lastName", label: "Apellidos", placeholder: "Apellidos del cliente", autoComplete: "family-name", maxLength: 100, required: true },
+  { field: "company", label: "Empresa", placeholder: "Nombre de la empresa", autoComplete: "organization", maxLength: 100 },
+  { field: "position", label: "Cargo", placeholder: "Cargo o función", autoComplete: "organization-title", maxLength: 100 },
   { field: "email", label: "Correo electrónico", placeholder: "nombre@empresa.com", autoComplete: "email", maxLength: 254, required: true, type: "email" },
-  { field: "phone", label: "Teléfono", placeholder: "+51 987 654 321", autoComplete: "tel", maxLength: 30, required: true, type: "tel" },
+  { field: "phone", label: "Teléfono", placeholder: "Teléfono con código de país", autoComplete: "tel", maxLength: 30, required: true, type: "tel" },
 ];
 
 function ClientFormFields({ client, onClose }: { client?: Client; onClose: () => void }) {
@@ -40,7 +41,7 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
   }
 
   function fieldError(field: keyof ClientInput) {
-    return errors[field] ? <p id={`${id}-${field}-error`} className="text-xs leading-5 text-red-600">{errors[field]}</p> : null;
+    return errors[field] ? <p id={`${id}-${field}-error`} className={styles.formError}>{errors[field]}</p> : null;
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -70,52 +71,58 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
     }
   }
 
-  const selectClassName = "h-10 w-full appearance-none rounded-lg border border-input bg-white px-3 pr-9 text-sm text-slate-700 shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/25 aria-invalid:border-red-500 aria-invalid:ring-red-100";
+  function textField(config: (typeof TEXT_FIELDS)[number]) {
+    return <div key={config.field} className={styles.field}>
+      <Label htmlFor={`${id}-${config.field}`}>{config.label}{config.required && <span aria-hidden="true" className="text-muted-foreground"> *</span>}</Label>
+      <Input {...fieldA11y(config.field)} type={config.type ?? "text"} value={values[config.field]} onChange={(event) => updateField(config.field, event.target.value)} placeholder={config.placeholder} autoComplete={config.autoComplete} maxLength={config.maxLength} required={config.required} />
+      {fieldError(config.field)}
+    </div>;
+  }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} noValidate className="space-y-5">
-      <p className="text-xs text-slate-500">Los campos con * son obligatorios.</p>
-      {CLIENT_FIELD_ORDER.some((field) => errors[field]) && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">Revisa los campos indicados antes de guardar.</p>}
-      <div className="grid gap-4 sm:grid-cols-2">
-        {TEXT_FIELDS.map((config) => (
-          <div key={config.field} className="space-y-2">
-            <Label htmlFor={`${id}-${config.field}`}>{config.label}{config.required && <span aria-hidden="true" className="text-slate-400"> *</span>}</Label>
-            <Input {...fieldA11y(config.field)} type={config.type ?? "text"} value={values[config.field]} onChange={(event) => updateField(config.field, event.target.value)} placeholder={config.placeholder} autoComplete={config.autoComplete} maxLength={config.maxLength} required={config.required} className="h-10 rounded-lg" />
-            {fieldError(config.field)}
+    <form ref={formRef} onSubmit={handleSubmit} noValidate className={styles.form} aria-busy={saving}>
+      <p className={styles.formHelp}>Los campos con * son obligatorios.</p>
+      {CLIENT_FIELD_ORDER.some((field) => errors[field]) && <p role="alert" className={styles.dangerNotice}>Revisa los campos indicados antes de guardar.</p>}
+      <fieldset className={styles.formSection}>
+        <legend>Identificación</legend>
+        <div className={styles.formGrid}>{TEXT_FIELDS.slice(0, 4).map(textField)}</div>
+      </fieldset>
+      <fieldset className={styles.formSection}>
+        <legend>Contacto</legend>
+        <div className={styles.formGrid}>
+          {TEXT_FIELDS.slice(4).map(textField)}
+          <div className={styles.fieldWide}>
+            <Label htmlFor={`${id}-address`}>Dirección</Label>
+            <Input {...fieldA11y("address")} value={values.address} onChange={(event) => updateField("address", event.target.value)} placeholder="Calle, número, distrito y ciudad" autoComplete="street-address" maxLength={200} />
+            {fieldError("address")}
           </div>
-        ))}
-        <div className="space-y-2">
-          <Label htmlFor={`${id}-status`}>Estado <span aria-hidden="true" className="text-slate-400">*</span></Label>
-          <div className="relative">
-            <select {...fieldA11y("status")} required value={values.status} onChange={(event) => updateField("status", event.target.value as ClientStatus)} className={selectClassName}>
+        </div>
+      </fieldset>
+      <fieldset className={styles.formSection}>
+        <legend>Relación comercial</legend>
+        <div className={styles.formGrid}>
+          <div className={styles.field}>
+            <Label htmlFor={`${id}-status`}>Estado <span aria-hidden="true" className="text-muted-foreground">*</span></Label>
+            <select {...fieldA11y("status")} required value={values.status} onChange={(event) => updateField("status", event.target.value as ClientStatus)} className={styles.select}>
               {CLIENT_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
             </select>
-            <ChevronDown className="pointer-events-none absolute top-3 right-3 size-4 text-slate-400" aria-hidden="true" />
+            {fieldError("status")}
           </div>
-          {fieldError("status")}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor={`${id}-owner`}>Responsable <span aria-hidden="true" className="text-slate-400">*</span></Label>
-          <div className="relative">
-            <select {...fieldA11y("owner")} required value={values.owner} onChange={(event) => updateField("owner", event.target.value)} className={selectClassName}>
+          <div className={styles.field}>
+            <Label htmlFor={`${id}-owner`}>Responsable <span aria-hidden="true" className="text-muted-foreground">*</span></Label>
+            <select {...fieldA11y("owner")} required value={values.owner} onChange={(event) => updateField("owner", event.target.value)} className={styles.select}>
               {OWNERS.map((owner) => <option key={owner.name} value={owner.name}>{owner.name}</option>)}
             </select>
-            <ChevronDown className="pointer-events-none absolute top-3 right-3 size-4 text-slate-400" aria-hidden="true" />
+            {fieldError("owner")}
           </div>
-          {fieldError("owner")}
+          <div className={styles.fieldWide}>
+            <Label htmlFor={`${id}-notes`}>Notas</Label>
+            <Textarea {...fieldA11y("notes")} value={values.notes} onChange={(event) => updateField("notes", event.target.value)} placeholder="Información útil para el próximo contacto…" maxLength={1500} rows={3} />
+            {fieldError("notes")}
+          </div>
         </div>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor={`${id}-address`}>Dirección</Label>
-        <Input {...fieldA11y("address")} value={values.address} onChange={(event) => updateField("address", event.target.value)} placeholder="Calle, número, distrito y ciudad" autoComplete="street-address" maxLength={200} className="h-10 rounded-lg" />
-        {fieldError("address")}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor={`${id}-notes`}>Notas</Label>
-        <Textarea {...fieldA11y("notes")} value={values.notes} onChange={(event) => updateField("notes", event.target.value)} placeholder="Agrega contexto que te ayude a conocer mejor al cliente…" maxLength={1500} rows={3} className="resize-y rounded-lg" />
-        {fieldError("notes")}
-      </div>
-      <DialogFooter className="gap-2 border-t border-slate-100 pt-5">
+      </fieldset>
+      <DialogFooter className={styles.formActions}>
         <Button type="button" variant="outline" disabled={saving} onClick={onClose}>Cancelar</Button>
         <Button type="submit" disabled={saving}>{saving ? "Guardando..." : client ? "Guardar cambios" : "Guardar cliente"}</Button>
       </DialogFooter>
@@ -123,21 +130,20 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
   );
 }
 
-export function ClientFormDialog({ client, children, open: controlledOpen, onOpenChange, hideTrigger = false }: {
+export function ClientFormDialog({ client, children, open: controlledOpen, onOpenChange, hideTrigger = false, onCloseAutoFocus }: {
   client?: Client; children?: ReactNode; open?: boolean; onOpenChange?: (open: boolean) => void; hideTrigger?: boolean;
+  onCloseAutoFocus?: ComponentProps<typeof DialogContent>["onCloseAutoFocus"];
 }) {
   const [localOpen, setLocalOpen] = useState(false);
   const open = controlledOpen ?? localOpen;
   const setOpen = onOpenChange ?? setLocalOpen;
-  const FormIcon = client ? UserRoundPen : UserRoundPlus;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {!hideTrigger && <DialogTrigger asChild>{children ?? <Button className="h-10 gap-2 rounded-lg px-4 shadow-sm"><Plus className="size-4" aria-hidden="true" />Nuevo cliente</Button>}</DialogTrigger>}
-      <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-2xl border-slate-200 p-6 sm:max-w-[640px] sm:p-7">
-        <DialogHeader className="text-left">
-          <span className="mb-1 flex size-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><FormIcon className="size-5" aria-hidden="true" /></span>
-          <DialogTitle className="text-xl tracking-tight text-slate-900">{client ? "Editar cliente" : "Nuevo cliente"}</DialogTitle>
-          <DialogDescription className="leading-6">{client ? "Mantén al día los datos de tu cliente." : "Agrega un contacto y comienza una nueva relación."}</DialogDescription>
+      {!hideTrigger && <DialogTrigger asChild>{children ?? <Button><Plus className="size-4" aria-hidden="true" />Nuevo cliente</Button>}</DialogTrigger>}
+      <DialogContent className={styles.dialog} onCloseAutoFocus={onCloseAutoFocus}>
+        <DialogHeader className={styles.dialogHeader}>
+          <DialogTitle>{client ? "Editar cliente" : "Nuevo cliente"}</DialogTitle>
+          <DialogDescription>{client ? "Actualiza el contacto, su estado y responsable." : "Guarda los datos del contacto y asígnale un responsable."}</DialogDescription>
         </DialogHeader>
         <ClientFormFields client={client} onClose={() => setOpen(false)} />
       </DialogContent>

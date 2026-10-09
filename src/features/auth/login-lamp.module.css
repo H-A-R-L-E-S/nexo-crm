@@ -1,0 +1,61 @@
+.raster {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 768 / 900;
+  pointer-events: none;
+}
+
+.frame {
+  position: absolute;
+  display: block;
+  inset: 0;
+  overflow: hidden;
+}
+
+.picture {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 200%;
+  max-width: none;
+  height: auto;
+  user-select: none;
+}
+
+.illuminated { left: -100%; }
+.unlit { filter: brightness(.76); }
+
+.filament,
+.afterglow {
+  mask-image: radial-gradient(ellipse 9% 11% at 50% 86%, #000 56%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 9% 11% at 50% 86%, #000 56%, transparent 100%);
+}
+
+.afterglow { filter: sepia(.35) saturate(2) brightness(.75); }
+
+.bloom {
+  position: absolute;
+  top: 86%;
+  left: 50%;
+  width: 32%;
+  height: 27%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgb(255 211 125 / 32%), rgb(255 174 56 / 10%) 40%, transparent 72%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+}
+
+.unavailable {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 48%;
+  padding: 1rem;
+  border-radius: .625rem;
+  background: #0a1a2e;
+  color: #edf3ff;
+  font-size: .875rem;
+  line-height: 1.6;
+}

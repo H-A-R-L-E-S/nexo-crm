@@ -1,0 +1,125 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\Usuario\\Downloads\\nexo-crm\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/login-photographic.spec.ts",
+      "-g",
+      "glass en ambos",
+      "--reporter=list,json"
+    ],
+    "configFile": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\playwright.config.ts",
+    "rootDir": "C:/Users/Usuario/Downloads/nexo-crm/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Usuario/Downloads/nexo-crm/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Usuario/Downloads/nexo-crm/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "login-photographic.spec.ts",
+      "file": "login-photographic.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "glass en ambos temas y alternativa opaca al reducir transparencias",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T18:34:43.848Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "glass.json",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJ0aGVtZSI6ICJsaWdodCIsCiAgICAidHJhbnNwYXJlbnQiOiAicmdiYSgxMjAsIDE1NCwgMTg2LCAwLjc4KSIsCiAgICAib3BhcXVlIjogInJnYigxOTUsIDIxMywgMjMwKSIKICB9LAogIHsKICAgICJ0aGVtZSI6ICJkYXJrIiwKICAgICJ0cmFuc3BhcmVudCI6ICJyZ2JhKDEyLCAyNywgNDUsIDAuOTEpIiwKICAgICJvcGFxdWUiOiAicmdiKDE4LCAzOSwgNjEpIgogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b4bb8b3169e8bab609b9-88cbf381abdb38c79d8d",
+          "file": "login-photographic.spec.ts",
+          "line": 187,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-09T18:34:35.516Z",
+    "duration": 21481.281000000003,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -94,18 +94,21 @@ test("lista, filtra y conserva el CRUD de clientes al recargar", async ({ page }
   await expect(row).toBeVisible();
   await expect(database.rows).toHaveLength(2);
 
-  await row.getByRole("button", { name: "Editar a Sofía Prueba" }).click();
+  await row.getByRole("button", { name: "Acciones de Sofía Prueba", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Editar a Sofía Prueba", exact: true }).click();
   await page.getByRole("textbox", { name: "Empresa" }).fill("Horizonte Actualizado");
   await page.getByRole("button", { name: "Guardar cambios" }).click();
   await expect(row).toContainText("Horizonte Actualizado");
   await page.reload();
   await expect(page.getByRole("row").filter({ hasText: "Sofía Prueba" })).toContainText("Horizonte Actualizado");
 
-  await page.getByRole("row").filter({ hasText: "Sofía Prueba" }).getByRole("button", { name: "Eliminar a Sofía Prueba" }).click();
+  await row.getByRole("button", { name: "Acciones de Sofía Prueba", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Eliminar a Sofía Prueba", exact: true }).click();
   const confirmation = page.getByRole("alertdialog");
   await confirmation.getByRole("button", { name: "Eliminar", exact: true }).click();
   await expect(page.getByRole("row").filter({ hasText: "Sofía Prueba" })).toHaveCount(0);
   await expect(database.rows).toHaveLength(1);
+  await expect(page.getByRole("button", { name: "Nuevo cliente", exact: true })).toBeFocused();
 });
 
 test("muestra un error de carga y permite reintentar", async ({ page }) => {
@@ -119,13 +122,65 @@ test("muestra un error de carga y permite reintentar", async ({ page }) => {
   await expect(page.getByRole("row").filter({ hasText: "Ana García" })).toBeVisible();
 });
 
+test("paginación de clientes, tamaño de página y filtros conservan la selección", async ({ page }) => {
+  await login(page);
+  const database = await mockClientes(page);
+  database.rows.splice(0, database.rows.length, ...Array.from({ length: 25 }, (_, index) => ({
+    ...initialClient,
+    id: crypto.randomUUID(),
+    nombres: `Cliente ${String(index + 1).padStart(2, "0")}`,
+    apellidos: "Prueba",
+    correo: `cliente${index + 1}@example.test`,
+  })));
+  await page.goto("/clientes");
+  const pagination = page.getByRole("navigation", { name: "Paginación de clientes" });
+  const count = page.locator("main").getByRole("status");
+  const pageSize = page.getByLabel("Por página", { exact: true });
+  await expect(count).toHaveText("Mostrando 1–8 de 25 clientes");
+  await expect(page.locator("main table tbody tr")).toHaveCount(8);
+  await expect(pagination.getByRole("button", { name: "Página anterior", exact: true })).toBeDisabled();
+  await pagination.getByRole("button", { name: "Página 2", exact: true }).click();
+  await expect(count).toHaveText("Mostrando 9–16 de 25 clientes");
+  await expect(pagination.getByRole("button", { name: "Página 2", exact: true })).toHaveAttribute("aria-current", "page");
+  await pagination.getByRole("button", { name: "Página siguiente", exact: true }).click();
+  await expect(count).toHaveText("Mostrando 17–24 de 25 clientes");
+  await pagination.getByRole("button", { name: "Página anterior", exact: true }).click();
+  await expect(count).toHaveText("Mostrando 9–16 de 25 clientes");
+  await pagination.getByRole("button", { name: "Página 4", exact: true }).click();
+  await expect(count).toHaveText("Mostrando 25–25 de 25 clientes");
+  await expect(pagination.getByRole("button", { name: "Página siguiente", exact: true })).toBeDisabled();
+  await pageSize.selectOption("16");
+  await expect(count).toHaveText("Mostrando 1–16 de 25 clientes");
+  await expect(page.locator("main table tbody tr")).toHaveCount(16);
+  await pageSize.selectOption("24");
+  await expect(count).toHaveText("Mostrando 1–24 de 25 clientes");
+  await expect(page.locator("main table tbody tr")).toHaveCount(24);
+  await pagination.getByRole("button", { name: "Página siguiente", exact: true }).click();
+  await page.setViewportSize({ width: 320, height: 844 });
+  const mobileList = page.getByRole("list", { name: "Lista de clientes", exact: true });
+  await expect(mobileList.getByRole("listitem")).toHaveCount(1);
+  await expect(mobileList).toContainText("Cliente 25 Prueba");
+  await pagination.getByRole("button", { name: "Página 1", exact: true }).click();
+  await expect(mobileList.getByRole("listitem")).toHaveCount(24);
+  await pageSize.selectOption("8");
+  await expect(mobileList.getByRole("listitem")).toHaveCount(8);
+  await pagination.getByRole("button", { name: "Página siguiente", exact: true }).click();
+  await page.getByLabel("Buscar clientes", { exact: true }).fill("Cliente 01");
+  await expect(count).toHaveText("Mostrando 1–1 de 1 clientes");
+  await expect(pagination.getByRole("button", { name: "Página 1", exact: true })).toHaveAttribute("aria-current", "page");
+  await page.getByRole("button", { name: "Limpiar filtros", exact: true }).click();
+  await expect(count).toHaveText("Mostrando 1–8 de 25 clientes");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 for (const [email, canDelete] of [["admin@example.test", true], ["gerente@example.test", true], ["vendedor@example.test", false]] as const) {
   test(`permisos visuales de clientes para ${email}`, async ({ page }) => {
     await login(page, email);
     await mockClientes(page);
     await page.goto("/clientes");
-    await expect(page.getByRole("button", { name: "Editar a Ana García" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Nuevo cliente", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Eliminar a Ana García" })).toHaveCount(canDelete ? 1 : 0);
+    await page.getByRole("button", { name: "Acciones de Ana García", exact: true }).click();
+    await expect(page.getByRole("menuitem", { name: "Editar a Ana García", exact: true })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "Eliminar a Ana García", exact: true })).toHaveCount(canDelete ? 1 : 0);
   });
 }

@@ -1,0 +1,12 @@
+[
+  {
+    "theme": "light",
+    "transparent": "rgba(120, 154, 186, 0.78)",
+    "opaque": "rgb(195, 213, 230)"
+  },
+  {
+    "theme": "dark",
+    "transparent": "rgba(12, 27, 45, 0.91)",
+    "opaque": "rgb(18, 39, 61)"
+  }
+]

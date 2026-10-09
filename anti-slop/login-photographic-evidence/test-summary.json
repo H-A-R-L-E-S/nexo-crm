@@ -1,0 +1,178 @@
+{
+  "command": "npm run test:e2e -- tests/auth.spec.ts tests/login-scene.spec.ts tests/login-photographic.spec.ts tests/motion-system.spec.ts --reporter=list,json",
+  "stats": {
+    "startTime": "2026-10-09T18:36:05.261Z",
+    "duration": 201221.009,
+    "expected": 25,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "cases": [
+    {
+      "id": "d748ac400d08b85935ef-6f2a834e5c00f64162af",
+      "file": "auth.spec.ts",
+      "title": "las rutas del CRM redirigen al login sin revelar contenido",
+      "status": "passed"
+    },
+    {
+      "id": "d748ac400d08b85935ef-de6a3f83549acfcf664e",
+      "file": "auth.spec.ts",
+      "title": "valida formulario, muestra contraseña y maneja credenciales incorrectas",
+      "status": "passed"
+    },
+    {
+      "id": "d748ac400d08b85935ef-54ec00656d59e5f32149",
+      "file": "auth.spec.ts",
+      "title": "login, perfil real, edición segura, sesión al recargar y logout",
+      "status": "passed"
+    },
+    {
+      "id": "d748ac400d08b85935ef-d0d32bea55f6000a8512",
+      "file": "auth.spec.ts",
+      "title": "rechaza sesiones revocadas y evita usar cookies falsas",
+      "status": "passed"
+    },
+    {
+      "id": "d748ac400d08b85935ef-b2be6cc7ab9263a2d440",
+      "file": "auth.spec.ts",
+      "title": "bloquea acceso a cuenta inactivo@example.test",
+      "status": "passed"
+    },
+    {
+      "id": "d748ac400d08b85935ef-4ac1d7d6adfd429e0ff5",
+      "file": "auth.spec.ts",
+      "title": "bloquea acceso a cuenta sinperfil@example.test",
+      "status": "passed"
+    },
+    {
+      "id": "d748ac400d08b85935ef-f985e2107c5c07cf066f",
+      "file": "auth.spec.ts",
+      "title": "login y menú de usuario son utilizables en móvil",
+      "status": "passed"
+    },
+    {
+      "id": "b4bb8b3169e8bab609b9-83ec1d7584c5ad9f0e03",
+      "file": "login-photographic.spec.ts",
+      "title": "la lámpara fotográfica carga sin sesión y sus dos estados se alinean",
+      "status": "passed"
+    },
+    {
+      "id": "b4bb8b3169e8bab609b9-cd76c2005c42b8ec5348",
+      "file": "login-photographic.spec.ts",
+      "title": "el encendido revela luz antes del acceso y el apagado conserva una caída gradual",
+      "status": "passed"
+    },
+    {
+      "id": "b4bb8b3169e8bab609b9-29ba49ec65ee15babdd5",
+      "file": "login-photographic.spec.ts",
+      "title": "el foco contextual funciona con teclado y no dibuja una caja sobre la escena",
+      "status": "passed"
+    },
+    {
+      "id": "b4bb8b3169e8bab609b9-2afd38b5a7d3efe549f6",
+      "file": "login-photographic.spec.ts",
+      "title": "reduced-motion dinámico cancela atmósfera y permite invertir el encendido sin foco oculto",
+      "status": "passed"
+    },
+    {
+      "id": "b4bb8b3169e8bab609b9-88cbf381abdb38c79d8d",
+      "file": "login-photographic.spec.ts",
+      "title": "glass en ambos temas y alternativa opaca al reducir transparencias",
+      "status": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-b82937a226464929115a",
+      "file": "login-scene.spec.ts",
+      "title": "apagada sin foco oculto, Enter y Space, apagar y conservar campos",
+      "status": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-0fad8e40664e2f170fba",
+      "file": "login-scene.spec.ts",
+      "title": "light: escena, ocho anchos, contraste, objetivos y texto al 200%",
+      "status": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-7d467f6cb169824b80a3",
+      "file": "login-scene.spec.ts",
+      "title": "dark: escena, ocho anchos, contraste, objetivos y texto al 200%",
+      "status": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-4c36d5f7a0cfa7d78181",
+      "file": "login-scene.spec.ts",
+      "title": "Sistema, elección de tema independiente de la lámpara y persistencia",
+      "status": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-7e0cf1305eb50ed7b950",
+      "file": "login-scene.spec.ts",
+      "title": "reduced motion y conmutación rápida sin bloqueo de foco",
+      "status": "passed"
+    },
+    {
+      "id": "6359cf701c18f4630418-ed7e58ac4e91b2c1f3b9",
+      "file": "login-scene.spec.ts",
+      "title": "sesión expirada, envío pendiente y error conservan comportamiento",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-662c3bd381f70bba5975",
+      "file": "motion-system.spec.ts",
+      "title": "movimiento reducido elimina esperas en login, decoración, controles y portales",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-99796a9562854f8a621b",
+      "file": "motion-system.spec.ts",
+      "title": "no-preference: dropdown y diálogo conservan posición, foco y temas al animar",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-6e90d1327807389d5cad",
+      "file": "motion-system.spec.ts",
+      "title": "reduce: dropdown y diálogo conservan posición, foco y temas al animar",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-ef012be5f5eec17d6eca",
+      "file": "motion-system.spec.ts",
+      "title": "la navegación móvil sigue accesible al cambiar de ancho y con movimiento reducido",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-d94e199ad56a8f579f5f",
+      "file": "motion-system.spec.ts",
+      "title": "la entrada de página termina y se cancela al activar movimiento reducido",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-e30d16bfe0bbbae0c629",
+      "file": "motion-system.spec.ts",
+      "title": "no-preference: aviso real conserva tema, contraste y tiempos de motion",
+      "status": "passed"
+    },
+    {
+      "id": "2fc3fcdbbebc8d1c432c-8e0eb9a4f3f807f921f7",
+      "file": "motion-system.spec.ts",
+      "title": "reduce: aviso real conserva tema, contraste y tiempos de motion",
+      "status": "passed"
+    }
+  ],
+  "counts": {
+    "passed": 25
+  },
+  "lint": {
+    "command": "npm run lint",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "compiled": true,
+    "typeScript": true,
+    "routes": 14
+  }
+}

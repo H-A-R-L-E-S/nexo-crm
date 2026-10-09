@@ -1,0 +1,17 @@
+{
+  "asset": "src/features/auth/assets/lamp-realistic-atlas-v1.webp",
+  "source": "C:/Users/Usuario/.codex/generated_images/01a11933-8e9c-7ad2-a06e-22384037136d/exec-bb9a3801-0eff-422e-a1d9-723d34b0bec3.png",
+  "width": 1536,
+  "height": 1024,
+  "hasAlpha": true,
+  "bytes": 154258,
+  "frames": 2,
+  "tileWidth": 768,
+  "tileHeight": 1024,
+  "visibleTileHeight": 900,
+  "bulbCenter": {
+    "x": 384,
+    "y": 770
+  },
+  "method": "Built-in imagegen; reference-photo-derived transparent off/on atlas; Sharp format optimization quality90 alpha100; no vector lamp"
+}

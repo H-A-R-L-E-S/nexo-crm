@@ -1,0 +1,159 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\Usuario\\Downloads\\nexo-crm\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/login-photographic.spec.ts",
+      "-g",
+      "glass en ambos",
+      "--reporter=list,json"
+    ],
+    "configFile": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\playwright.config.ts",
+    "rootDir": "C:/Users/Usuario/Downloads/nexo-crm/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Usuario/Downloads/nexo-crm/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Usuario/Downloads/nexo-crm/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "login-photographic.spec.ts",
+      "file": "login-photographic.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "glass en ambos temas y alternativa opaca al reducir transparencias",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6882,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0.7\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0.7\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\login-photographic.spec.ts:218:94",
+                    "location": {
+                      "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\login-photographic.spec.ts",
+                      "column": 94,
+                      "line": 218
+                    },
+                    "snippet": "  216 |     observations.push({ theme, transparent, opaque });\n  217 |     await page.getByRole(\"button\", { name: \"Apagar lámpara\", exact: true }).click();\n> 218 |     expect(Number(await afterglow.evaluate((element) => getComputedStyle(element).opacity))).toBeGreaterThan(.7);\n      |                                                                                              ^\n  219 |     await expect(afterglow).toHaveCSS(\"opacity\", \"0\");\n  220 |   }\n  221 |   await testInfo.attach(\"glass.json\", { body: JSON.stringify(observations, null, 2), contentType: \"application/json\" });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\login-photographic.spec.ts",
+                        "column": 94,
+                        "line": 218
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0.7\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n  216 |     observations.push({ theme, transparent, opaque });\n  217 |     await page.getByRole(\"button\", { name: \"Apagar lámpara\", exact: true }).click();\n> 218 |     expect(Number(await afterglow.evaluate((element) => getComputedStyle(element).opacity))).toBeGreaterThan(.7);\n      |                                                                                              ^\n  219 |     await expect(afterglow).toHaveCSS(\"opacity\", \"0\");\n  220 |   }\n  221 |   await testInfo.attach(\"glass.json\", { body: JSON.stringify(observations, null, 2), contentType: \"application/json\" });\n    at C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\login-photographic.spec.ts:218:94"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-09T18:34:03.278Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\login-photographic-glass-e-2138f-a-al-reducir-transparencias-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\login-photographic-glass-e-2138f-a-al-reducir-transparencias-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\test-results\\login-photographic-glass-e-2138f-a-al-reducir-transparencias-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\Usuario\\Downloads\\nexo-crm\\tests\\login-photographic.spec.ts",
+                    "column": 94,
+                    "line": 218
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b4bb8b3169e8bab609b9-88cbf381abdb38c79d8d",
+          "file": "login-photographic.spec.ts",
+          "line": 187,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-09T18:33:53.621Z",
+    "duration": 17608.204,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

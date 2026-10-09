@@ -1,0 +1,322 @@
+{
+  "method": "WCAG sRGB formula; source colors over clean final screenshot samples of the composited glass panel, reflection behind content; fixed controls and status surfaces",
+  "panels": [
+    {
+      "theme": "light",
+      "samples": [
+        {
+          "x": 805,
+          "y": 260,
+          "rgb": [
+            149,
+            167,
+            182
+          ]
+        },
+        {
+          "x": 805,
+          "y": 350,
+          "rgb": [
+            154,
+            170,
+            180
+          ]
+        },
+        {
+          "x": 805,
+          "y": 445,
+          "rgb": [
+            155,
+            170,
+            179
+          ]
+        },
+        {
+          "x": 805,
+          "y": 500,
+          "rgb": [
+            154,
+            171,
+            180
+          ]
+        },
+        {
+          "x": 805,
+          "y": 795,
+          "rgb": [
+            139,
+            163,
+            184
+          ]
+        },
+        {
+          "x": 805,
+          "y": 875,
+          "rgb": [
+            135,
+            161,
+            185
+          ]
+        },
+        {
+          "x": 1233,
+          "y": 260,
+          "rgb": [
+            134,
+            163,
+            191
+          ]
+        },
+        {
+          "x": 1233,
+          "y": 445,
+          "rgb": [
+            134,
+            162,
+            190
+          ]
+        },
+        {
+          "x": 1233,
+          "y": 875,
+          "rgb": [
+            134,
+            162,
+            190
+          ]
+        },
+        {
+          "x": 1000,
+          "y": 440,
+          "rgb": [
+            145,
+            167,
+            184
+          ]
+        },
+        {
+          "x": 1000,
+          "y": 864,
+          "rgb": [
+            134,
+            162,
+            188
+          ]
+        }
+      ],
+      "measurements": [
+        {
+          "pair": "text",
+          "foreground": "#102b45",
+          "minimum": 5.386028868916533,
+          "required": 4.5
+        },
+        {
+          "pair": "muted",
+          "foreground": "#1b3048",
+          "minimum": 5.0088854046639995,
+          "required": 4.5
+        },
+        {
+          "pair": "error",
+          "foreground": "#620e24",
+          "minimum": 4.86972226982189,
+          "required": 4.5
+        },
+        {
+          "pair": "boundary",
+          "foreground": "#344d68",
+          "minimum": 3.251845008180224,
+          "required": 3
+        },
+        {
+          "pair": "focus",
+          "foreground": "#103994",
+          "minimum": 3.847195783073074,
+          "required": 3
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "samples": [
+        {
+          "x": 805,
+          "y": 260,
+          "rgb": [
+            31,
+            42,
+            53
+          ]
+        },
+        {
+          "x": 805,
+          "y": 350,
+          "rgb": [
+            37,
+            47,
+            55
+          ]
+        },
+        {
+          "x": 805,
+          "y": 445,
+          "rgb": [
+            40,
+            47,
+            55
+          ]
+        },
+        {
+          "x": 805,
+          "y": 500,
+          "rgb": [
+            37,
+            47,
+            55
+          ]
+        },
+        {
+          "x": 805,
+          "y": 795,
+          "rgb": [
+            20,
+            33,
+            47
+          ]
+        },
+        {
+          "x": 805,
+          "y": 875,
+          "rgb": [
+            15,
+            29,
+            45
+          ]
+        },
+        {
+          "x": 1233,
+          "y": 260,
+          "rgb": [
+            12,
+            27,
+            45
+          ]
+        },
+        {
+          "x": 1233,
+          "y": 445,
+          "rgb": [
+            12,
+            27,
+            45
+          ]
+        },
+        {
+          "x": 1233,
+          "y": 875,
+          "rgb": [
+            12,
+            27,
+            45
+          ]
+        },
+        {
+          "x": 1000,
+          "y": 440,
+          "rgb": [
+            26,
+            39,
+            50
+          ]
+        },
+        {
+          "x": 1000,
+          "y": 864,
+          "rgb": [
+            13,
+            28,
+            45
+          ]
+        }
+      ],
+      "measurements": [
+        {
+          "pair": "text",
+          "foreground": "#edf3ff",
+          "minimum": 12.155402965896547,
+          "required": 4.5
+        },
+        {
+          "pair": "muted",
+          "foreground": "#bbc9df",
+          "minimum": 8.075507973828016,
+          "required": 4.5
+        },
+        {
+          "pair": "error",
+          "foreground": "#ffa9bc",
+          "minimum": 7.508622289508542,
+          "required": 4.5
+        },
+        {
+          "pair": "boundary",
+          "foreground": "#839ab4",
+          "minimum": 4.6690551669314475,
+          "required": 3
+        },
+        {
+          "pair": "focus",
+          "foreground": "#b9d4ff",
+          "minimum": 8.971831898520177,
+          "required": 3
+        }
+      ]
+    }
+  ],
+  "fixed": [
+    {
+      "pair": "submit",
+      "foreground": "#ffffff",
+      "background": "#245de2",
+      "minimum": 5.616548168856996,
+      "required": 4.5
+    },
+    {
+      "pair": "instruction",
+      "foreground": "#e5eefb",
+      "background": "#0a1a2e",
+      "minimum": 14.960584652936248,
+      "required": 4.5
+    },
+    {
+      "pair": "lamp cue text",
+      "foreground": "#edf3ff",
+      "background": "#0a1a2e",
+      "minimum": 15.719443444969647,
+      "required": 4.5
+    },
+    {
+      "pair": "lamp cue focus",
+      "foreground": "#b9d4ff",
+      "background": "#0a1a2e",
+      "minimum": 11.602429349503712,
+      "required": 3
+    },
+    {
+      "pair": "expired",
+      "foreground": "#92400e",
+      "background": "#fffbeb",
+      "minimum": 6.837002380367332,
+      "required": 4.5
+    },
+    {
+      "pair": "credentials error",
+      "foreground": "#b91c1c",
+      "background": "#fef2f2",
+      "minimum": 5.914600426850339,
+      "required": 4.5
+    }
+  ],
+  "failures": []
+}

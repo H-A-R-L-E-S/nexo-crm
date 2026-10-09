@@ -1,0 +1,4339 @@
+{
+  "ignition": [
+    {
+      "duration": 210.00000000000003,
+      "opacity": [
+        0,
+        0.35,
+        0.1,
+        0.65,
+        0.45,
+        1
+      ]
+    }
+  ],
+  "on": [
+    {
+      "time": 18.599999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 21.599999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 23.099999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 28.30000001192093,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 36.099999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 39.599999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 44.099999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 47.900000005960464,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 52.5,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 56.599999994039536,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 60.80000001192093,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 64.5,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 68.80000001192093,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 72.7000000178814,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 77.30000001192093,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 81.09999999403954,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 85.5,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 89.40000000596046,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 94,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 97.80000001192093,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 102.5,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 106.2000000178814,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 110.5,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 114.59999999403954,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 119,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 123,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 127.2000000178814,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 131.40000000596046,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 135.59999999403954,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 139.59999999403954,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 144.09999999403954,
+      "photo": 0.0001568,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 148,
+      "photo": 0.0016371,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 152.40000000596046,
+      "photo": 0.00485005,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 156.5,
+      "photo": 0.00986969,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 160.7000000178814,
+      "photo": 0.016773,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 164.7000000178814,
+      "photo": 0.0253832,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 168.90000000596046,
+      "photo": 0.0361499,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 173,
+      "photo": 0.0488826,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 177.30000001192093,
+      "photo": 0.0631665,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 181.40000000596046,
+      "photo": 0.0796139,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 185.7000000178814,
+      "photo": 0.0977687,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 189.59999999403954,
+      "photo": 0.116975,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 194.09999999403954,
+      "photo": 0.137972,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 198,
+      "photo": 0.160083,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 202.2000000178814,
+      "photo": 0.18307,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 206.2000000178814,
+      "photo": 0.205563,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 210.5,
+      "photo": 0.229595,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 214.40000000596046,
+      "photo": 0.253849,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 218.80000001192093,
+      "photo": 0.277564,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 222.80000001192093,
+      "photo": 0.301744,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 227.5,
+      "photo": 0.325681,
+      "halo": 0.000639469,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 231.2000000178814,
+      "photo": 0.349269,
+      "halo": 0.00262757,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 235.7000000178814,
+      "photo": 0.37188,
+      "halo": 0.00593609,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 239.7000000178814,
+      "photo": 0.394556,
+      "halo": 0.0107886,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 244.09999999403954,
+      "photo": 0.416172,
+      "halo": 0.0170051,
+      "beam": 0.0000098635,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 247.80000001192093,
+      "photo": 0.438259,
+      "halo": 0.0251359,
+      "beam": 0.000438222,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 252.5,
+      "photo": 0.458742,
+      "halo": 0.0344459,
+      "beam": 0.00145284,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 256.30000001192093,
+      "photo": 0.47913,
+      "halo": 0.0455593,
+      "beam": 0.00312818,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 260.30000001192093,
+      "photo": 0.498911,
+      "halo": 0.0582419,
+      "beam": 0.00546861,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 264.40000000596046,
+      "photo": 0.517638,
+      "halo": 0.0720851,
+      "beam": 0.00841409,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 269.09999999403954,
+      "photo": 0.53623,
+      "halo": 0.0876828,
+      "beam": 0.012126,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 273.09999999403954,
+      "photo": 0.554231,
+      "halo": 0.104605,
+      "beam": 0.0165564,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 277.40000000596046,
+      "photo": 0.571654,
+      "halo": 0.122717,
+      "beam": 0.0217175,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 281.59999999403954,
+      "photo": 0.588116,
+      "halo": 0.141397,
+      "beam": 0.0274687,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 285.80000001192093,
+      "photo": 0.604435,
+      "halo": 0.161394,
+      "beam": 0.0340946,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 289.80000001192093,
+      "photo": 0.619848,
+      "halo": 0.18159,
+      "beam": 0.0412787,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 294,
+      "photo": 0.635121,
+      "halo": 0.202803,
+      "beam": 0.0493654,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 298.09999999403954,
+      "photo": 0.649888,
+      "halo": 0.224383,
+      "beam": 0.0581757,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 302.59999999403954,
+      "photo": 0.663831,
+      "halo": 0.245656,
+      "beam": 0.0674568,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 306.5,
+      "photo": 0.677644,
+      "halo": 0.267525,
+      "beam": 0.077637,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 310.7000000178814,
+      "photo": 0.690997,
+      "halo": 0.289352,
+      "beam": 0.0884675,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 314.7000000178814,
+      "photo": 0.703603,
+      "halo": 0.310518,
+      "beam": 0.0996321,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 318.90000000596046,
+      "photo": 0.716091,
+      "halo": 0.331973,
+      "beam": 0.111634,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 323.30000001192093,
+      "photo": 0.727878,
+      "halo": 0.352625,
+      "beam": 0.123858,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 327.2000000178814,
+      "photo": 0.739554,
+      "halo": 0.373427,
+      "beam": 0.136852,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 331.5,
+      "photo": 0.750839,
+      "halo": 0.393827,
+      "beam": 0.150269,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 335.59999999403954,
+      "photo": 0.76149,
+      "halo": 0.413322,
+      "beam": 0.163723,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 339.59999999403954,
+      "photo": 0.772039,
+      "halo": 0.432838,
+      "beam": 0.177818,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 344.30000001192093,
+      "photo": 0.782233,
+      "halo": 0.451879,
+      "beam": 0.192174,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 347.80000001192093,
+      "photo": 0.792083,
+      "halo": 0.470435,
+      "beam": 0.206738,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 352.59999999403954,
+      "photo": 0.801377,
+      "halo": 0.488076,
+      "beam": 0.221106,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 356.30000001192093,
+      "photo": 0.810362,
+      "halo": 0.505249,
+      "beam": 0.235579,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 360.59999999403954,
+      "photo": 0.819466,
+      "halo": 0.522759,
+      "beam": 0.250824,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 364.40000000596046,
+      "photo": 0.827848,
+      "halo": 0.538983,
+      "beam": 0.265382,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 369,
+      "photo": 0.836144,
+      "halo": 0.555131,
+      "beam": 0.28028,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 372.90000000596046,
+      "photo": 0.844153,
+      "halo": 0.570811,
+      "beam": 0.295129,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 377.2000000178814,
+      "photo": 0.851703,
+      "halo": 0.585675,
+      "beam": 0.309548,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 381.2000000178814,
+      "photo": 0.858995,
+      "halo": 0.600112,
+      "beam": 0.323865,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 385.80000001192093,
+      "photo": 0.866374,
+      "halo": 0.614804,
+      "beam": 0.338749,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 389.5,
+      "photo": 0.87316,
+      "halo": 0.628397,
+      "beam": 0.352794,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 394,
+      "photo": 0.879709,
+      "halo": 0.641594,
+      "beam": 0.36668,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 398.2000000178814,
+      "photo": 0.886178,
+      "halo": 0.654713,
+      "beam": 0.380726,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 402.40000000596046,
+      "photo": 0.892412,
+      "halo": 0.667439,
+      "beam": 0.394579,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 406.5,
+      "photo": 0.898416,
+      "halo": 0.679784,
+      "beam": 0.408229,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 410.59999999403954,
+      "photo": 0.904061,
+      "halo": 0.691477,
+      "beam": 0.421351,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 414.59999999403954,
+      "photo": 0.90963,
+      "halo": 0.703099,
+      "beam": 0.434577,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 418.80000001192093,
+      "photo": 0.91486,
+      "halo": 0.714108,
+      "beam": 0.447276,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 422.90000000596046,
+      "photo": 0.920134,
+      "halo": 0.725305,
+      "beam": 0.460363,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 427.80000001192093,
+      "photo": 0.925081,
+      "halo": 0.735909,
+      "beam": 0.472916,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 431.30000001192093,
+      "photo": 0.92972,
+      "halo": 0.745952,
+      "beam": 0.484951,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 435.7000000178814,
+      "photo": 0.934175,
+      "halo": 0.755698,
+      "beam": 0.496767,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 439.90000000596046,
+      "photo": 0.938553,
+      "halo": 0.765384,
+      "beam": 0.508647,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 444.2000000178814,
+      "photo": 0.942651,
+      "halo": 0.774555,
+      "beam": 0.520025,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 448.2000000178814,
+      "photo": 0.94667,
+      "halo": 0.783669,
+      "beam": 0.531457,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 452.40000000596046,
+      "photo": 0.950515,
+      "halo": 0.792505,
+      "beam": 0.542667,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 456.5,
+      "photo": 0.954188,
+      "halo": 0.801072,
+      "beam": 0.553656,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 460.59999999403954,
+      "photo": 0.957612,
+      "halo": 0.809182,
+      "beam": 0.564172,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 464.90000000596046,
+      "photo": 0.960957,
+      "halo": 0.817238,
+      "beam": 0.574733,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 469,
+      "photo": 0.964142,
+      "halo": 0.825045,
+      "beam": 0.585081,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 473.40000000596046,
+      "photo": 0.967171,
+      "halo": 0.832612,
+      "beam": 0.595221,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 477.30000001192093,
+      "photo": 0.969978,
+      "halo": 0.839771,
+      "beam": 0.604921,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 481.59999999403954,
+      "photo": 0.972706,
+      "halo": 0.846878,
+      "beam": 0.614658,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 486.09999999403954,
+      "photo": 0.975286,
+      "halo": 0.853763,
+      "beam": 0.624197,
+      "dust": 0.000286854,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 490.09999999403954,
+      "photo": 0.977665,
+      "halo": 0.860273,
+      "beam": 0.633321,
+      "dust": 0.00197578,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 494.09999999403954,
+      "photo": 0.97991,
+      "halo": 0.866582,
+      "beam": 0.642263,
+      "dust": 0.00525329,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 498.30000001192093,
+      "photo": 0.982072,
+      "halo": 0.87284,
+      "beam": 0.651237,
+      "dust": 0.01034,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 502.40000000596046,
+      "photo": 0.984144,
+      "halo": 0.879038,
+      "beam": 0.660235,
+      "dust": 0.0174347,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 506.90000000596046,
+      "photo": 0.98599,
+      "halo": 0.884756,
+      "beam": 0.668637,
+      "dust": 0.0260282,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 510.7000000178814,
+      "photo": 0.987711,
+      "halo": 0.890291,
+      "beam": 0.676871,
+      "dust": 0.0364321,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 514.5999999940395,
+      "photo": 0.989347,
+      "halo": 0.895775,
+      "beam": 0.685135,
+      "dust": 0.0489618,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 519,
+      "photo": 0.990857,
+      "halo": 0.901077,
+      "beam": 0.693228,
+      "dust": 0.0633439,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 523.0999999940395,
+      "photo": 0.992212,
+      "halo": 0.906079,
+      "beam": 0.700968,
+      "dust": 0.0790922,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 527.3000000119209,
+      "photo": 0.993509,
+      "halo": 0.911147,
+      "beam": 0.708919,
+      "dust": 0.0972961,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 531.5999999940395,
+      "photo": 0.994655,
+      "halo": 0.915924,
+      "beam": 0.716522,
+      "dust": 0.116582,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 535.5,
+      "photo": 0.99566,
+      "halo": 0.920426,
+      "beam": 0.723793,
+      "dust": 0.13666,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 539.8000000119209,
+      "photo": 0.996556,
+      "halo": 0.924773,
+      "beam": 0.730917,
+      "dust": 0.157773,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 545.5,
+      "photo": 0.997362,
+      "halo": 0.929067,
+      "beam": 0.738066,
+      "dust": 0.180259,
+      "form": 0.0000185958,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 548.8000000119209,
+      "photo": 0.998042,
+      "halo": 0.933109,
+      "beam": 0.744902,
+      "dust": 0.202833,
+      "form": 0.000622222,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 552.5,
+      "photo": 0.998631,
+      "halo": 0.937097,
+      "beam": 0.751762,
+      "dust": 0.226388,
+      "form": 0.00215302,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 556.5999999940395,
+      "photo": 0.999112,
+      "halo": 0.940936,
+      "beam": 0.758479,
+      "dust": 0.250181,
+      "form": 0.00464684,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 560.7000000178814,
+      "photo": 0.99948,
+      "halo": 0.944542,
+      "beam": 0.764903,
+      "dust": 0.27347,
+      "form": 0.00804578,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 565.0999999940395,
+      "photo": 0.999754,
+      "halo": 0.948094,
+      "beam": 0.771348,
+      "dust": 0.297241,
+      "form": 0.0125482,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 569,
+      "photo": 0.999923,
+      "halo": 0.951426,
+      "beam": 0.77751,
+      "dust": 0.320241,
+      "form": 0.017966,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 573.0999999940395,
+      "photo": 0.999998,
+      "halo": 0.954778,
+      "beam": 0.783838,
+      "dust": 0.344039,
+      "form": 0.0247546,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 577.5,
+      "photo": 1,
+      "halo": 0.957843,
+      "beam": 0.789747,
+      "dust": 0.36634,
+      "form": 0.0322942,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 581.5,
+      "photo": 1,
+      "halo": 0.960781,
+      "beam": 0.795534,
+      "dust": 0.388202,
+      "form": 0.0408767,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 585.8000000119209,
+      "photo": 1,
+      "halo": 0.96373,
+      "beam": 0.801478,
+      "dust": 0.410609,
+      "form": 0.0509885,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 589.8000000119209,
+      "photo": 1,
+      "halo": 0.966416,
+      "beam": 0.807025,
+      "dust": 0.431445,
+      "form": 0.0616663,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 594.0999999940395,
+      "photo": 1,
+      "halo": 0.969045,
+      "beam": 0.812591,
+      "dust": 0.452231,
+      "form": 0.0736183,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 598.2000000178814,
+      "photo": 1,
+      "halo": 0.971551,
+      "beam": 0.818039,
+      "dust": 0.472439,
+      "form": 0.0865465,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 602,
+      "photo": 1,
+      "halo": 0.973881,
+      "beam": 0.823246,
+      "dust": 0.491603,
+      "form": 0.100049,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 606.2000000178814,
+      "photo": 1,
+      "halo": 0.976151,
+      "beam": 0.828469,
+      "dust": 0.510658,
+      "form": 0.11471,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 610.5,
+      "photo": 1,
+      "halo": 0.978305,
+      "beam": 0.83358,
+      "dust": 0.529132,
+      "form": 0.130128,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 614.7000000178814,
+      "photo": 1,
+      "halo": 0.980297,
+      "beam": 0.838465,
+      "dust": 0.546614,
+      "form": 0.145822,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 618.9000000059605,
+      "photo": 1,
+      "halo": 0.982227,
+      "beam": 0.843364,
+      "dust": 0.563966,
+      "form": 0.162461,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 622.8000000119209,
+      "photo": 1,
+      "halo": 0.984048,
+      "beam": 0.848157,
+      "dust": 0.580768,
+      "form": 0.179573,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 627.4000000059605,
+      "photo": 1,
+      "halo": 0.98572,
+      "beam": 0.852737,
+      "dust": 0.59665,
+      "form": 0.196641,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 631.5999999940395,
+      "photo": 1,
+      "halo": 0.987329,
+      "beam": 0.857328,
+      "dust": 0.612402,
+      "form": 0.214403,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 635.7000000178814,
+      "photo": 1,
+      "halo": 0.988833,
+      "beam": 0.861819,
+      "dust": 0.627643,
+      "form": 0.232359,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 639.9000000059605,
+      "photo": 1,
+      "halo": 0.990202,
+      "beam": 0.866109,
+      "dust": 0.642045,
+      "form": 0.249994,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 644.0999999940395,
+      "photo": 1,
+      "halo": 0.991474,
+      "beam": 0.870308,
+      "dust": 0.655988,
+      "form": 0.267664,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 648.3000000119209,
+      "photo": 1,
+      "halo": 0.99268,
+      "beam": 0.874515,
+      "dust": 0.66981,
+      "form": 0.285735,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 652.0999999940395,
+      "photo": 1,
+      "halo": 0.993788,
+      "beam": 0.878628,
+      "dust": 0.683181,
+      "form": 0.303716,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 656.5,
+      "photo": 1,
+      "halo": 0.994799,
+      "beam": 0.882651,
+      "dust": 0.696114,
+      "form": 0.321557,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 660.5999999940395,
+      "photo": 1,
+      "halo": 0.995717,
+      "beam": 0.886583,
+      "dust": 0.708624,
+      "form": 0.339212,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 664.9000000059605,
+      "photo": 1,
+      "halo": 0.996522,
+      "beam": 0.890336,
+      "dust": 0.72044,
+      "form": 0.356234,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 669.0999999940395,
+      "photo": 1,
+      "halo": 0.997257,
+      "beam": 0.894094,
+      "dust": 0.732151,
+      "form": 0.373423,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 673.2000000178814,
+      "photo": 1,
+      "halo": 0.997901,
+      "beam": 0.897767,
+      "dust": 0.743478,
+      "form": 0.390336,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 677.3000000119209,
+      "photo": 1,
+      "halo": 0.998457,
+      "beam": 0.901356,
+      "dust": 0.754432,
+      "form": 0.406954,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 681.5999999940395,
+      "photo": 1,
+      "halo": 0.998915,
+      "beam": 0.904778,
+      "dust": 0.764777,
+      "form": 0.422878,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 685.9000000059605,
+      "photo": 1,
+      "halo": 0.999299,
+      "beam": 0.908204,
+      "dust": 0.775029,
+      "form": 0.438873,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 690,
+      "photo": 1,
+      "halo": 0.999592,
+      "beam": 0.91147,
+      "dust": 0.784709,
+      "form": 0.454171,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 694,
+      "photo": 1,
+      "halo": 0.999805,
+      "beam": 0.914661,
+      "dust": 0.794076,
+      "form": 0.469152,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 698.4000000059605,
+      "photo": 1,
+      "halo": 0.999942,
+      "beam": 0.917852,
+      "dust": 0.803356,
+      "form": 0.484166,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 702.4000000059605,
+      "photo": 1,
+      "halo": 0.999998,
+      "beam": 0.920967,
+      "dust": 0.812327,
+      "form": 0.498844,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 707.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.924006,
+      "dust": 0.820997,
+      "form": 0.513186,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 711.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.92697,
+      "dust": 0.829376,
+      "form": 0.527194,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 715.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.929792,
+      "dust": 0.837282,
+      "form": 0.540551,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 719.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.932546,
+      "dust": 0.844926,
+      "form": 0.553597,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 723.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.935361,
+      "dust": 0.852669,
+      "form": 0.56695,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 727.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.937976,
+      "dust": 0.859799,
+      "form": 0.579374,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 731.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.940587,
+      "dust": 0.866852,
+      "form": 0.591794,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 735.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.943129,
+      "dust": 0.87366,
+      "form": 0.60391,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 740.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.945546,
+      "dust": 0.880074,
+      "form": 0.61545,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 744.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.947956,
+      "dust": 0.886415,
+      "form": 0.626984,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 748.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.950301,
+      "dust": 0.892529,
+      "form": 0.638232,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 753.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.952527,
+      "dust": 0.898284,
+      "form": 0.648943,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 756.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.954745,
+      "dust": 0.903966,
+      "form": 0.659646,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 771.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.956849,
+      "dust": 0.909311,
+      "form": 0.669838,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 774.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.962949,
+      "dust": 0.924532,
+      "form": 0.699632,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 777.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.964862,
+      "dust": 0.929219,
+      "form": 0.709073,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 782,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.96663,
+      "dust": 0.93351,
+      "form": 0.717844,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 786,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.968471,
+      "dust": 0.937938,
+      "form": 0.72704,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 789.8000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.970211,
+      "dust": 0.942084,
+      "form": 0.735796,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 794.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.971855,
+      "dust": 0.945964,
+      "form": 0.744131,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 799.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.973446,
+      "dust": 0.949681,
+      "form": 0.752262,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 802.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.975022,
+      "dust": 0.953326,
+      "form": 0.760385,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 806.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.976543,
+      "dust": 0.956808,
+      "form": 0.768304,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 810.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.97801,
+      "dust": 0.960132,
+      "form": 0.776024,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 816,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.97939,
+      "dust": 0.963226,
+      "form": 0.783372,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 819.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.980753,
+      "dust": 0.966245,
+      "form": 0.790712,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 823.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.982033,
+      "dust": 0.969049,
+      "form": 0.797698,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 827.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.983294,
+      "dust": 0.971776,
+      "form": 0.804675,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 831.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.984504,
+      "dust": 0.97436,
+      "form": 0.811474,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 836.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.985664,
+      "dust": 0.976804,
+      "form": 0.818101,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 840.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.986748,
+      "dust": 0.979058,
+      "form": 0.824406,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 844.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.987811,
+      "dust": 0.981233,
+      "form": 0.830701,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 848,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.988826,
+      "dust": 0.983276,
+      "form": 0.836834,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 852.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.98977,
+      "dust": 0.985145,
+      "form": 0.842667,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 856.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.990669,
+      "dust": 0.986892,
+      "form": 0.848353,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 860.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.991564,
+      "dust": 0.988598,
+      "form": 0.854161,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 865.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.992373,
+      "dust": 0.990104,
+      "form": 0.859554,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 869.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.993156,
+      "dust": 0.991528,
+      "form": 0.864934,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 873.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.993877,
+      "dust": 0.992804,
+      "form": 0.870048,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 877.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.994572,
+      "dust": 0.993996,
+      "form": 0.87515,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 881.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.995222,
+      "dust": 0.995074,
+      "form": 0.880114,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 887,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.995815,
+      "dust": 0.996019,
+      "form": 0.884831,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 889.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.99638,
+      "dust": 0.996878,
+      "form": 0.889533,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 894.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.996902,
+      "dust": 0.997628,
+      "form": 0.894106,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 898.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.997371,
+      "dust": 0.998258,
+      "form": 0.898448,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 902.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.997819,
+      "dust": 0.998812,
+      "form": 0.902875,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 906.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.998207,
+      "dust": 0.99924,
+      "form": 0.906977,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 910.8000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.998555,
+      "dust": 0.99957,
+      "form": 0.910966,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 914.8000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.998872,
+      "dust": 0.999811,
+      "form": 0.914937,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 919.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.999149,
+      "dust": 0.999954,
+      "form": 0.918793,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 922.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.999381,
+      "dust": 1,
+      "form": 0.922448,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 927.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.99958,
+      "dust": 1,
+      "form": 0.926082,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 931.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.99974,
+      "dust": 1,
+      "form": 0.929609,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 935.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.999859,
+      "dust": 1,
+      "form": 0.932948,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 939.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.999943,
+      "dust": 1,
+      "form": 0.936264,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 944.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 0.99999,
+      "dust": 1,
+      "form": 0.939478,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 948,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.942518,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 952.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.945533,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 956.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.948382,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 960.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.951205,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 964.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.953933,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 969,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.956569,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 973.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.959113,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 977.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.961509,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 981.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.963877,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 986,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.966103,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 989.8000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.9683,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 994.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.970411,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 998.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.97244,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1002.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.974341,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1006.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.976208,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1011.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.977955,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1014.8000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.979667,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1019.3000000119209,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.981263,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1023,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.982859,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1027.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.984309,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1031.300000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.98572,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1035.800000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.987028,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1039.5999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.988296,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1044,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.989494,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1048.300000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.990596,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1052.300000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.991656,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1056.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.992649,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1060.800000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.993554,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1065.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.994415,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1069.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.995211,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1073.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.995943,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1077.2000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.996596,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1081.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.997204,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1085.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.997749,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1089.800000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.998222,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1094.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.998648,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1098,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.999006,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1103.0999999940395,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.999314,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1106.4000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.999565,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1110.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.999754,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1114.9000000059605,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.999892,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1119.300000011921,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 0.999973,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 1132.7000000178814,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 1,
+      "inert": false,
+      "ready": true
+    }
+  ],
+  "off": [
+    {
+      "time": 14.900000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 1,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 19.299999982118607,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 1,
+      "form": 1,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 22.599999994039536,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.999594,
+      "form": 0.999096,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 29,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.998454,
+      "form": 0.996583,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 32.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.996617,
+      "form": 0.992582,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 34.599999994039536,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.99398,
+      "form": 0.986903,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 39.400000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.990737,
+      "form": 0.97999,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 43.400000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.986866,
+      "form": 0.971819,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 47.400000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.98251,
+      "form": 0.962702,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 51.400000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.977609,
+      "form": 0.952526,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 55.900000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.972184,
+      "form": 0.941349,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 59.900000005960464,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.965958,
+      "form": 0.928611,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 64,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.959528,
+      "form": 0.915546,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 68.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.952462,
+      "form": 0.901279,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 72.19999998807907,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.945115,
+      "form": 0.88653,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 78.19999998807907,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.937145,
+      "form": 0.870617,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 80.69999998807907,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.928741,
+      "form": 0.853927,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 85.09999999403954,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.919919,
+      "form": 0.836493,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 88.90000000596046,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.910918,
+      "form": 0.818785,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 93.09999999403954,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.90131,
+      "form": 0.799967,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 97.19999998807907,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.891567,
+      "form": 0.78096,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 101.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.881223,
+      "form": 0.760859,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 105.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.870781,
+      "form": 0.740643,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 109.90000000596046,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.859477,
+      "form": 0.718831,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 114.19999998807907,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.848372,
+      "form": 0.697472,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 118,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.836672,
+      "form": 0.675039,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 122.2999999821186,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.824946,
+      "form": 0.652617,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 126.2999999821186,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.812628,
+      "form": 0.629127,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 130.5,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.800312,
+      "form": 0.6057,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 134.7999999821186,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.787406,
+      "form": 0.581205,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 138.90000000596046,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.774213,
+      "form": 0.556221,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 143,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.76074,
+      "form": 0.530757,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 147.40000000596046,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.746994,
+      "form": 0.504823,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 151.59999999403954,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.733318,
+      "form": 0.479063,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 155.90000000596046,
+      "photo": 1,
+      "halo": 1,
+      "beam": 1,
+      "dust": 0.719049,
+      "form": 0.452226,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 160,
+      "photo": 0.999962,
+      "halo": 1,
+      "beam": 0.999976,
+      "dust": 0.704873,
+      "form": 0.425597,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 164.09999999403954,
+      "photo": 0.99952,
+      "halo": 1,
+      "beam": 0.999698,
+      "dust": 0.690104,
+      "form": 0.397883,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 168.09999999403954,
+      "photo": 0.9986,
+      "halo": 1,
+      "beam": 0.999116,
+      "dust": 0.675088,
+      "form": 0.369732,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 172.2999999821186,
+      "photo": 0.99726,
+      "halo": 1,
+      "beam": 0.998266,
+      "dust": 0.660197,
+      "form": 0.341834,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 176.5,
+      "photo": 0.995405,
+      "halo": 1,
+      "beam": 0.997083,
+      "dust": 0.644338,
+      "form": 0.312134,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 180.7999999821186,
+      "photo": 0.993224,
+      "halo": 1,
+      "beam": 0.995687,
+      "dust": 0.628989,
+      "form": 0.283396,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 185.09999999403954,
+      "photo": 0.990589,
+      "halo": 1,
+      "beam": 0.993995,
+      "dust": 0.613041,
+      "form": 0.253529,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 189,
+      "photo": 0.987641,
+      "halo": 1,
+      "beam": 0.992095,
+      "dust": 0.597255,
+      "form": 0.223955,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 193.2999999821186,
+      "photo": 0.984248,
+      "halo": 1,
+      "beam": 0.989902,
+      "dust": 0.580865,
+      "form": 0.193223,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 197.19999998807907,
+      "photo": 0.980493,
+      "halo": 1,
+      "beam": 0.987466,
+      "dust": 0.564258,
+      "form": 0.16204,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 201.7999999821186,
+      "photo": 0.97649,
+      "halo": 1,
+      "beam": 0.984862,
+      "dust": 0.54784,
+      "form": 0.131148,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 205.59999999403954,
+      "photo": 0.972163,
+      "halo": 1,
+      "beam": 0.982039,
+      "dust": 0.53122,
+      "form": 0.0997879,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 210.2999999821186,
+      "photo": 0.96729,
+      "halo": 1,
+      "beam": 0.97885,
+      "dust": 0.513575,
+      "form": 0.0663528,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 213.90000000596046,
+      "photo": 0.962335,
+      "halo": 1,
+      "beam": 0.975599,
+      "dust": 0.49655,
+      "form": 0.0338778,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 219.09999999403954,
+      "photo": 0.956955,
+      "halo": 1,
+      "beam": 0.97206,
+      "dust": 0.478909,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 224.59999999403954,
+      "photo": 0.951277,
+      "halo": 1,
+      "beam": 0.968316,
+      "dust": 0.461066,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 235.90000000596046,
+      "photo": 0.932702,
+      "halo": 0.999657,
+      "beam": 0.956008,
+      "dust": 0.406788,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 239.90000000596046,
+      "photo": 0.925924,
+      "halo": 0.999106,
+      "beam": 0.951498,
+      "dust": 0.388162,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 243.40000000596046,
+      "photo": 0.919229,
+      "halo": 0.998348,
+      "beam": 0.947034,
+      "dust": 0.370243,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 247.7999999821186,
+      "photo": 0.911778,
+      "halo": 0.997289,
+      "beam": 0.942056,
+      "dust": 0.350786,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 252,
+      "photo": 0.904435,
+      "halo": 0.996049,
+      "beam": 0.93714,
+      "dust": 0.332046,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 256,
+      "photo": 0.896678,
+      "halo": 0.994554,
+      "beam": 0.931938,
+      "dust": 0.312661,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 260.5,
+      "photo": 0.888688,
+      "halo": 0.992838,
+      "beam": 0.92657,
+      "dust": 0.293084,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 264.2999999821186,
+      "photo": 0.880471,
+      "halo": 0.990906,
+      "beam": 0.92104,
+      "dust": 0.273316,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 268.19999998807907,
+      "photo": 0.872236,
+      "halo": 0.988818,
+      "beam": 0.915488,
+      "dust": 0.253833,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 272.19999998807907,
+      "photo": 0.863587,
+      "halo": 0.986477,
+      "beam": 0.909648,
+      "dust": 0.233683,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 276.5,
+      "photo": 0.85494,
+      "halo": 0.984002,
+      "beam": 0.903801,
+      "dust": 0.213826,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 280.69999998807907,
+      "photo": 0.845878,
+      "halo": 0.981274,
+      "beam": 0.897663,
+      "dust": 0.193289,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 285.69999998807907,
+      "photo": 0.836837,
+      "halo": 0.978431,
+      "beam": 0.891531,
+      "dust": 0.173048,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 290.09999999403954,
+      "photo": 0.827152,
+      "halo": 0.97526,
+      "beam": 0.884952,
+      "dust": 0.15161,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 293.69999998807907,
+      "photo": 0.817961,
+      "halo": 0.972142,
+      "beam": 0.878701,
+      "dust": 0.131469,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 297.59999999403954,
+      "photo": 0.808125,
+      "halo": 0.968697,
+      "beam": 0.872002,
+      "dust": 0.110109,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 301.5,
+      "photo": 0.798102,
+      "halo": 0.965081,
+      "beam": 0.865168,
+      "dust": 0.088519,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 305.7999999821186,
+      "photo": 0.787898,
+      "halo": 0.961299,
+      "beam": 0.858201,
+      "dust": 0.0666848,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 309.7999999821186,
+      "photo": 0.777764,
+      "halo": 0.957449,
+      "beam": 0.851273,
+      "dust": 0.0451111,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 314.2999999821186,
+      "photo": 0.767209,
+      "halo": 0.953348,
+      "beam": 0.84405,
+      "dust": 0.0227019,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 318.19999998807907,
+      "photo": 0.756482,
+      "halo": 0.949091,
+      "beam": 0.836701,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 322.40000000596046,
+      "photo": 0.745847,
+      "halo": 0.944788,
+      "beam": 0.829407,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 326.40000000596046,
+      "photo": 0.734523,
+      "halo": 0.940123,
+      "beam": 0.821633,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 330.69999998807907,
+      "photo": 0.723566,
+      "halo": 0.935532,
+      "beam": 0.814103,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 334.7999999821186,
+      "photo": 0.712457,
+      "halo": 0.930804,
+      "beam": 0.806461,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 339.19999998807907,
+      "photo": 0.70092,
+      "halo": 0.925822,
+      "beam": 0.798517,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 343.2999999821186,
+      "photo": 0.689228,
+      "halo": 0.920703,
+      "beam": 0.790459,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 347.59999999403954,
+      "photo": 0.677666,
+      "halo": 0.915576,
+      "beam": 0.782484,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 351.40000000596046,
+      "photo": 0.665673,
+      "halo": 0.910192,
+      "beam": 0.774206,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 356.5,
+      "photo": 0.653532,
+      "halo": 0.904679,
+      "beam": 0.765817,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 360.19999998807907,
+      "photo": 0.641244,
+      "halo": 0.899039,
+      "beam": 0.757322,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 365.40000000596046,
+      "photo": 0.62911,
+      "halo": 0.893412,
+      "beam": 0.748926,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 368.19999998807907,
+      "photo": 0.616539,
+      "halo": 0.887527,
+      "beam": 0.740221,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 372.5,
+      "photo": 0.604132,
+      "halo": 0.881665,
+      "beam": 0.731625,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 377,
+      "photo": 0.591285,
+      "halo": 0.875544,
+      "beam": 0.722718,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 380.69999998807907,
+      "photo": 0.578301,
+      "halo": 0.869305,
+      "beam": 0.71371,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 385,
+      "photo": 0.565495,
+      "halo": 0.863105,
+      "beam": 0.704821,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 389.09999999403954,
+      "photo": 0.552245,
+      "halo": 0.856642,
+      "beam": 0.695619,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 393.09999999403954,
+      "photo": 0.538863,
+      "halo": 0.850069,
+      "beam": 0.68632,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 397.2999999821186,
+      "photo": 0.52535,
+      "halo": 0.843386,
+      "beam": 0.676925,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 401.69999998807907,
+      "photo": 0.512034,
+      "halo": 0.836759,
+      "beam": 0.667663,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 405.90000000596046,
+      "photo": 0.498595,
+      "halo": 0.830031,
+      "beam": 0.658311,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 409.69999998807907,
+      "photo": 0.484703,
+      "halo": 0.823037,
+      "beam": 0.648641,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 415.09999999403954,
+      "photo": 0.470685,
+      "halo": 0.81594,
+      "beam": 0.638879,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 418.19999998807907,
+      "photo": 0.456541,
+      "halo": 0.808742,
+      "beam": 0.629028,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 422.5,
+      "photo": 0.442274,
+      "halo": 0.801444,
+      "beam": 0.619086,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 426.5,
+      "photo": 0.427884,
+      "halo": 0.794049,
+      "beam": 0.609057,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 430.69999998807907,
+      "photo": 0.413719,
+      "halo": 0.786736,
+      "beam": 0.599182,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 435.09999999403954,
+      "photo": 0.399437,
+      "halo": 0.779333,
+      "beam": 0.589225,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 439.09999999403954,
+      "photo": 0.384688,
+      "halo": 0.771656,
+      "beam": 0.57894,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 443.19999998807907,
+      "photo": 0.369819,
+      "halo": 0.763886,
+      "beam": 0.56857,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 447.59999999403954,
+      "photo": 0.354829,
+      "halo": 0.756025,
+      "beam": 0.558116,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 451.5,
+      "photo": 0.340081,
+      "halo": 0.748264,
+      "beam": 0.54783,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 456.09999999403954,
+      "photo": 0.32522,
+      "halo": 0.740418,
+      "beam": 0.537466,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 459.69999998807907,
+      "photo": 0.309878,
+      "halo": 0.732294,
+      "beam": 0.526768,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 463.90000000596046,
+      "photo": 0.294417,
+      "halo": 0.724083,
+      "beam": 0.515989,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 468.09999999403954,
+      "photo": 0.278836,
+      "halo": 0.715786,
+      "beam": 0.505129,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 472.7999999821186,
+      "photo": 0.263512,
+      "halo": 0.707604,
+      "beam": 0.494451,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 476.7999999821186,
+      "photo": 0.247694,
+      "halo": 0.699141,
+      "beam": 0.483433,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 481.09999999403954,
+      "photo": 0.231756,
+      "halo": 0.690594,
+      "beam": 0.472337,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 484.7999999821186,
+      "photo": 0.215697,
+      "halo": 0.681966,
+      "beam": 0.461162,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 488.90000000596046,
+      "photo": 0.199901,
+      "halo": 0.673465,
+      "beam": 0.450178,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 493.09999999403954,
+      "photo": 0.183598,
+      "halo": 0.664677,
+      "beam": 0.43885,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 497.69999998807907,
+      "photo": 0.16756,
+      "halo": 0.656022,
+      "beam": 0.427717,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 501.5,
+      "photo": 0.151005,
+      "halo": 0.647079,
+      "beam": 0.416237,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 505.69999998807907,
+      "photo": 0.134319,
+      "halo": 0.638058,
+      "beam": 0.404681,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 545,
+      "photo": 0,
+      "halo": 0.554194,
+      "beam": 0.29816,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 547.1999999880791,
+      "photo": 0,
+      "halo": 0.544441,
+      "beam": 0.285858,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 551.4000000059605,
+      "photo": 0,
+      "halo": 0.534854,
+      "beam": 0.273777,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 555.7999999821186,
+      "photo": 0,
+      "halo": 0.524963,
+      "beam": 0.261327,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 559.6999999880791,
+      "photo": 0,
+      "halo": 0.515241,
+      "beam": 0.249101,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 564.0999999940395,
+      "photo": 0,
+      "halo": 0.504975,
+      "beam": 0.236201,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 568.0999999940395,
+      "photo": 0,
+      "halo": 0.49512,
+      "beam": 0.223827,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 572.4000000059605,
+      "photo": 0,
+      "halo": 0.484957,
+      "beam": 0.211075,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 576.5,
+      "photo": 0,
+      "halo": 0.474971,
+      "beam": 0.198553,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 580.7999999821186,
+      "photo": 0,
+      "halo": 0.464676,
+      "beam": 0.185648,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 585.1999999880791,
+      "photo": 0,
+      "halo": 0.454314,
+      "beam": 0.172664,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 588.9000000059605,
+      "photo": 0,
+      "halo": 0.444135,
+      "beam": 0.159912,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 593.5,
+      "photo": 0,
+      "halo": 0.433643,
+      "beam": 0.146769,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 597.1999999880791,
+      "photo": 0,
+      "halo": 0.423338,
+      "beam": 0.133859,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 601.5,
+      "photo": 0,
+      "halo": 0.412716,
+      "beam": 0.12055,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 605.5,
+      "photo": 0,
+      "halo": 0.402285,
+      "beam": 0.107475,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 609.6999999880791,
+      "photo": 0,
+      "halo": 0.391536,
+      "beam": 0.0939908,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 619.4000000059605,
+      "photo": 0,
+      "halo": 0.380722,
+      "beam": 0.0804135,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 623.0999999940395,
+      "photo": 0,
+      "halo": 0.369845,
+      "beam": 0.0667378,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 627.5,
+      "photo": 0,
+      "halo": 0.358903,
+      "beam": 0.0529573,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 629.6999999880791,
+      "photo": 0,
+      "halo": 0.34816,
+      "beam": 0.0393951,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 630.9000000059605,
+      "photo": 0,
+      "halo": 0.337092,
+      "beam": 0.0253758,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 634.7999999821186,
+      "photo": 0,
+      "halo": 0.326225,
+      "beam": 0.0115422,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 639.0999999940395,
+      "photo": 0,
+      "halo": 0.315032,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 643.7999999821186,
+      "photo": 0,
+      "halo": 0.303774,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 647.2999999821186,
+      "photo": 0,
+      "halo": 0.292723,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 651.2999999821186,
+      "photo": 0,
+      "halo": 0.28134,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 655.4000000059605,
+      "photo": 0,
+      "halo": 0.269892,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 659.6999999880791,
+      "photo": 0,
+      "halo": 0.258381,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 663.7999999821186,
+      "photo": 0,
+      "halo": 0.247082,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 668,
+      "photo": 0,
+      "halo": 0.235443,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 672.0999999940395,
+      "photo": 0,
+      "halo": 0.22402,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 677.0999999940395,
+      "photo": 0,
+      "halo": 0.212253,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 680.4000000059605,
+      "photo": 0,
+      "halo": 0.20042,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 684.6999999880791,
+      "photo": 0,
+      "halo": 0.188521,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 688.9000000059605,
+      "photo": 0,
+      "halo": 0.176555,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 692.9000000059605,
+      "photo": 0,
+      "halo": 0.165096,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 697.1999999880791,
+      "photo": 0,
+      "halo": 0.152708,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 701.4000000059605,
+      "photo": 0,
+      "halo": 0.140827,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 707.1999999880791,
+      "photo": 0,
+      "halo": 0.128879,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 713,
+      "photo": 0,
+      "halo": 0.116273,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 718.6999999880791,
+      "photo": 0,
+      "halo": 0.10418,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 724.5999999940395,
+      "photo": 0,
+      "halo": 0.0917164,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 727.5,
+      "photo": 0,
+      "halo": 0.0791721,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 727.7999999821186,
+      "photo": 0,
+      "halo": 0.0668451,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 730.2999999821186,
+      "photo": 0,
+      "halo": 0.0541294,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 734.5999999940395,
+      "photo": 0,
+      "halo": 0.0413173,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 738.7999999821186,
+      "photo": 0,
+      "halo": 0.0287076,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 742.9000000059605,
+      "photo": 0,
+      "halo": 0.0156676,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 747.1999999880791,
+      "photo": 0,
+      "halo": 0.00277858,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    },
+    {
+      "time": 751.1999999880791,
+      "photo": 0,
+      "halo": 0,
+      "beam": 0,
+      "dust": 0,
+      "form": 0,
+      "inert": true,
+      "ready": false
+    }
+  ]
+}

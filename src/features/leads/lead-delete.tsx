@@ -3,12 +3,23 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import styles from "@/components/crm/directory.module.css";
 import { deleteLead } from "./services/leads.service";
 import { leadName, type Lead } from "./types";
 
-export function LeadDelete({ lead, onDeleted }: { lead: Lead; onDeleted: (id: string) => void }) {
-  const [open, setOpen] = useState(false);
+type Props = {
+  lead: Lead;
+  onDeleted: (id: string) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  onCloseAutoFocus?: (event: Event) => void;
+};
+
+export function LeadDelete({ lead, onDeleted, open: controlledOpen, onOpenChange, onCloseAutoFocus }: Props) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen ?? internalOpen;
+  const setOpen = onOpenChange ?? setInternalOpen;
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   async function remove() {
@@ -18,5 +29,12 @@ export function LeadDelete({ lead, onDeleted }: { lead: Lead; onDeleted: (id: st
     catch (cause) { setError(cause instanceof Error ? cause.message : "No se pudo eliminar el lead."); }
     finally { setPending(false); }
   }
-  return <AlertDialog open={open} onOpenChange={(value) => { if (!pending) { setOpen(value); setError(""); } }}><AlertDialogTrigger asChild><Button variant="ghost" size="icon" aria-label={`Eliminar lead: ${leadName(lead)}`} title="Eliminar lead" className="text-slate-500 hover:text-red-600"><Trash2 className="size-4" /></Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Eliminar lead</AlertDialogTitle><AlertDialogDescription>¿Eliminar a {leadName(lead)}? Se perderá su historial como lead. Esta acción no se puede deshacer. El cliente vinculado, si existe, se conserva.</AlertDialogDescription></AlertDialogHeader>{error && <p role="alert" className="text-sm text-red-700">{error}</p>}<div className="flex justify-end gap-2"><Button variant="outline" disabled={pending} onClick={() => setOpen(false)}>Cancelar</Button><Button variant="destructive" disabled={pending} onClick={remove}>{pending ? "Eliminando..." : "Eliminar lead"}</Button></div></AlertDialogContent></AlertDialog>;
+  return <AlertDialog open={open} onOpenChange={(value) => { if (!pending) { setOpen(value); setError(""); } }}>
+    {controlledOpen === undefined && <AlertDialogTrigger asChild><Button variant="ghost" size="icon" aria-label={`Eliminar lead: ${leadName(lead)}`} title="Eliminar lead" className="text-muted-foreground hover:text-[var(--danger)]"><Trash2 aria-hidden="true" /></Button></AlertDialogTrigger>}
+    <AlertDialogContent className={styles.compactDialog} onCloseAutoFocus={onCloseAutoFocus} aria-busy={pending}>
+      <AlertDialogHeader className={styles.dialogHeader}><AlertDialogTitle>Eliminar lead</AlertDialogTitle><AlertDialogDescription>¿Eliminar a {leadName(lead)}? Se perderá su historial como lead. Esta acción no se puede deshacer. El cliente vinculado, si existe, se conserva.</AlertDialogDescription></AlertDialogHeader>
+      {error && <p role="alert" className={styles.formError}>{error}</p>}
+      <div className={styles.formActions}><AlertDialogCancel disabled={pending} onClick={() => setOpen(false)}>Cancelar</AlertDialogCancel><Button variant="destructive" disabled={pending} onClick={remove}>{pending ? "Eliminando..." : "Eliminar lead"}</Button></div>
+    </AlertDialogContent>
+  </AlertDialog>;
 }

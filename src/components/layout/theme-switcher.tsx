@@ -25,7 +25,7 @@ export function ThemeSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" disabled={!hydrated} aria-label={`Cambiar tema${current ? `: ${current.label}` : ""}`} className="header-control">
-          <Icon className="size-[18px]" aria-hidden="true" />
+          <Icon key={current?.value ?? "hydrating"} className="theme-icon size-[18px]" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8} className="w-48 p-1.5">

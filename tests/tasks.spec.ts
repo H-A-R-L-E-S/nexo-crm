@@ -134,7 +134,12 @@ test("Lista, tablero, filtros combinados, búsqueda, paginación y métricas rea
 for (const [type, path, label, id] of [["Cliente", "/clientes", "Ana García", customerId], ["Lead", "/leads", "Andrea Torres", leadId], ["Oportunidad", "/oportunidades", "Implementación CRM", opportunityId], ["Venta", "/ventas", "V-2026-000001", saleId]] as const) {
   test(`Nueva tarea desde ${type}, relación persistente y enlace al registro`, async ({ page }) => {
     const db = await mockTasks(page); await login(page); await page.goto(path);
-    await page.getByRole("link", { name: `Nueva tarea: ${label}`, exact: true }).click();
+    if (type === "Cliente" || type === "Lead") {
+      await page.getByRole("button", { name: `Acciones de ${label}`, exact: true }).click();
+      await page.getByRole("menuitem", { name: `Nueva tarea: ${label}`, exact: true }).click();
+    } else {
+      await page.getByRole("link", { name: `Nueva tarea: ${label}`, exact: true }).click();
+    }
     const dialog = page.getByRole("dialog"); await expect(dialog.getByLabel("Relacionado con", { exact: true })).toHaveValue(type); await expect(dialog.getByLabel("Registro relacionado *", { exact: true })).toHaveValue(id);
     await fillTask(page, `Seguimiento ${type}`); await dialog.getByRole("button", { name: "Crear tarea", exact: true }).click(); await expect(dialog).toBeHidden(); await expect(page).toHaveURL("http://127.0.0.1:3100/tareas");
     const key = { Cliente: "cliente_id", Lead: "lead_id", Oportunidad: "oportunidad_id", Venta: "venta_id" }[type] as "cliente_id" | "lead_id" | "oportunidad_id" | "venta_id";

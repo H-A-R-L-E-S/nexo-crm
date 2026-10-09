@@ -41,7 +41,7 @@ test("resumen con datos, filtros, edición y navegación por teclado", async ({ 
   const metrics = page.getByRole("region", { name: "Indicadores de clientes" });
   await expect(metrics.getByRole("link", { name: /Clientes totales/ })).toContainText("8");
   await expect(page.getByText("Responsable de prueba", { exact: true })).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("overview-desktop.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("overview-desktop.png"), fullPage: true, animations: "disabled", style: "nextjs-portal { display: none !important; }" });
   await noOverflow(page);
   await page.getByRole("button", { name: "Editar a Contacto 1 Prueba" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -87,7 +87,7 @@ test("reflow de móvil a escritorio y texto al 200%", async ({ page }, testInfo)
   for (const width of [320, 390, 640, 768, 1024, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await noOverflow(page);
-    if ([390, 768, 1440].includes(width)) await page.screenshot({ path: testInfo.outputPath(`overview-${width}.png`), fullPage: true });
+    if ([390, 768, 1440].includes(width)) await page.screenshot({ path: testInfo.outputPath(`overview-${width}.png`), fullPage: true, animations: "disabled", style: "nextjs-portal { display: none !important; }" });
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Abrir navegación" }).click();
@@ -104,7 +104,7 @@ test("reflow de móvil a escritorio y texto al 200%", async ({ page }, testInfo)
   await expect(page.getByRole("dialog")).toBeHidden();
   await page.addStyleTag({ content: "html { font-size: 200%; }" });
   await noOverflow(page);
-  await page.screenshot({ path: testInfo.outputPath("overview-text-200.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("overview-text-200.png"), fullPage: true, animations: "disabled", style: "nextjs-portal { display: none !important; }" });
 });
 
 test("carga y error no muestran cifras ni vacío; reintento recupera datos", async ({ page }) => {
@@ -141,5 +141,5 @@ test("cartera vacía con acción y recuperación del seguimiento", async ({ page
   unavailable = false;
   await page.getByRole("button", { name: "Reintentar tareas" }).click();
   await expect(page.getByText(/No hay seguimientos abiertos/)).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("overview-empty.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("overview-empty.png"), fullPage: true, animations: "disabled", style: "nextjs-portal { display: none !important; }" });
 });

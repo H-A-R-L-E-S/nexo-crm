@@ -181,7 +181,12 @@ test("ambos temas: reflow, contraste de tokens, controles y portales", async ({ 
     }
     await page.screenshot({ path: testInfo.outputPath(`dialog-${theme}.png`), animations: "disabled" });
     await page.setViewportSize({ width: 390, height: 400 });
-    await expect(page.getByRole("dialog", { name: "Nuevo cliente" })).toHaveCSS("max-height", "360px");
+    const shortDialog = page.getByRole("dialog", { name: "Nuevo cliente" });
+    await expect(shortDialog).toBeInViewport({ ratio: 1 });
+    const dialogBounds = await shortDialog.boundingBox();
+    expect(dialogBounds).not.toBeNull();
+    expect(dialogBounds!.y).toBeGreaterThanOrEqual(0);
+    expect(dialogBounds!.y + dialogBounds!.height).toBeLessThanOrEqual(400);
     await page.getByLabel("Notas", { exact: true }).focus();
     await expect(page.getByLabel("Notas", { exact: true })).toBeInViewport({ ratio: 1 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

@@ -1,3 +1,5 @@
+import { DirectoryLoading } from "@/components/crm/directory";
+
 export default function Loading() {
-  return <p role="status" className="p-8 text-sm text-slate-500">Cargando leads...</p>;
+  return <DirectoryLoading label="Cargando leads..." />;
 }
