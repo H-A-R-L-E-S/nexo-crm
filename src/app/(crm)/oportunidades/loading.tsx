@@ -1,1 +1,3 @@
-export default function Loading() { return <p role="status" className="p-8 text-sm text-slate-500">Cargando oportunidades...</p>; }
+import { DirectoryLoading } from "@/components/crm/directory";
+
+export default function Loading() { return <DirectoryLoading label="Cargando oportunidades..." />; }

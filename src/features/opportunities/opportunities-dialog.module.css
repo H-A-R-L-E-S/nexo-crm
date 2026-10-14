@@ -1,0 +1,116 @@
+.dialog.dialog {
+  width: 42rem;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 1.25rem;
+  gap: 1.25rem;
+  border-radius: 1.125rem;
+  color: var(--foreground);
+  background: var(--popover);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 1.25rem;
+}
+
+.dialog :global([data-slot="dialog-close"]) {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: 0.5rem;
+}
+
+.createButton.createButton {
+  min-height: 2.75rem;
+  height: auto;
+  max-width: 100%;
+  padding-block: 0.625rem;
+  border-radius: 0.625rem;
+  white-space: normal;
+}
+
+.form.form :is(input, select, textarea) {
+  min-height: 2.75rem;
+  border-radius: 0.625rem;
+  background: var(--popover);
+  font-size: 1rem;
+  scroll-margin-block: 1.25rem;
+}
+
+.form :global(fieldset:disabled) { opacity: 0.7; }
+.form :global([role="alert"]), .dialog :global([role="alert"]) {
+  background: color-mix(in srgb, var(--danger) 8%, var(--popover));
+  color: var(--danger);
+}
+
+.formActions.formActions :is(button, a) {
+  min-height: 2.75rem;
+  height: auto;
+  max-width: 100%;
+  padding-block: 0.625rem;
+  border-radius: 0.625rem;
+  white-space: normal;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.actions :is(button, a) {
+  flex: 0 0 auto;
+  width: 2.75rem;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: 0.5rem;
+  color: var(--muted-foreground);
+}
+
+.actions :is(button, a):hover,
+.actions :is(button, a):active,
+.actions :is(button, a)[data-state="open"] {
+  background: var(--accent);
+  color: var(--link);
+}
+
+.actions .deleteTrigger:hover, .actions .deleteTrigger:active,
+.actions .deleteTrigger:global([data-state="open"]) {
+  background: color-mix(in srgb, var(--danger) 8%, var(--popover));
+  color: var(--danger);
+}
+
+.detailDialog.detailDialog { width: 38rem; }
+.detailStage { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.detailHero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 0.25rem 0 0.5rem; }
+.detailHero > div { min-width: 0; }
+.detailHero dt { color: var(--muted-foreground); font-size: 0.8125rem; }
+.detailAmount { margin-top: 0.375rem; color: var(--link); font-size: clamp(1.75rem, 1.45rem + 1vw, 2.25rem); font-weight: 600; letter-spacing: -0.045em; font-variant-numeric: tabular-nums; line-height: 1.25; overflow-wrap: anywhere; }
+.detailProbability { margin-top: 0.375rem; font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.5; }
+.detailLink { display: inline-flex; align-items: center; min-height: 2.75rem; max-width: 100%; color: var(--link); font-size: 0.8125rem; font-weight: 500; line-height: 1.6; text-decoration: underline; text-underline-offset: 0.2em; overflow-wrap: anywhere; }
+.description { color: var(--foreground); font-size: 0.8125rem; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.leadId { color: var(--muted-foreground); font-size: 0.75rem; line-height: 1.6; overflow-wrap: anywhere; }
+.deleteDialog.deleteDialog { width: 30rem; }
+.deleteHeader { justify-items: start; padding-right: 0; text-align: left; }
+.deleteHeader :global([data-slot="alert-dialog-description"]) { text-wrap: wrap; }
+
+.actions :is(button, a):focus-visible,
+.dialog :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (min-width: 640px) {
+  .dialog.dialog { padding: 1.5rem; }
+  .form.form :is(input, select, textarea) { font-size: 0.875rem; }
+  .detailHero { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: end; }
+}
+
+@media (forced-colors: active) {
+  .actions :is(button, a):focus-visible,
+  .dialog :is(button, a, input, select, textarea):focus-visible { outline-color: Highlight; }
+  .actions :is(button, a)[data-state="open"] { outline: 1px solid Highlight; }
+}

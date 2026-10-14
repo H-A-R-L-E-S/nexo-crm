@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import directoryStyles from "@/components/crm/directory.module.css";
+import styles from "./opportunities-dialog.module.css";
 import { useAuth } from "@/features/auth/auth-provider";
 import { canManageOpportunities } from "./permissions";
 import { leadName, responsableName } from "@/features/leads/types";
@@ -15,12 +17,21 @@ import { createOpportunity, updateOpportunity } from "./services/opportunities.s
 import { isClosed, OPPORTUNITY_STAGES, STAGE_PROBABILITY, type Opportunity, type OpportunityStage } from "./types";
 import type { OpportunityDirectory } from "./use-opportunities";
 
-export const selectStyle = "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm focus-visible:outline-blue-600 disabled:bg-slate-50 disabled:text-slate-500";
+export const selectStyle = directoryStyles.select;
 type Props = { item?: Opportunity; directory: OpportunityDirectory; onSaved: (item: Opportunity) => void; initialClientId?: string; initialLeadId?: string; defaultOpen?: boolean; children?: ReactNode; disabled?: boolean };
 export function OpportunityFormDialog(props: Props) {
   const [open, setOpen] = useState(props.defaultOpen ?? false);
   const [pending, setPending] = useState(false);
-  return <Dialog open={open} onOpenChange={(value) => { if (!pending) setOpen(value); }}><DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled} className="gap-2"><Plus className="size-4" />Nueva oportunidad</Button>}</DialogTrigger><DialogContent className="max-h-[90dvh] overflow-y-auto p-6 sm:max-w-2xl" showCloseButton={!pending}><DialogHeader><DialogTitle>{props.item ? "Editar oportunidad" : "Nueva oportunidad"}</DialogTitle><DialogDescription>Asocia una propuesta a un cliente. Los campos con * son obligatorios.</DialogDescription></DialogHeader><OpportunityForm {...props} pending={pending} setPending={setPending} onCancel={() => setOpen(false)} onSaved={(item) => { props.onSaved(item); setOpen(false); }} /></DialogContent></Dialog>;
+  return <Dialog open={open} onOpenChange={(value) => { if (!pending) setOpen(value); }}>
+    <DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled} className={styles.createButton}><Plus aria-hidden="true" />Nueva oportunidad</Button>}</DialogTrigger>
+    <DialogContent className={`${directoryStyles.dialog} ${styles.dialog}`} showCloseButton={!pending}>
+      <DialogHeader className={directoryStyles.dialogHeader}>
+        <DialogTitle>{props.item ? "Editar oportunidad" : "Nueva oportunidad"}</DialogTitle>
+        <DialogDescription>Asocia una propuesta a un cliente. Los campos con * son obligatorios.</DialogDescription>
+      </DialogHeader>
+      <OpportunityForm {...props} pending={pending} setPending={setPending} onCancel={() => setOpen(false)} onSaved={(item) => { props.onSaved(item); setOpen(false); }} />
+    </DialogContent>
+  </Dialog>;
 }
 function OpportunityForm({ item, directory, initialClientId, initialLeadId, onSaved, pending, setPending, onCancel }: Props & { pending: boolean; setPending: (value: boolean) => void; onCancel: () => void }) {
   const id = useId();
@@ -50,16 +61,59 @@ function OpportunityForm({ item, directory, initialClientId, initialLeadId, onSa
     } catch (cause) { setError(cause instanceof Error ? cause.message : "No se pudo guardar la oportunidad."); }
     finally { setPending(false); }
   }
-  return <form onSubmit={submit} noValidate className="space-y-5 pt-2" aria-busy={pending}><fieldset disabled={pending} className="grid gap-4 sm:grid-cols-2 disabled:opacity-70">
-    <div className="space-y-2 sm:col-span-2"><Label htmlFor={`${id}-title`}>Título *</Label><Input id={`${id}-title`} name="titulo" defaultValue={item?.titulo ?? ""} maxLength={160} required /></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-client`}>Cliente *</Label><select id={`${id}-client`} className={selectStyle} value={clientId} onChange={(event) => { setClientId(event.target.value); setLeadId(""); }} required><option value="">Selecciona un cliente</option>{directory.clients.map((client) => <option key={client.id} value={client.id}>{client.name}{client.company ? ` · ${client.company}` : ""}</option>)}</select>{!directory.clients.length && <p className="text-xs text-amber-700">Primero registra un cliente en Clientes.</p>}</div>
-    <div className="space-y-2"><Label htmlFor={`${id}-lead`}>Lead relacionado</Label><select id={`${id}-lead`} value={leadId} onChange={(event) => setLeadId(event.target.value)} className={selectStyle}><option value="">Sin lead relacionado</option>{directory.leads.filter((lead) => lead.estado === "Convertido" && lead.convertido_cliente_id === clientId).map((lead) => <option key={lead.id} value={lead.id}>{leadName(lead)}</option>)}</select><p className="text-[11px] text-slate-500">Leads convertidos al cliente seleccionado.</p></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-value`}>Valor estimado (S/) *</Label><Input id={`${id}-value`} name="valor" inputMode="decimal" placeholder="0.00" defaultValue={item?.valor ?? ""} required /><p className="text-[11px] text-slate-500">Hasta dos decimales, sin separadores de miles.</p></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-stage`}>Etapa *</Label><select id={`${id}-stage`} className={selectStyle} value={stage} onChange={(event) => { const next = event.target.value as OpportunityStage; setStage(next); setProbability(String(STAGE_PROBABILITY[next])); }}>{OPPORTUNITY_STAGES.map((value) => <option key={value}>{value}</option>)}</select></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-probability`}>Probabilidad (%) *</Label><Input id={`${id}-probability`} type="number" min={0} max={100} step={1} value={probability} onChange={(event) => setProbability(event.target.value)} disabled={isClosed(stage)} required /><p className="text-[11px] text-slate-500">Sugerida al cambiar etapa; editable mientras esté abierta.</p></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-owner`}>Responsable *</Label><select id={`${id}-owner`} name="responsable_id" defaultValue={owner} disabled={!manage} className={selectStyle} required><option value="">Selecciona un responsable</option>{inactive && <option value={inactive.id}>{responsableName(inactive)} (inactivo)</option>}{directory.responsibles.filter((person) => person.activo).map((person) => <option key={person.id} value={person.id}>{responsableName(person)}</option>)}</select></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-date`}>Fecha de cierre estimada</Label><Input id={`${id}-date`} name="fecha_cierre_estimada" type="date" defaultValue={item?.fecha_cierre_estimada ?? ""} /></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-origin`}>Origen</Label><Input id={`${id}-origin`} name="origen" defaultValue={item?.origen ?? (initialLead ? initialLead.fuente : "")} maxLength={100} /></div>
-    <div className="space-y-2 sm:col-span-2"><Label htmlFor={`${id}-description`}>Descripción</Label><Textarea id={`${id}-description`} name="descripcion" defaultValue={item?.descripcion ?? ""} maxLength={3000} rows={3} /></div>
-  </fieldset>{!manage && <p className="text-xs text-slate-500">Las oportunidades nuevas se asignan a ti. Administrador y Gerente pueden reasignarlas.</p>}{error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}<div className="flex justify-end gap-2 border-t pt-4"><Button type="button" variant="outline" disabled={pending} onClick={onCancel}>Cancelar</Button><Button type="submit" disabled={pending}>{pending ? <Loader2 className="animate-spin" /> : <Save />}{pending ? item ? "Guardando cambios..." : "Creando..." : item ? "Guardar cambios" : "Crear oportunidad"}</Button></div></form>;
+  return <form onSubmit={submit} noValidate className={`${directoryStyles.form} ${styles.form}`} aria-busy={pending} aria-describedby={error ? `${id}-error` : undefined}>
+    <fieldset disabled={pending} className={directoryStyles.formSection}>
+      <legend>Oportunidad y cliente</legend>
+      <div className={directoryStyles.formGrid}>
+        <div className={directoryStyles.fieldWide}><Label htmlFor={`${id}-title`}>Título *</Label><Input id={`${id}-title`} name="titulo" defaultValue={item?.titulo ?? ""} maxLength={160} required /></div>
+        <div className={directoryStyles.field}>
+          <Label htmlFor={`${id}-client`}>Cliente *</Label>
+          <select id={`${id}-client`} className={selectStyle} value={clientId} onChange={(event) => { setClientId(event.target.value); setLeadId(""); }} required><option value="">Selecciona un cliente</option>{directory.clients.map((client) => <option key={client.id} value={client.id}>{client.name}{client.company ? ` · ${client.company}` : ""}</option>)}</select>
+          {!directory.clients.length && <p className={directoryStyles.formHelp}>Primero registra un cliente en Clientes.</p>}
+        </div>
+        <div className={directoryStyles.field}>
+          <Label htmlFor={`${id}-lead`}>Lead relacionado</Label>
+          <select id={`${id}-lead`} value={leadId} onChange={(event) => setLeadId(event.target.value)} className={selectStyle} aria-describedby={`${id}-lead-help`}><option value="">Sin lead relacionado</option>{directory.leads.filter((lead) => lead.estado === "Convertido" && lead.convertido_cliente_id === clientId).map((lead) => <option key={lead.id} value={lead.id}>{leadName(lead)}</option>)}</select>
+          <p id={`${id}-lead-help`} className={directoryStyles.formHelp}>Leads convertidos al cliente seleccionado.</p>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset disabled={pending} className={directoryStyles.formSection}>
+      <legend>Información comercial</legend>
+      <div className={directoryStyles.formGrid}>
+        <div className={directoryStyles.field}>
+          <Label htmlFor={`${id}-value`}>Valor estimado (S/) *</Label>
+          <Input id={`${id}-value`} name="valor" inputMode="decimal" placeholder="0.00" defaultValue={item?.valor ?? ""} required aria-describedby={`${id}-value-help`} />
+          <p id={`${id}-value-help`} className={directoryStyles.formHelp}>Hasta dos decimales, sin separadores de miles.</p>
+        </div>
+        <div className={directoryStyles.field}>
+          <Label htmlFor={`${id}-stage`}>Etapa *</Label>
+          <select id={`${id}-stage`} className={selectStyle} value={stage} onChange={(event) => { const next = event.target.value as OpportunityStage; setStage(next); setProbability(String(STAGE_PROBABILITY[next])); }}>{OPPORTUNITY_STAGES.map((value) => <option key={value}>{value}</option>)}</select>
+        </div>
+        <div className={directoryStyles.field}>
+          <Label htmlFor={`${id}-probability`}>Probabilidad (%) *</Label>
+          <Input id={`${id}-probability`} type="number" min={0} max={100} step={1} value={probability} onChange={(event) => setProbability(event.target.value)} disabled={isClosed(stage)} required aria-describedby={`${id}-probability-help`} />
+          <p id={`${id}-probability-help`} className={directoryStyles.formHelp}>Sugerida al cambiar etapa; editable mientras esté abierta.</p>
+        </div>
+        <div className={directoryStyles.field}>
+          <Label htmlFor={`${id}-owner`}>Responsable *</Label>
+          <select id={`${id}-owner`} name="responsable_id" defaultValue={owner} disabled={!manage} className={selectStyle} required><option value="">Selecciona un responsable</option>{inactive && <option value={inactive.id}>{responsableName(inactive)} (inactivo)</option>}{directory.responsibles.filter((person) => person.activo).map((person) => <option key={person.id} value={person.id}>{responsableName(person)}</option>)}</select>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset disabled={pending} className={directoryStyles.formSection}>
+      <legend>Cierre y contexto</legend>
+      <div className={directoryStyles.formGrid}>
+        <div className={directoryStyles.field}><Label htmlFor={`${id}-date`}>Fecha de cierre estimada</Label><Input id={`${id}-date`} name="fecha_cierre_estimada" type="date" defaultValue={item?.fecha_cierre_estimada ?? ""} /></div>
+        <div className={directoryStyles.field}><Label htmlFor={`${id}-origin`}>Origen</Label><Input id={`${id}-origin`} name="origen" defaultValue={item?.origen ?? (initialLead ? initialLead.fuente : "")} maxLength={100} /></div>
+        <div className={directoryStyles.fieldWide}><Label htmlFor={`${id}-description`}>Descripción</Label><Textarea id={`${id}-description`} name="descripcion" defaultValue={item?.descripcion ?? ""} maxLength={3000} rows={3} /></div>
+      </div>
+    </fieldset>
+    {!manage && <p className={directoryStyles.formHelp}>Las oportunidades nuevas se asignan a ti. Administrador y Gerente pueden reasignarlas.</p>}
+    {error && <p id={`${id}-error`} role="alert" className={directoryStyles.dangerNotice}>{error}</p>}
+    <div className={`${directoryStyles.formActions} ${styles.formActions}`}>
+      <Button type="button" variant="outline" disabled={pending} onClick={onCancel}>Cancelar</Button>
+      <Button type="submit" disabled={pending}>{pending ? <Loader2 className="animate-spin" aria-hidden="true" /> : <Save aria-hidden="true" />}{pending ? item ? "Guardando cambios..." : "Creando..." : item ? "Guardar cambios" : "Crear oportunidad"}</Button>
+    </div>
+  </form>;
 }
