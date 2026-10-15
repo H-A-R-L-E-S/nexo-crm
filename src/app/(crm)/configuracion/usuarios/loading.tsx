@@ -1,3 +1,8 @@
+import styles from "@/features/users/users.module.css";
+
 export default function UsersLoading() {
-  return <div role="status" className="rounded-xl border bg-white p-8 text-sm text-slate-500">Comprobando permisos y cargando usuarios...</div>;
+  return <main className={styles.routeLoading} role="status">
+    <div><span /><h1>Usuarios</h1><p>Comprobando permisos y cargando el equipo...</p></div>
+    <section aria-hidden="true"><span /><span /><span /></section>
+  </main>;
 }

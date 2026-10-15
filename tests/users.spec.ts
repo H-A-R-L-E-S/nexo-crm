@@ -1,4 +1,6 @@
-import { expect, test, type Page } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+import { join } from "node:path";
+import { expect, test, type Page, type TestInfo } from "@playwright/test";
 import { login } from "./support/login";
 
 test.beforeEach(async ({ request }) => { await request.post("http://127.0.0.1:54321/__test/reset"); });
@@ -12,6 +14,19 @@ async function newUser(page: Page, email = "nuevo@example.test") {
   await dialog.getByLabel("Contraseña temporal", { exact: true }).fill("Temporal-segura-2026!");
   await dialog.getByLabel("Confirmar contraseña").fill("Temporal-segura-2026!");
   return dialog;
+}
+
+async function chooseTheme(page: Page, theme: "Claro" | "Oscuro" | "Sistema") {
+  await page.getByRole("button", { name: /^Cambiar tema/ }).click();
+  await page.getByRole("menuitemradio", { name: theme, exact: true }).click();
+  await expect(page.locator("html")).toHaveClass(theme === "Oscuro" ? /dark/ : /light/);
+}
+
+async function capture(page: Page, testInfo: TestInfo, name: string) {
+  const directory = join(process.cwd(), "anti-slop", "users-evidence");
+  await mkdir(directory, { recursive: true });
+  await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true, animations: "disabled" });
+  await testInfo.attach(name, { path: join(directory, `${name}.png`), contentType: "image/png" });
 }
 
 test("Administrador administra equipo, filtros, alta, edición, roles y estado", async ({ page }) => {
@@ -163,4 +178,36 @@ test("módulo Usuarios y formulario se adaptan a móvil", async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: "Nuevo usuario", exact: true })).toBeFocused();
+});
+
+test("Usuarios conserva temas, reflow, zoom, foco y reduced motion", async ({ page }, testInfo) => {
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await login(page);
+  await page.goto("/configuracion/usuarios");
+  for (const width of [320, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.getByRole("region", { name: "Directorio del equipo" })).toBeVisible();
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await chooseTheme(page, "Claro");
+  await capture(page, testInfo, "users-light-desktop");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await chooseTheme(page, "Oscuro");
+  await capture(page, testInfo, "users-dark-mobile");
+  await page.setViewportSize({ width: 768, height: 900 });
+  await chooseTheme(page, "Sistema");
+  await capture(page, testInfo, "users-system-tablet");
+  await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  const create = page.getByRole("button", { name: "Nuevo usuario", exact: true });
+  await create.focus();
+  await expect(create).toBeFocused();
+  const reduced = await page.locator("[data-users-page]").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { animation: style.animationDuration, transition: style.transitionDuration };
+  });
+  expect(parseFloat(reduced.animation) || 0).toBeLessThanOrEqual(.001);
+  expect(parseFloat(reduced.transition) || 0).toBeLessThanOrEqual(.001);
 });
