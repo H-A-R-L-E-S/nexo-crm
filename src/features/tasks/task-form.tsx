@@ -16,6 +16,7 @@ import { taskDateInput } from "./dates";
 import { saveTask } from "./services/tasks.service";
 import { RELATION_TYPES, TASK_PRIORITIES, TASK_STATUSES, TASK_TYPES, type CreateTask, type RelationType, type Task } from "./types";
 import { taskRelation, type TasksDirectory } from "./use-tasks";
+import styles from "./task-dialog.module.css";
 export const taskSelectStyle = "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm focus-visible:outline-blue-600 disabled:bg-slate-50 disabled:text-slate-500";
 type Props = { task?: Task; directory: TasksDirectory; onSaved: (task: Task) => void; initialRelation?: RelationType; initialRecord?: string; defaultOpen?: boolean; disabled?: boolean; children?: ReactNode };
 export function TaskFormDialog(props: Props) {
@@ -23,7 +24,7 @@ export function TaskFormDialog(props: Props) {
   const [open, setOpen] = useState(props.defaultOpen ?? false);
   const [pending, setPending] = useState(false);
   function close() { setOpen(false); if (props.defaultOpen) router.replace("/tareas", { scroll: false }); }
-  return <Dialog open={open} onOpenChange={(value) => { if (!pending) { if (value) setOpen(true); else close(); } }}><DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled}><Plus className="size-4" />Nueva tarea</Button>}</DialogTrigger><DialogContent className="max-h-[92dvh] overflow-y-auto p-6 sm:max-w-2xl" showCloseButton={!pending}><DialogHeader><DialogTitle>{props.task ? "Editar tarea" : "Nueva tarea"}</DialogTitle><DialogDescription>Los campos con * son obligatorios. Todas las fechas y horas se ingresan en hora de Lima (UTC−5).</DialogDescription></DialogHeader><TaskForm {...props} pending={pending} setPending={setPending} onCancel={close} onSaved={(task) => { props.onSaved(task); close(); }} /></DialogContent></Dialog>;
+  return <Dialog open={open} onOpenChange={(value) => { if (!pending) { if (value) setOpen(true); else close(); } }}><DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled}><Plus className="size-4" />Nueva tarea</Button>}</DialogTrigger><DialogContent className={styles.dialog} showCloseButton={!pending}><DialogHeader className={styles.header}><DialogTitle>{props.task ? "Editar tarea" : "Nueva tarea"}</DialogTitle><DialogDescription>Los campos con * son obligatorios. Todas las fechas y horas se ingresan en hora de Lima (UTC−5).</DialogDescription></DialogHeader><TaskForm {...props} pending={pending} setPending={setPending} onCancel={close} onSaved={(task) => { props.onSaved(task); close(); }} /></DialogContent></Dialog>;
 }
 function TaskForm({ task, directory, onSaved, initialRelation, initialRecord, pending, setPending, onCancel }: Props & { pending: boolean; setPending: (value: boolean) => void; onCancel: () => void }) {
   const id = useId();
@@ -55,7 +56,7 @@ function TaskForm({ task, directory, onSaved, initialRelation, initialRecord, pe
     } catch (cause) { setError(cause instanceof Error ? cause.message : "No se pudo guardar la tarea."); }
     finally { busy.current = false; setPending(false); }
   }
-  return <form noValidate onSubmit={submit} aria-busy={pending} className="space-y-5"><fieldset disabled={pending} className="grid min-w-0 gap-4 sm:grid-cols-2">
+  return <form noValidate onSubmit={submit} aria-busy={pending} className={styles.form}><fieldset disabled={pending} className={styles.fields}>
     {initialRelation && initialRecord && !requested && !task && <p role="alert" className="text-sm text-amber-700 sm:col-span-2">El registro solicitado no está disponible. Selecciona otra relación o crea una tarea general.</p>}
     <div className="space-y-2 sm:col-span-2"><Label htmlFor={`${id}-title`}>Título *</Label><Input id={`${id}-title`} name="titulo" defaultValue={task?.titulo ?? ""} maxLength={160} required /></div>
     <div className="space-y-2 sm:col-span-2"><Label htmlFor={`${id}-description`}>Descripción</Label><Textarea id={`${id}-description`} name="descripcion" defaultValue={task?.descripcion ?? ""} maxLength={3000} rows={3} /></div>
@@ -68,5 +69,5 @@ function TaskForm({ task, directory, onSaved, initialRelation, initialRecord, pe
     <div className="space-y-2"><Label htmlFor={`${id}-reminder`}>Recordatorio</Label><Input id={`${id}-reminder`} type="datetime-local" name="recordatorio" defaultValue={toLimaInput(task?.recordatorio_at ?? null)} /><p className="text-xs text-slate-500">Se guarda la fecha; todavía no se envían notificaciones.</p></div>
     <div className="space-y-2"><Label htmlFor={`${id}-relation`}>Relacionado con</Label><select id={`${id}-relation`} value={relation} onChange={(event) => { setRelation(event.target.value as RelationType); setRecord(""); }} className={taskSelectStyle}>{RELATION_TYPES.map((value) => <option key={value}>{value}</option>)}</select></div>
     {relation !== "Ninguno" && <div className="space-y-2 sm:col-span-2"><Label htmlFor={`${id}-record`}>Registro relacionado *</Label><select id={`${id}-record`} value={record} onChange={(event) => setRecord(event.target.value)} className={taskSelectStyle} required><option value="">Selecciona un registro</option>{directory.relations.filter((row) => row.type === relation).map((row) => <option key={row.id} value={row.id}>{row.label}</option>)}</select></div>}
-  </fieldset>{error && <p role="alert" className="text-sm text-red-700">{error}</p>}<div className="flex justify-end gap-2 border-t pt-4"><Button type="button" variant="outline" disabled={pending} onClick={onCancel}>Volver</Button><Button type="submit" disabled={pending}>{pending ? "Guardando..." : task ? "Guardar cambios" : "Crear tarea"}</Button></div></form>;
+  </fieldset>{error && <p role="alert" className="text-sm text-red-700">{error}</p>}<div className={styles.actions}><Button type="button" variant="outline" disabled={pending} onClick={onCancel}>Volver</Button><Button type="submit" disabled={pending}>{pending ? "Guardando..." : task ? "Guardar cambios" : "Crear tarea"}</Button></div></form>;
 }
