@@ -216,6 +216,34 @@ test("móvil: ítems dinámicos y teclado sin desbordamiento", async ({ page }, 
 
 test("Ventas y detalle exigen sesión", async ({ page }) => { for (const path of ["/ventas", `/ventas/${fixture.id}`]) { await page.goto(path); await expect(page).toHaveURL(/\/login/); } });
 
+for (const theme of ["Claro", "Oscuro", "Sistema"] as const) {
+  test(`Ventas: tema ${theme}, responsive, foco y reduced motion`, async ({ page }, testInfo) => {
+    await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+    await mockSales(page);
+    await login(page);
+    await page.goto("/ventas");
+    await page.getByRole("button", { name: /^Cambiar tema/ }).click();
+    await page.getByRole("menuitemradio", { name: theme, exact: true }).click();
+    await expect(page.locator("html")).toHaveClass(theme === "Oscuro" ? /dark/ : /light/);
+    for (const width of [320, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect(page.getByRole("region", { name: "Resumen de ventas" })).toBeVisible();
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+    const create = page.getByRole("button", { name: "Nueva venta", exact: true });
+    await create.focus();
+    await expect(create).toBeFocused();
+    const motion = await page.locator("[data-sales-page]").evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { animation: style.animationDuration, transition: style.transitionDuration };
+    });
+    expect(parseFloat(motion.animation)).toBeLessThanOrEqual(.001);
+    expect(parseFloat(motion.transition)).toBeLessThanOrEqual(.001);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: testInfo.outputPath(`sales-${theme.toLowerCase()}-mobile.png`), fullPage: true, animations: "disabled" });
+  });
+}
+
 test("cálculos exactos, redondeo, descuentos, IGV y canceladas sin ingreso", () => {
   const items = [{ descripcion: "A", cantidad: "2", precio_unitario: "100.00", descuento: "10.00" }, { descripcion: "B", cantidad: "1.5", precio_unitario: "20.00", descuento: "0.00" }];
   expect(saleAmounts(items, true)).toEqual({ subtotal: BigInt(23000), discount: BigInt(1000), tax: BigInt(3960), total: BigInt(25960) });

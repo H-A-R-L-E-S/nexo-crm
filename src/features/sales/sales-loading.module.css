@@ -1,0 +1,14 @@
+.loading { display: grid; gap: 1.25rem; animation: loading-enter .2s ease-out both; }
+.header { display: flex; align-items: end; justify-content: space-between; }
+.header div:first-child { width: min(18rem, 55%); height: 3.7rem; }
+.header div:last-child { width: 8rem; height: 2.5rem; }
+.summary { display: grid; grid-template-columns: 1.25fr repeat(3, 1fr); min-height: 8.5rem; border: 1px solid var(--border); border-radius: 1rem; }
+.summary div + div { border-left: 1px solid var(--border); }
+.toolbar { height: 8rem; border: 1px solid var(--border); border-radius: .9rem; }
+.rows { overflow: hidden; border: 1px solid var(--border); border-radius: .9rem; }
+.rows div { height: 3.6rem; border-bottom: 1px solid var(--border); }
+.header div, .summary div, .toolbar, .rows div { background: linear-gradient(100deg, color-mix(in srgb, var(--muted) 70%, transparent) 30%, color-mix(in srgb, var(--muted) 35%, transparent) 50%, color-mix(in srgb, var(--muted) 70%, transparent) 70%); background-size: 220% 100%; animation: shimmer 1.4s ease-in-out infinite; }
+@keyframes loading-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (max-width: 700px) { .summary { grid-template-columns: 1fr; } .summary div { min-height: 5rem; } .summary div + div { border-top: 1px solid var(--border); border-left: 0; } .toolbar { height: 21rem; } }
+@media (prefers-reduced-motion: reduce) { .loading, .header div, .summary div, .toolbar, .rows div { animation: none; } }

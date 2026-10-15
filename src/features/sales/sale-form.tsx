@@ -16,14 +16,15 @@ import { getSaleDetail, saveSale } from "./services/sales.service";
 import { saleAmounts } from "./calculations";
 import { SaleSummary } from "./sale-summary";
 import type { SalesDirectory } from "./use-sales";
+import styles from "./sales-dialog.module.css";
 
-export const saleSelectStyle = "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm focus-visible:outline-blue-600 disabled:bg-slate-50 disabled:text-slate-500";
+export const saleSelectStyle = styles.select;
 type Props = { sale?: Sale; directory: SalesDirectory; onSaved: (detail: SaleDetail) => void; today: string; initialOpportunityId?: string; defaultOpen?: boolean; disabled?: boolean; children?: ReactNode };
 export function SaleFormDialog(props: Props) {
   const [open, setOpen] = useState(props.defaultOpen ?? false);
   const [pending, setPending] = useState(false);
   const formProps = { ...props, pending, setPending, onCancel: () => setOpen(false), onSaved: (detail: SaleDetail) => { props.onSaved(detail); setOpen(false); } };
-  return <Dialog open={open} onOpenChange={(value) => { if (!pending) setOpen(value); }}><DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled}><Plus className="size-4" />Nueva venta</Button>}</DialogTrigger><DialogContent className="max-h-[92dvh] overflow-y-auto p-6 sm:max-w-3xl" showCloseButton={!pending}><DialogHeader><DialogTitle>{props.sale ? `Editar ${props.sale.numero}` : "Nueva venta"}</DialogTitle><DialogDescription>Registra el cliente y sus productos o servicios. Los campos con * son obligatorios.</DialogDescription></DialogHeader>{props.sale ? <EditSaleForm {...formProps} sale={props.sale} /> : <SaleForm {...formProps} />}</DialogContent></Dialog>;
+  return <Dialog open={open} onOpenChange={(value) => { if (!pending) setOpen(value); }}><DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled}><Plus className="size-4" />Nueva venta</Button>}</DialogTrigger><DialogContent className={styles.dialog} showCloseButton={!pending}><DialogHeader className={styles.dialogHeader}><DialogTitle>{props.sale ? `Editar ${props.sale.numero}` : "Nueva venta"}</DialogTitle><DialogDescription>Registra el cliente y sus productos o servicios. Los campos con * son obligatorios.</DialogDescription></DialogHeader>{props.sale ? <EditSaleForm {...formProps} sale={props.sale} /> : <SaleForm {...formProps} />}</DialogContent></Dialog>;
 }
 type FormProps = Props & { detail?: SaleDetail; pending: boolean; setPending: (value: boolean) => void; onCancel: () => void };
 function EditSaleForm(props: FormProps & { sale: Sale }) {
@@ -75,7 +76,7 @@ function SaleForm({ directory, detail, today, initialOpportunityId, pending, set
     } catch (cause) { setError(cause instanceof Error ? cause.message : "No se pudo guardar la venta."); }
     finally { busy.current = false; setPending(false); }
   }
-  return <form onSubmit={submit} noValidate className="space-y-5 pt-2" aria-busy={pending}><fieldset disabled={pending} className="grid gap-4 sm:grid-cols-2 disabled:opacity-70">
+  return <form onSubmit={submit} noValidate className={styles.form} aria-busy={pending}><fieldset disabled={pending} className={styles.primaryFields}><legend>Venta y cobro</legend>
     <div className="space-y-2"><Label htmlFor={`${id}-client`}>Cliente *</Label><select id={`${id}-client`} value={clientId} onChange={(event) => { setClientId(event.target.value); setOpportunityId(""); }} className={saleSelectStyle}><option value="">Selecciona un cliente</option>{directory.clients.map((client) => <option key={client.id} value={client.id}>{client.name}{client.company ? ` · ${client.company}` : ""}</option>)}</select>{!directory.clients.length && <p className="text-xs text-amber-700">Primero registra un cliente en Clientes.</p>}</div>
     <div className="space-y-2"><Label htmlFor={`${id}-opportunity`}>Oportunidad</Label><select id={`${id}-opportunity`} value={opportunityId} onChange={(event) => setOpportunityId(event.target.value)} className={saleSelectStyle}><option value="">Sin oportunidad relacionada</option>{directory.opportunities.filter((item) => item.cliente_id === clientId && (item.etapa === "Ganada" || item.id === sale?.oportunidad_id)).map((item) => <option key={item.id} value={item.id}>{item.titulo}{item.etapa !== "Ganada" ? " (histórico)" : ""}</option>)}</select><p className="text-[11px] text-slate-500">Las nuevas asociaciones requieren una oportunidad Ganada.</p></div>
     <div className="space-y-2"><Label htmlFor={`${id}-owner`}>Responsable *</Label><select id={`${id}-owner`} name="responsable_id" defaultValue={initialOwner} disabled={!manage} className={saleSelectStyle}><option value="">Selecciona un responsable</option>{inactiveOwner && <option value={inactiveOwner.id}>{responsableName(inactiveOwner)} (inactivo)</option>}{directory.responsibles.filter((person) => person.activo).map((person) => <option key={person.id} value={person.id}>{responsableName(person)}</option>)}</select></div>

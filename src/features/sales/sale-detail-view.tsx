@@ -1,11 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getClientes } from "@/features/clients/services/clients.service";
 import { getOpportunities } from "@/features/opportunities/services/opportunities.service";
 import { estimatedDate } from "@/features/opportunities/opportunity-actions";
@@ -17,6 +15,7 @@ import { SaleActions, SaleStateBadge } from "./sale-actions";
 import { SaleSummary, storedAmounts } from "./sale-summary";
 import type { SaleDetail } from "./types";
 import type { SalesDirectory } from "./use-sales";
+import styles from "./sale-detail.module.css";
 
 export function SaleDetailView({ id, today }: { id: string; today: string }) {
   const router = useRouter();
@@ -27,18 +26,38 @@ export function SaleDetailView({ id, today }: { id: string; today: string }) {
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let active = true;
-    void Promise.all([getSaleDetail(id), getClientes(), getOpportunities(), getSaleResponsibles()]).then(([data, clients, opportunities, responsibles]) => { if (active) { setDetail(data); setDirectory({ clients, opportunities, responsibles }); setError(""); } }).catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "No se pudo cargar el detalle."); }).finally(() => { if (active) setLoading(false); });
+    void Promise.all([getSaleDetail(id), getClientes(), getOpportunities(), getSaleResponsibles()])
+      .then(([data, clients, opportunities, responsibles]) => { if (active) { setDetail(data); setDirectory({ clients, opportunities, responsibles }); setError(""); } })
+      .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "No se pudo cargar el detalle."); })
+      .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [id, attempt]);
   function retry() { setLoading(true); setError(""); setAttempt(attempt + 1); }
-  if (loading) return <p role="status" className="p-12 text-center text-sm text-slate-500">Cargando detalle de venta...</p>;
-  if (error || !detail) return <div className="space-y-4 rounded-xl border bg-white p-8"><p role="alert" className="text-sm text-red-700">{error || "Venta no disponible."}</p><Button variant="outline" onClick={retry}>Reintentar</Button><Button asChild variant="ghost"><Link href="/ventas">Volver a Ventas</Link></Button></div>;
+  if (loading) return <p role="status" className={styles.state}>Cargando detalle de venta...</p>;
+  if (error || !detail) return <div className={styles.state}><p role="alert">{error || "Venta no disponible."}</p><div><Button variant="outline" onClick={retry}>Reintentar</Button><Button asChild variant="ghost"><Link href="/ventas">Volver a Ventas</Link></Button></div></div>;
   const sale = detail.sale;
   const client = directory.clients.find((row) => row.id === sale.cliente_id);
   const opportunity = directory.opportunities.find((row) => row.id === sale.oportunidad_id);
   const owner = directory.responsibles.find((row) => row.id === sale.responsable_id);
   const fields = { Responsable: owner ? `${responsableName(owner)}${owner.activo ? "" : " (inactivo)"}` : "Sin asignar", "Fecha de venta": estimatedDate(sale.fecha_venta), "Fecha de pago": estimatedDate(sale.fecha_pago), "Método de pago": sale.metodo_pago || "Sin registrar", Referencia: sale.referencia_pago || "Sin referencia", Moneda: "PEN · Sol peruano", Creación: formatLeadDate(sale.created_at), Actualización: formatLeadDate(sale.updated_at) };
-  return <div className="min-w-0 space-y-6"><Button asChild variant="ghost" className="-ml-3"><Link href="/ventas"><ArrowLeft className="size-4" />Volver a Ventas</Link></Button><div className="flex flex-wrap items-center justify-between gap-4"><div><h1 className="text-2xl font-semibold">{sale.numero}</h1><div className="mt-2"><SaleStateBadge state={sale.estado} /></div></div><SaleActions sale={sale} directory={directory} today={today} showDetail={false} onSaved={(saved) => setDetail({ ...detail, sale: saved })} onEdited={setDetail} onDeleted={() => router.push("/ventas")} /></div>
-    <section className="space-y-5 rounded-xl border border-slate-200 bg-white p-5 sm:p-6" aria-label="Datos de la venta"><div className="grid gap-4 sm:grid-cols-2"><div><h2 className="text-xs text-slate-500">Cliente</h2><Link className="mt-1 block text-sm font-medium text-blue-700 underline" href={`/clientes?buscar=${encodeURIComponent(sale.cliente_id)}`}>{client?.name ?? "Ver cliente"}</Link></div><div><h2 className="text-xs text-slate-500">Oportunidad</h2>{opportunity ? <p className="mt-1 break-words text-sm">{opportunity.titulo} · {opportunity.etapa}</p> : <p className="mt-1 text-sm text-slate-500">Sin oportunidad relacionada</p>}</div></div><dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{Object.entries(fields).map(([label, value]) => <div key={label} className="min-w-0"><dt className="text-xs text-slate-500">{label}</dt><dd className="mt-1 break-words text-sm">{value}</dd></div>)}</dl>{sale.estado === "Pagada" && <p className="rounded-lg bg-emerald-50 p-3 text-xs text-emerald-800">Pago registrado. Los datos y los ítems están bloqueados para edición.</p>}{sale.estado === "Cancelada" && <div className="rounded-lg bg-red-50 p-4 text-sm text-red-800"><p className="font-semibold">Venta cancelada · {formatLeadDate(sale.cancelada_at)}</p><p className="mt-2 whitespace-pre-wrap break-words">{sale.motivo_cancelacion}</p><p className="mt-2 text-xs">Los datos originales se conservan y esta venta no cuenta como ingreso.</p></div>}</section>
-    <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white" aria-label="Ítems de la venta"><h2 className="p-5 text-sm font-semibold">Productos y servicios</h2><Table><TableHeader><TableRow>{["Descripción", "Cantidad", "Precio unitario", "Subtotal", "Descuento", "Importe neto"].map((label) => <TableHead key={label} className="px-4 text-xs">{label}</TableHead>)}</TableRow></TableHeader><TableBody>{detail.items.map((item) => <TableRow key={item.id}><TableCell className="max-w-80 whitespace-normal break-words px-4 py-4 text-sm">{item.descripcion}</TableCell><TableCell className="px-4 text-xs">{item.cantidad}</TableCell><TableCell className="px-4 text-xs">{formatMoney(item.precio_unitario)}</TableCell><TableCell className="px-4 text-xs">{formatMoney(item.subtotal)}</TableCell><TableCell className="px-4 text-xs">{formatMoney(item.descuento)}</TableCell><TableCell className="px-4 text-xs">{formatCents(toCents(item.subtotal) - toCents(item.descuento))}</TableCell></TableRow>)}</TableBody></Table><div className="space-y-3 p-5"><p className="text-xs text-slate-500">IGV {sale.aplica_igv ? "18% sobre el importe neto" : "no aplicado"}. Importes calculados al guardar.</p><SaleSummary amounts={storedAmounts(sale)} /></div></section><section className="rounded-xl border border-slate-200 bg-white p-5"><h2 className="text-sm font-semibold">Observaciones</h2><p className="mt-2 whitespace-pre-wrap break-words text-sm text-slate-600">{sale.observaciones || "Sin observaciones"}</p></section></div>;
+  return <div className={styles.page}>
+    <Button asChild variant="ghost" className="-ml-3"><Link href="/ventas"><ArrowLeft aria-hidden="true" />Volver a Ventas</Link></Button>
+    <header className={styles.hero}>
+      <div className={styles.identity}><p>Operación comercial</p><h1>{sale.numero}</h1><SaleStateBadge state={sale.estado} /></div>
+      <div className={styles.total}><span>Total de la venta</span><strong>{formatMoney(sale.total)}</strong><small>{sale.aplica_igv ? "Incluye IGV" : "Sin IGV"}</small></div>
+      <div className={styles.actions}><SaleActions sale={sale} directory={directory} today={today} showDetail={false} onSaved={(saved) => setDetail({ ...detail, sale: saved })} onEdited={setDetail} onDeleted={() => router.push("/ventas")} /></div>
+    </header>
+    <section className={styles.info} aria-label="Datos de la venta">
+      <div className={styles.relationships}><div><span>Cliente</span><Link href={`/clientes?buscar=${encodeURIComponent(sale.cliente_id)}`}>{client?.name ?? "Ver cliente"}</Link></div><div><span>Oportunidad</span>{opportunity ? <p>{opportunity.titulo} · {opportunity.etapa}</p> : <p>Sin oportunidad relacionada</p>}</div></div>
+      <dl className={styles.metadata}>{Object.entries(fields).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+      {sale.estado === "Pagada" && <p className={styles.success}>Pago registrado. Los datos y los ítems están bloqueados para edición.</p>}
+      {sale.estado === "Cancelada" && <div className={styles.danger}><p>Venta cancelada · {formatLeadDate(sale.cancelada_at)}</p><p>{sale.motivo_cancelacion}</p><small>Los datos originales se conservan y esta venta no cuenta como ingreso.</small></div>}
+    </section>
+    <section className={styles.items} aria-label="Ítems de la venta">
+      <header><div><p>Desglose</p><h2>Productos y servicios</h2></div><span>{detail.items.length} {detail.items.length === 1 ? "ítem" : "ítems"}</span></header>
+      <div className={styles.tableWrap}><table><caption className="sr-only">Ítems, cantidades e importes de la venta</caption><thead><tr>{["Descripción", "Cantidad", "Precio unitario", "Subtotal", "Descuento", "Importe neto"].map((label) => <th scope="col" key={label}>{label}</th>)}</tr></thead><tbody>{detail.items.map((item) => <tr key={item.id}><th scope="row">{item.descripcion}</th><td data-label="Cantidad">{item.cantidad}</td><td data-label="Precio unitario">{formatMoney(item.precio_unitario)}</td><td data-label="Subtotal">{formatMoney(item.subtotal)}</td><td data-label="Descuento">{formatMoney(item.descuento)}</td><td data-label="Importe neto">{formatCents(toCents(item.subtotal) - toCents(item.descuento))}</td></tr>)}</tbody></table></div>
+      <div className={styles.summary}><p>IGV {sale.aplica_igv ? "18% sobre el importe neto" : "no aplicado"}. Importes calculados al guardar.</p><SaleSummary amounts={storedAmounts(sale)} /></div>
+    </section>
+    <section className={styles.notes}><h2>Observaciones</h2><p>{sale.observaciones || "Sin observaciones"}</p></section>
+  </div>;
 }
