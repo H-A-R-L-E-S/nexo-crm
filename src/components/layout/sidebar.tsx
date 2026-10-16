@@ -19,7 +19,7 @@ const navigation = [
   { label: "Oportunidades", href: "/oportunidades", icon: GitBranch },
   { label: "Ventas", href: "/ventas", icon: ShoppingBag },
   { label: "Tareas", href: "/tareas", icon: CheckSquare },
-  { label: "Calendario", icon: CalendarDays },
+  { label: "Calendario", href: "/calendario", icon: CalendarDays },
   { label: "Reportes", icon: ChartNoAxesCombined },
 ];
 

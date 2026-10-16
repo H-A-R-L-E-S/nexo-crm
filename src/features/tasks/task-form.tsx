@@ -18,7 +18,7 @@ import { RELATION_TYPES, TASK_PRIORITIES, TASK_STATUSES, TASK_TYPES, type Create
 import { taskRelation, type TasksDirectory } from "./use-tasks";
 import styles from "./task-dialog.module.css";
 export const taskSelectStyle = "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm focus-visible:outline-blue-600 disabled:bg-slate-50 disabled:text-slate-500";
-type Props = { task?: Task; directory: TasksDirectory; onSaved: (task: Task) => void; initialRelation?: RelationType; initialRecord?: string; defaultOpen?: boolean; disabled?: boolean; children?: ReactNode };
+type Props = { task?: Task; directory: TasksDirectory; onSaved: (task: Task) => void; initialRelation?: RelationType; initialRecord?: string; initialDueDate?: string; defaultOpen?: boolean; disabled?: boolean; children?: ReactNode };
 export function TaskFormDialog(props: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(props.defaultOpen ?? false);
@@ -26,7 +26,7 @@ export function TaskFormDialog(props: Props) {
   function close() { setOpen(false); if (props.defaultOpen) router.replace("/tareas", { scroll: false }); }
   return <Dialog open={open} onOpenChange={(value) => { if (!pending) { if (value) setOpen(true); else close(); } }}><DialogTrigger asChild>{props.children ?? <Button disabled={props.disabled}><Plus className="size-4" />Nueva tarea</Button>}</DialogTrigger><DialogContent className={styles.dialog} showCloseButton={!pending}><DialogHeader className={styles.header}><DialogTitle>{props.task ? "Editar tarea" : "Nueva tarea"}</DialogTitle><DialogDescription>Los campos con * son obligatorios. Todas las fechas y horas se ingresan en hora de Lima (UTC−5).</DialogDescription></DialogHeader><TaskForm {...props} pending={pending} setPending={setPending} onCancel={close} onSaved={(task) => { props.onSaved(task); close(); }} /></DialogContent></Dialog>;
 }
-function TaskForm({ task, directory, onSaved, initialRelation, initialRecord, pending, setPending, onCancel }: Props & { pending: boolean; setPending: (value: boolean) => void; onCancel: () => void }) {
+function TaskForm({ task, directory, onSaved, initialRelation, initialRecord, initialDueDate, pending, setPending, onCancel }: Props & { pending: boolean; setPending: (value: boolean) => void; onCancel: () => void }) {
   const id = useId();
   const { profile } = useAuth();
   const manage = canManageTasks(profile);
@@ -65,7 +65,7 @@ function TaskForm({ task, directory, onSaved, initialRelation, initialRecord, pe
     <div className="space-y-2"><Label htmlFor={`${id}-owner`}>Responsable *</Label><select id={`${id}-owner`} name="responsable" defaultValue={owner} disabled={!manage} className={taskSelectStyle} required>{directory.responsibles.filter((person) => person.activo || person.id === task?.responsable_id).map((person) => <option key={person.id} value={person.id}>{responsableName(person)}{person.activo ? "" : " (inactivo · histórico)"}</option>)}</select>{!manage && <p className="text-xs text-slate-500">Solo puedes crear y modificar tareas asignadas a ti.</p>}</div>
     <div className="space-y-2"><Label htmlFor={`${id}-state`}>Estado *</Label><select id={`${id}-state`} name="estado" defaultValue={task?.estado ?? "Pendiente"} className={taskSelectStyle} required>{TASK_STATUSES.filter((state) => task?.estado !== "Cancelada" || state === "Cancelada").map((value) => <option key={value}>{value}</option>)}</select></div>
     <div className="space-y-2"><Label htmlFor={`${id}-start`}>Fecha de inicio</Label><Input id={`${id}-start`} type="datetime-local" name="inicio" defaultValue={toLimaInput(task?.fecha_inicio ?? null)} /></div>
-    <div className="space-y-2"><Label htmlFor={`${id}-due`}>Fecha de vencimiento *</Label><Input id={`${id}-due`} type="datetime-local" name="vencimiento" defaultValue={toLimaInput(task?.fecha_vencimiento ?? null)} required /></div>
+    <div className="space-y-2"><Label htmlFor={`${id}-due`}>Fecha de vencimiento *</Label><Input id={`${id}-due`} type="datetime-local" name="vencimiento" defaultValue={toLimaInput(task?.fecha_vencimiento ?? null) || (initialDueDate ? `${initialDueDate}T09:00` : "")} required /></div>
     <div className="space-y-2"><Label htmlFor={`${id}-reminder`}>Recordatorio</Label><Input id={`${id}-reminder`} type="datetime-local" name="recordatorio" defaultValue={toLimaInput(task?.recordatorio_at ?? null)} /><p className="text-xs text-slate-500">Se guarda la fecha; todavía no se envían notificaciones.</p></div>
     <div className="space-y-2"><Label htmlFor={`${id}-relation`}>Relacionado con</Label><select id={`${id}-relation`} value={relation} onChange={(event) => { setRelation(event.target.value as RelationType); setRecord(""); }} className={taskSelectStyle}>{RELATION_TYPES.map((value) => <option key={value}>{value}</option>)}</select></div>
     {relation !== "Ninguno" && <div className="space-y-2 sm:col-span-2"><Label htmlFor={`${id}-record`}>Registro relacionado *</Label><select id={`${id}-record`} value={record} onChange={(event) => setRecord(event.target.value)} className={taskSelectStyle} required><option value="">Selecciona un registro</option>{directory.relations.filter((row) => row.type === relation).map((row) => <option key={row.id} value={row.id}>{row.label}</option>)}</select></div>}
