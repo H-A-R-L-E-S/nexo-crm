@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { login } from "./support/login";
-import { reportMetrics, periodBounds } from "../src/features/reports/metrics";
+import { calendarDateKey, reportMetrics, periodBounds } from "../src/features/reports/metrics";
 import type { ReportData } from "../src/features/reports/metrics";
 
 const created = "2026-10-10T16:00:00Z";
@@ -43,6 +43,36 @@ test("cálculos monetarios, porcentajes implícitos y límites Lima", () => {
   const result = reportMetrics(data, "month", new Date("2026-10-15T04:30:00Z"));
   expect(result.sales.paid).toBe(BigInt(11800)); expect(result.sales.pending).toBe(BigInt(5001)); expect(result.opportunities.weighted).toBe(BigInt(75000));
   expect(periodBounds("previous", new Date("2026-01-15T12:00:00-05:00"))).toMatchObject({ start: "2025-12-01", end: "2025-12-31" });
+});
+
+test("fechas date conservan el calendario y timestamptz respeta Lima", () => {
+  expect(calendarDateKey("2026-10-01")).toBe("2026-10-01");
+  expect(calendarDateKey("2024-02-29")).toBe("2024-02-29");
+  expect(calendarDateKey("2025-02-29")).toBeNull();
+  expect(periodBounds("month", new Date("2026-10-01T05:00:00Z"))).toMatchObject({ start: "2026-10-01", end: "2026-10-31" });
+  expect(periodBounds("month", new Date("2026-10-01T00:00:00Z"))).toMatchObject({ start: "2026-09-01", end: "2026-09-30" });
+  expect(periodBounds("year", new Date("2027-01-01T05:00:00Z"))).toMatchObject({ start: "2027-01-01", end: "2027-01-31" });
+
+  const octoberDateSale = { ...paid, fecha_venta: "2026-10-01", fecha_pago: "2026-10-31" };
+  const decemberDateSale = { ...paid, id: "s-dec", fecha_venta: "2026-12-31", fecha_pago: "2027-01-01" };
+  const timestampClient = { id: "c-ts", name: "UTC", firstName: "UTC", lastName: "", company: "", email: "", phone: "", status: "Activo", owner: "", position: "", address: "", notes: "", lastContact: null, createdAt: "2026-10-01T00:00:00Z", updatedAt: "2026-10-01T00:00:00Z" };
+  const data = { clients: [timestampClient], leads: [], opportunities: [], sales: [octoberDateSale, decemberDateSale], tasks: [] } as unknown as ReportData;
+  const october = reportMetrics(data, "month", new Date("2026-10-15T17:00:00Z"));
+  expect(october.sales.total).toBe(1);
+  expect(october.sales.paid).toBe(BigInt(11800));
+  expect(october.clients.new).toBe(0);
+  const january = reportMetrics(data, "month", new Date("2027-01-15T17:00:00Z"));
+  expect(january.sales.total).toBe(0);
+  expect(january.sales.paid).toBe(BigInt(11800));
+});
+
+test("CSV refleja exactamente el período seleccionado", async ({ page }) => {
+  await mockReports(page); await login(page); await page.goto("/reportes");
+  await page.getByLabel("Período").selectOption("previous");
+  const download = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Exportar CSV" }).click();
+  const file = await download;
+  expect(file.suggestedFilename()).toMatch(/^nexo-reporte-\d{4}-\d{2}-01-\d{4}-\d{2}-\d{2}\.csv$/);
 });
 
 for (const theme of ["Claro", "Oscuro", "Sistema"] as const) {

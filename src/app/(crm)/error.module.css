@@ -1,0 +1,11 @@
+.boundary { display: grid; min-height: min(32rem, calc(100svh - 8rem)); align-content: center; justify-items: start; gap: 1.25rem; max-width: 44rem; margin-inline: auto; padding: clamp(1.25rem, 5vw, 3rem); }
+.marker { display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid color-mix(in srgb, var(--primary) 38%, var(--border)); border-radius: .625rem; background: var(--accent); color: var(--link); font-size: 1.5rem; font-weight: 700; }
+.copy { display: grid; gap: .55rem; }
+.context { color: var(--link); font-size: .75rem; font-weight: 700; letter-spacing: .04em; }
+.copy h1 { color: var(--foreground); font-size: clamp(1.5rem, 5vw, 2.25rem); font-weight: 650; letter-spacing: -.035em; line-height: 1.12; }
+.copy p:last-child { max-width: 38rem; color: var(--muted-foreground); font-size: .925rem; line-height: 1.65; }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.actions a, .actions button { min-height: 44px; }
+@media (max-width: 30rem) { .boundary { min-height: calc(100svh - 6rem); } .actions { width: 100%; } .actions a, .actions button { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .boundary *, .boundary *::before, .boundary *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+@media (forced-colors: active) { .marker { border-color: CanvasText; } }

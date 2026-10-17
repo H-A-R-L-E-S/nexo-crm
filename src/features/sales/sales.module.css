@@ -8,6 +8,7 @@
 .revenue { padding: 1.4rem 1.5rem; border-right: 1px solid color-mix(in srgb, var(--primary) 16%, var(--border)); }
 .revenue p, .summary dt { color: var(--muted-foreground); font-size: .75rem; font-weight: 600; }
 .revenue strong { display: block; margin: .35rem 0; font-size: clamp(1.9rem, 4vw, 3rem); font-variant-numeric: tabular-nums; letter-spacing: -.055em; }
+.revenue strong[data-state="status"], .summary dd[data-state="status"] { color: var(--muted-foreground); font-size: .8rem; font-weight: 600; letter-spacing: 0; }
 .revenue span, .summary dd:last-child { color: var(--muted-foreground); font-size: .7rem; }
 .summary dl { display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; }
 .summary dl > div { min-width: 0; padding: 1.2rem 1.35rem; }

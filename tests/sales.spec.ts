@@ -22,6 +22,29 @@ const wonOpportunity = { id: opportunityId, titulo: "Contrato anual", cliente_id
 const decimal = (cents: bigint) => `${cents / BigInt(100)}.${String(cents % BigInt(100)).padStart(2, "0")}`;
 
 test.beforeEach(async ({ request }) => { await request.post("http://127.0.0.1:54321/__test/reset"); });
+
+test("Ventas distingue carga, error y cero válido en sus indicadores", async ({ page }) => {
+  await login(page);
+  await page.route("**/rest/v1/clientes**", (route) => route.fulfill({ json: [] }));
+  await page.route("**/rest/v1/oportunidades**", (route) => route.fulfill({ json: [] }));
+  await page.route(/\/rest\/v1\/rpc\/(sale_responsibles|opportunity_responsibles)$/, (route) => route.fulfill({ json: [] }));
+  let release!: () => void;
+  const pending = new Promise<void>((resolve) => { release = resolve; });
+  let fail = true;
+  await page.route("**/rest/v1/ventas**", async (route) => {
+    await pending;
+    return fail ? route.fulfill({ status: 503, json: { message: "Consulta temporalmente no disponible" } }) : route.fulfill({ json: [] });
+  });
+  await page.goto("/ventas");
+  const summary = page.getByRole("region", { name: "Resumen de ventas" });
+  await expect(summary).toContainText("Cargando");
+  release();
+  await expect(summary).toContainText("No disponible");
+  fail = false;
+  await page.getByRole("button", { name: "Reintentar", exact: true }).click();
+  await expect(summary).toContainText("S/ 0.00");
+  await expect(summary).toContainText("Ventas registradas0");
+});
 // Contrato local del navegador. Las garantías PostgreSQL se verifican con supabase/tests/sales.sql.
 async function mockSales(page: Page, initial: Sale[] = [fixture]) {
   const rows = initial.map((row) => ({ ...row }));
