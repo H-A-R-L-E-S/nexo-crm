@@ -33,7 +33,7 @@ export default defineConfig({
     url: "http://127.0.0.1:54321/health",
     reuseExistingServer: false,
   }, {
-    command: "node node_modules/next/dist/bin/next dev --webpack --hostname 127.0.0.1 --port 3100",
+    command: "node tests/support/start-e2e.mjs",
     env: {
       NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "playwright-anon-key",

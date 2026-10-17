@@ -20,7 +20,7 @@ const navigation = [
   { label: "Ventas", href: "/ventas", icon: ShoppingBag },
   { label: "Tareas", href: "/tareas", icon: CheckSquare },
   { label: "Calendario", href: "/calendario", icon: CalendarDays },
-  { label: "Reportes", icon: ChartNoAxesCombined },
+  { label: "Reportes", href: "/reportes", icon: ChartNoAxesCombined },
 ];
 
 const subscribeToHydration = () => () => {};

@@ -36,6 +36,9 @@ test("resumen con datos, filtros, edición y navegación por teclado", async ({ 
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await mockTasks(page);
+  for (const resource of ["leads", "oportunidades", "ventas"]) {
+    await page.route(`http://127.0.0.1:54321/rest/v1/${resource}**`, (route) => route.fulfill({ json: [] }));
+  }
   await page.route("http://127.0.0.1:54321/rest/v1/clientes**", (route) => route.fulfill({ json: clients }));
   await login(page);
   const metrics = page.getByRole("region", { name: "Indicadores de clientes" });
@@ -53,14 +56,29 @@ test("resumen con datos, filtros, edición y navegación por teclado", async ({ 
   await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog", { name: "Nuevo cliente" })).toBeVisible();
   await page.keyboard.press("Escape");
-  for (const label of ["Calendario", "Reportes"]) {
-    await page.getByRole("button", { name: `${label} Pronto` }).click();
-    await expect(page.getByRole("dialog", { name: label })).toBeVisible();
-    await page.keyboard.press("Escape");
+  for (const [label, path] of [["Calendario", "/calendario"], ["Reportes", "/reportes"]]) {
+    const link = page.getByRole("link", { name: label, exact: true });
+    await expect(link).toHaveAttribute("href", path);
+    await link.focus();
+    await expect(link).toBeFocused();
+    expect(await link.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe("solid");
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(`http://127.0.0.1:3100${path}`);
+    await expect(page.getByRole("heading", { name: label, exact: true, level: 1 })).toBeVisible();
+    await expect(link).toHaveAttribute("aria-current", "page");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await page.getByRole("link", { name: "Resumen", exact: true }).focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL("http://127.0.0.1:3100/");
+    await expect(page.getByRole("heading", { name: "Resumen", exact: true, level: 1 })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Resumen", exact: true })).toHaveAttribute("aria-current", "page");
   }
-  await page.getByRole("button", { name: "Ayuda", exact: true }).click();
+  const help = page.getByRole("button", { name: "Ayuda", exact: true });
+  await help.click();
+  await expect(page.getByRole("dialog", { name: "Te damos la bienvenida a Nexo" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Gestiona tus relaciones comerciales" })).toBeVisible();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.getByRole("button", { name: "Notificaciones", exact: true }).click();
   await page.getByRole("button", { name: "Marcar como leída" }).click();
   await expect(page.getByRole("button", { name: "Todas leídas" })).toBeDisabled();

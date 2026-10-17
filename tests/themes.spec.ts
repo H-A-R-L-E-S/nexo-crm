@@ -214,13 +214,16 @@ test("ambos temas: reflow, contraste de tokens, controles y portales", async ({ 
 test("oscuro: primitivas heredadas, menú, estados y enlaces del resumen", async ({ page }, testInfo) => {
   test.setTimeout(180_000);
   await mockData(page);
+  for (const resource of ["leads", "oportunidades", "ventas"]) {
+    await page.route(`http://127.0.0.1:54321/rest/v1/${resource}**`, (route) => route.fulfill({ json: [] }));
+  }
   await login(page);
   await chooseTheme(page, "Oscuro");
   const fonts = await page.locator("h1,h2,body").evaluateAll((elements) => elements.map((element) => ({ element: element.tagName, font: getComputedStyle(element).fontFamily })));
   expect(new Set(fonts.map((font) => font.font)).size).toBe(1);
   await testInfo.attach("fonts.json", { body: JSON.stringify(fonts), contentType: "application/json" });
 
-  for (const path of ["/clientes", "/leads", "/oportunidades", "/ventas", "/tareas", "/configuracion/usuarios", "/configuracion", "/perfil"]) {
+  for (const path of ["/clientes", "/leads", "/oportunidades", "/ventas", "/tareas", "/calendario", "/reportes", "/configuracion/usuarios", "/configuracion", "/perfil"]) {
     await page.goto(path);
     await expect(page.locator("main h1")).toBeVisible();
     const whiteSurfaces = await page.locator("main .bg-white").evaluateAll((elements) => elements.filter((element) => getComputedStyle(element).backgroundColor === "rgb(255, 255, 255)").length);
@@ -229,12 +232,26 @@ test("oscuro: primitivas heredadas, menú, estados y enlaces del resumen", async
   }
 
   await page.goto("/");
-  for (const label of ["Calendario", "Reportes", "Ayuda"]) {
-    await page.getByRole("button", { name: label === "Ayuda" ? "Ayuda" : `${label} Pronto`, exact: true }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(page.locator('[data-slot="dialog-content"]')).toHaveCount(0);
+  for (const [label, path] of [["Calendario", "/calendario"], ["Reportes", "/reportes"]]) {
+    const link = page.getByRole("link", { name: label, exact: true });
+    await expect(link).toHaveAttribute("href", path);
+    await link.click();
+    await expect(page).toHaveURL(`http://127.0.0.1:3100${path}`);
+    await expect(page.getByRole("heading", { name: label, exact: true, level: 1 })).toBeVisible();
+    await expect(link).toHaveAttribute("aria-current", "page");
+    await expect(page.locator("html")).toHaveClass(/dark/);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await page.getByRole("link", { name: "Resumen", exact: true }).click();
+    await expect(page).toHaveURL("http://127.0.0.1:3100/");
+    await expect(page.getByRole("heading", { name: "Resumen", exact: true, level: 1 })).toBeVisible();
+    await expect(page.locator("html")).toHaveClass(/dark/);
   }
+  const help = page.getByRole("button", { name: "Ayuda", exact: true });
+  await help.click();
+  await expect(page.getByRole("dialog", { name: "Te damos la bienvenida a Nexo" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Gestiona tus relaciones comerciales" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator('[data-slot="dialog-content"]')).toHaveCount(0);
   for (const label of [/Clientes totales/, /Clientes activos/, /Prospectos/, /Nuevos este mes/]) {
     await page.getByRole("region", { name: "Indicadores de clientes" }).getByRole("link", { name: label }).click();
     await expect(page).toHaveURL(/\/clientes(?:\?.*)?$/);
