@@ -17,6 +17,8 @@ type ClientsContextValue = {
   clients: Client[];
   loading: boolean;
   error: string | null;
+  ensure: () => Promise<Client[]>;
+  load: () => Promise<Client[]>;
   reload: () => Promise<void>;
   addClient: (input: ClientInput) => Promise<void>;
   updateClient: (id: string, input: ClientInput) => Promise<void>;
@@ -30,44 +32,79 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const mutationVersion = useRef(0);
+  const requestRef = useRef<Promise<Client[]> | null>(null);
+  const clientsRef = useRef<Client[]>([]);
+  const loadedRef = useRef(false);
 
-  const reload = useCallback(async () => {
+  const load = useCallback(async () => {
+    if (requestRef.current) return requestRef.current;
     const version = mutationVersion.current;
     setLoading(true);
     setError(null);
+    const request = getClientes();
+    requestRef.current = request;
     try {
-      const loaded = await getClientes();
-      if (mutationVersion.current === version) setClients(loaded);
+      const loaded = await request;
+      if (mutationVersion.current === version) {
+        clientsRef.current = loaded;
+        loadedRef.current = true;
+        setClients(loaded);
+      }
+      return loaded;
     } catch (cause) {
       if (mutationVersion.current === version) setError(cause instanceof Error ? cause.message : "No se pudieron cargar los clientes.");
+      throw cause;
     } finally {
+      if (requestRef.current === request) requestRef.current = null;
       setLoading(false);
     }
   }, []);
+
+  const ensure = useCallback(() => loadedRef.current ? Promise.resolve(clientsRef.current) : load(), [load]);
+
+  const reload = useCallback(async () => {
+    try {
+      await load();
+    } catch {
+      // El estado de error ya fue actualizado por load.
+    }
+  }, [load]);
 
   useEffect(() => { queueMicrotask(() => void reload()); }, [reload]);
 
   const addClient = useCallback(async (input: ClientInput) => {
     const client = await createCliente(input);
     mutationVersion.current += 1;
-    setClients((current) => [client, ...current]);
+    setClients((current) => {
+      const next = [client, ...current];
+      clientsRef.current = next;
+      return next;
+    });
   }, []);
 
   const updateClient = useCallback(async (id: string, input: ClientInput) => {
     const client = await updateCliente(id, input);
     mutationVersion.current += 1;
-    setClients((current) => current.map((item) => item.id === id ? client : item));
+    setClients((current) => {
+      const next = current.map((item) => item.id === id ? client : item);
+      clientsRef.current = next;
+      return next;
+    });
   }, []);
 
   const deleteClient = useCallback(async (id: string) => {
     await deleteCliente(id);
     mutationVersion.current += 1;
-    setClients((current) => current.filter((item) => item.id !== id));
+    setClients((current) => {
+      const next = current.filter((item) => item.id !== id);
+      clientsRef.current = next;
+      return next;
+    });
   }, []);
 
   const value = useMemo(
-    () => ({ clients, loading, error, reload, addClient, updateClient, deleteClient }),
-    [clients, loading, error, reload, addClient, updateClient, deleteClient],
+    () => ({ clients, loading, error, ensure, load, reload, addClient, updateClient, deleteClient }),
+    [clients, loading, error, ensure, load, reload, addClient, updateClient, deleteClient],
   );
 
   return (

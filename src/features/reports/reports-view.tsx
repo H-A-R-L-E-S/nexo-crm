@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { Download, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getClientes } from "@/features/clients/services/clients.service";
+import { useClients } from "@/features/clients/clients-provider";
 import { getLeads } from "@/features/leads/services/leads.service";
 import { getOpportunities } from "@/features/opportunities/services/opportunities.service";
 import { getSales } from "@/features/sales/services/sales.service";
@@ -22,18 +22,19 @@ function Distribution({ title, rows }: { title: string; rows: { name: string; va
 function safeCsv(value: string | number) { const text = String(value); const safe = /^[=+\-@]/.test(text) ? `'${text}` : text; return `"${safe.replaceAll('"', '""')}"`; }
 
 export function ReportsView() {
+  const { ensure: ensureClients, load: loadClients } = useClients();
   const [period, setPeriod] = useState<ReportPeriod>("month");
   const [data, setData] = useState(empty);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
-  const load = useCallback(async () => {
+  const load = useCallback(async (refreshClients = true) => {
     setLoading(true); setErrors([]);
-    const results = await Promise.allSettled([getClientes(), getLeads(), getOpportunities(), getSales(), getTasks()]);
+    const results = await Promise.allSettled([refreshClients ? loadClients() : ensureClients(), getLeads(), getOpportunities(), getSales(), getTasks()]);
     const names = ["clientes", "leads", "oportunidades", "ventas", "tareas"];
     setData({ clients: results[0].status === "fulfilled" ? results[0].value : [], leads: results[1].status === "fulfilled" ? results[1].value : [], opportunities: results[2].status === "fulfilled" ? results[2].value : [], sales: results[3].status === "fulfilled" ? results[3].value : [], tasks: results[4].status === "fulfilled" ? results[4].value : [] });
     setErrors(results.flatMap((result, index) => result.status === "rejected" ? [`No se pudo cargar ${names[index]}.`] : [])); setLoading(false);
-  }, []);
-  useEffect(() => { let active = true; queueMicrotask(() => { if (active) void load(); }); return () => { active = false; }; }, [load]);
+  }, [ensureClients, loadClients]);
+  useEffect(() => { let active = true; queueMicrotask(() => { if (active) void load(false); }); return () => { active = false; }; }, [load]);
   const metrics = useMemo(() => reportMetrics(data, period), [data, period]);
   const exportCsv = () => {
     const rows = [["Indicador", "Valor", "Periodo"], ["Clientes nuevos", metrics.clients.new, metrics.bounds.label], ["Leads registrados", metrics.leads.total, metrics.bounds.label], ["Oportunidades", metrics.opportunities.total, metrics.bounds.label], ["Ventas registradas", formatCents(metrics.sales.registered), metrics.bounds.label], ["Importe cobrado", formatCents(metrics.sales.paid), metrics.bounds.label], ["Importe pendiente", formatCents(metrics.sales.pending), metrics.bounds.label]];
