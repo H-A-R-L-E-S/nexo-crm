@@ -10,7 +10,7 @@ export const OWNERS = [
 ] as const;
 
 /** Datos totalmente ficticios. Este archivo podrá sustituirse por un repositorio de Supabase. */
-const SEED_CLIENTS: Omit<Client, "firstName" | "lastName" | "position" | "address" | "notes" | "lastContact">[] = [
+const SEED_CLIENTS: Omit<Client, "firstName" | "lastName" | "position" | "address" | "notes" | "lastContact" | "ownerId">[] = [
   {
     id: "cli-001",
     name: "Valeria Rojas",
@@ -236,6 +236,7 @@ const seededClients: Client[] = SEED_CLIENTS.map((client, index) => {
   const [firstName, ...lastNames] = client.name.split(" ");
   return {
     ...client,
+    ownerId: null,
     firstName,
     lastName: lastNames.join(" "),
     position: POSITIONS[index % POSITIONS.length],
@@ -261,6 +262,7 @@ const generatedClients: Client[] = Array.from({ length: 1230 }, (_, index) => {
     phone: `+51 9${String(10000000 + index * 137).padStart(8, "0")}`,
     status: generatedStatuses[(index * 17) % generatedStatuses.length],
     owner: OWNERS[index % OWNERS.length].name,
+    ownerId: null,
     position: POSITIONS[index % POSITIONS.length],
     address: `Av. Los Cedros ${200 + index}, ${DISTRICTS[index % DISTRICTS.length]}`,
     notes: index % 3 === 0 ? "Cliente de demostración. Interés en una propuesta personalizada." : "",

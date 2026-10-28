@@ -14,7 +14,6 @@ import { canDeleteClient } from "@/features/auth/roles";
 import { cn } from "@/lib/utils";
 import { ClientFormDialog } from "./client-form";
 import { useClients } from "./clients-provider";
-import { OWNERS } from "./demo-data";
 import type { Client, ClientStatus } from "./types";
 import styles from "@/components/crm/directory.module.css";
 
@@ -176,7 +175,7 @@ export function ClientsView({ initialStatus, initialOwner, initialSearch }: { in
             <label htmlFor={`${id}-owner-filter`} className="sr-only">Filtrar por responsable</label>
             <select id={`${id}-owner-filter`} value={owner} onChange={(event) => { setOwner(event.target.value); setPage(1); }} className={styles.select}>
               <option value="">Todos los responsables</option>
-              {OWNERS.map((person) => <option key={person.name} value={person.name}>{person.name}</option>)}
+              {[...new Set(clients.map((client) => client.owner))].sort((a, b) => a.localeCompare(b, "es")).map((name) => <option key={name} value={name}>{name}</option>)}
             </select>
           </div>
         </div>

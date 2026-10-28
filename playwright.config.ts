@@ -7,6 +7,7 @@ const installedEdge = existsSync(
 
 export default defineConfig({
   testDir: "./tests",
+  testIgnore: "**/unit/**",
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
@@ -39,6 +40,7 @@ export default defineConfig({
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "playwright-anon-key",
       SUPABASE_SERVICE_ROLE_KEY: "playwright-service-role-key",
       NEXO_E2E_ERROR_PROBE: "enabled",
+      NEXO_E2E_CLIENT_RESPONSIBLES: "enabled",
     },
     url: "http://127.0.0.1:3100/login",
     reuseExistingServer: false,

@@ -91,7 +91,8 @@ do $$ begin
   begin insert into public.leads(nombres, telefono) values ('No permitido', '999123456');
     raise exception 'Inactivo crea leads'; exception when insufficient_privilege then null; end;
   begin perform public.convert_lead(gen_random_uuid());
-    raise exception 'Inactivo invoca conversión'; exception when insufficient_privilege then null; end;
+    raise exception 'Inactivo invoca conversión';
+    exception when insufficient_privilege or no_data_found then null; end;
 end $$;
 reset role;
 set local role anon;

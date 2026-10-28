@@ -1,0 +1,331 @@
+[
+  {
+    "text": "Editar cliente",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Actualiza el contacto conservando su historia o selecciona un responsable autorizado.",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Los campos con * son obligatorios.",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Identificación",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Nombres",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Cliente",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Apellidos",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Prueba",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Empresa",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Empresa de prueba local",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Cargo",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Contacto comercial",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Contacto",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Correo electrónico",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "cliente-responsables@example.test",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Teléfono",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "999123456",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Dirección",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Lima",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Relación comercial",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Estado",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Responsable",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Asignación actual",
+    "ratio": 7.86621570080917,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "21,37,62,1"
+  },
+  {
+    "text": "Ana García",
+    "ratio": 13.809759638738266,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "21,37,62,1"
+  },
+  {
+    "text": "Pendiente de vincular",
+    "ratio": 7.86621570080917,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "21,37,62,1"
+  },
+  {
+    "text": "prueba",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Puedes conservar esta asignación al editar otros campos.",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Carlos Prueba",
+    "ratio": 10.103593023956746,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "32,59,99,1"
+  },
+  {
+    "text": "Administrador · Activo",
+    "ratio": 5.755135799517507,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "32,59,99,1"
+  },
+  {
+    "text": "UUID: 00000000-0000-4000-8000-000000000001",
+    "ratio": 5.755135799517507,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "32,59,99,1"
+  },
+  {
+    "text": "Lucía Prueba",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Gerente · Activo",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "UUID: 00000000-0000-4000-8000-000000000002",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Diego Prueba",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Vendedor · Activo",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "UUID: 00000000-0000-4000-8000-000000000003",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Homónimo Prueba",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Vendedor · Activo",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "UUID: 00000000-0000-4000-8000-000000000004",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Homónimo Prueba",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Vendedor · Activo",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "UUID: 00000000-0000-4000-8000-000000000005",
+    "ratio": 7.477631456872274,
+    "minimum": 4.5,
+    "foreground": "rgb(169, 187, 212)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Notas",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Fixture en memoria. No representa un cliente de producción.",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  },
+  {
+    "text": "Cancelar",
+    "ratio": 14.818009522226877,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "18,31,53,1"
+  },
+  {
+    "text": "Guardar cambios",
+    "ratio": 5.616548168856996,
+    "minimum": 4.5,
+    "foreground": "rgb(255, 255, 255)",
+    "background": "36,93,226,1"
+  },
+  {
+    "text": "Cerrar",
+    "ratio": 13.127569471029368,
+    "minimum": 4.5,
+    "foreground": "rgb(237, 243, 255)",
+    "background": "24,41,67,1"
+  }
+]

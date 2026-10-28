@@ -1,24 +1,13 @@
 import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Client, ClientInput } from "../types";
 import type { ClientRow } from "@/lib/supabase/database.types";
-
-function toClient(row: ClientRow): Client {
-  return {
-    id: row.id, firstName: row.nombres, lastName: row.apellidos,
-    name: `${row.nombres} ${row.apellidos}`.trim(), company: row.empresa,
-    email: row.correo, phone: row.telefono, position: row.cargo,
-    status: row.estado, address: row.direccion, notes: row.notas,
-    owner: row.responsable, lastContact: row.ultimo_contacto,
-    createdAt: row.created_at, updatedAt: row.updated_at,
-  };
-}
+import { toClient } from "../client-mapping";
 
 function toRow(input: ClientInput) {
   return {
     nombres: input.firstName, apellidos: input.lastName, empresa: input.company,
     correo: input.email, telefono: input.phone, cargo: input.position,
     estado: input.status, direccion: input.address, notas: input.notes,
-    responsable: input.owner,
   };
 }
 
@@ -52,7 +41,7 @@ export async function getClienteById(id: string): Promise<Client | null> {
 }
 
 export async function createCliente(input: ClientInput): Promise<Client> {
-  const { data, error } = await getSupabaseClient().from("clientes").insert(toRow(input)).select("*").single();
+  const { data, error } = await getSupabaseClient().from("clientes").insert({ ...toRow(input), responsable: "Sin asignar" }).select("*").single();
   if (error) fail("No se pudo crear el cliente", error);
   return toClient(data as ClientRow);
 }

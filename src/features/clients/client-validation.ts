@@ -1,5 +1,4 @@
-import { OWNERS } from "./demo-data";
-import type { Client, ClientInput, ClientStatus } from "./types";
+import type { Client, ClientContactInput, ClientInput, ClientStatus } from "./types";
 
 export type ClientFormErrors = Partial<Record<keyof ClientInput, string>>;
 export const CLIENT_STATUSES: ClientStatus[] = ["Prospecto", "Activo", "Inactivo"];
@@ -10,7 +9,7 @@ export function clientInitialValues(client?: Client): ClientInput {
     firstName: client?.firstName ?? "", lastName: client?.lastName ?? "",
     company: client?.company ?? "", email: client?.email ?? "", phone: client?.phone ?? "",
     position: client?.position ?? "", status: client?.status ?? "Prospecto",
-    owner: client?.owner ?? OWNERS[0].name, address: client?.address ?? "", notes: client?.notes ?? "",
+    owner: client?.owner ?? "Sin asignar", address: client?.address ?? "", notes: client?.notes ?? "",
   };
 }
 
@@ -22,7 +21,7 @@ export function normalizeClientInput(values: ClientInput): ClientInput {
   };
 }
 
-export function validateClient(input: ClientInput, clients: Client[], editingId?: string): ClientFormErrors {
+export function validateClientContact(input: ClientContactInput, clients: readonly Client[], editingId?: string): ClientFormErrors {
   const errors: ClientFormErrors = {};
   if (input.firstName.length < 2) errors.firstName = "Escribe nombres de al menos 2 caracteres.";
   if (input.firstName.length > 80) errors.firstName = "Los nombres pueden tener hasta 80 caracteres.";
@@ -42,6 +41,12 @@ export function validateClient(input: ClientInput, clients: Client[], editingId?
     errors.phone = "Escribe un teléfono de 7 a 15 dígitos; puedes incluir +51.";
   }
   if (!CLIENT_STATUSES.includes(input.status)) errors.status = "Selecciona un estado válido.";
-  if (!OWNERS.some((owner) => owner.name === input.owner)) errors.owner = "Selecciona un responsable de la lista.";
+  return errors;
+}
+
+export function validateClient(input: ClientInput, clients: readonly Client[], editingId?: string): ClientFormErrors {
+  const errors = validateClientContact(input, clients, editingId);
+  const previous = editingId ? clients.find((client) => client.id === editingId) : undefined;
+  if (input.owner !== (previous?.owner ?? "Sin asignar")) errors.owner = "Conserva el responsable histórico. Las nuevas asignaciones todavía no están habilitadas.";
   return errors;
 }

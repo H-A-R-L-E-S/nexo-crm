@@ -1,5 +1,5 @@
 import type { Profile } from "@/features/auth/types";
-import type { ClientStatus } from "@/features/clients/types";
+import type { ClientResponsible, ClientStatus } from "@/features/clients/types";
 import type { Lead, NuevoLead, LeadConversion, LeadResponsable } from "@/features/leads/types";
 import type { OpportunityRow, CreateOpportunity, OpportunityResponsible } from "@/features/opportunities/types";
 import type { SaleRow, SaleItemRow, SaveSale, SaleItemInput, SaleResponsible, SaleState } from "@/features/sales/types";
@@ -8,9 +8,11 @@ import type { Task, CreateTask, TaskStatus, TaskResponsible } from "@/features/t
 export type ClientRow = {
   id: string; nombres: string; apellidos: string; empresa: string; correo: string;
   telefono: string; cargo: string; estado: ClientStatus; direccion: string;
-  notas: string; responsable: string; ultimo_contacto: string | null;
+  notas: string; responsable: string; responsable_id: string | null; ultimo_contacto: string | null;
   created_at: string; updated_at: string;
 };
+
+export type ClientReadRow = Omit<ClientRow, "responsable_id"> & { responsable_id?: string | null };
 
 export type Database = {
   public: {
@@ -22,7 +24,7 @@ export type Database = {
       leads: { Row: Lead; Insert: NuevoLead; Update: Partial<NuevoLead>; Relationships: [] };
       clientes: {
         Row: ClientRow;
-        Insert: Omit<ClientRow, "id" | "created_at" | "updated_at" | "ultimo_contacto"> & Partial<Pick<ClientRow, "id" | "created_at" | "updated_at" | "ultimo_contacto">>;
+        Insert: Omit<ClientRow, "id" | "created_at" | "updated_at" | "ultimo_contacto" | "responsable" | "responsable_id"> & Partial<Pick<ClientRow, "id" | "created_at" | "updated_at" | "ultimo_contacto" | "responsable" | "responsable_id">>;
         Update: Partial<ClientRow>;
         Relationships: [];
       };
@@ -35,6 +37,7 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      client_responsibles: { Args: { p_client_id?: string | null }; Returns: ClientResponsible[] };
       task_responsibles: { Args: Record<string, never>; Returns: TaskResponsible[] };
       save_task: { Args: { p_id: string | null; p_updated_at: string | null; p_request_id: string; p_data: CreateTask }; Returns: string };
       set_task_status: { Args: { p_id: string; p_updated_at: string; p_estado: TaskStatus }; Returns: string };

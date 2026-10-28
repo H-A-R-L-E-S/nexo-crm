@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { OWNERS } from "./demo-data";
 import { useClients } from "./clients-provider";
 import { CLIENT_FIELD_ORDER, CLIENT_STATUSES, clientInitialValues, normalizeClientInput, validateClient, type ClientFormErrors } from "./client-validation";
 import type { Client, ClientInput, ClientStatus } from "./types";
@@ -109,10 +108,9 @@ function ClientFormFields({ client, onClose }: { client?: Client; onClose: () =>
             {fieldError("status")}
           </div>
           <div className={styles.field}>
-            <Label htmlFor={`${id}-owner`}>Responsable <span aria-hidden="true" className="text-muted-foreground">*</span></Label>
-            <select {...fieldA11y("owner")} required value={values.owner} onChange={(event) => updateField("owner", event.target.value)} className={styles.select}>
-              {OWNERS.map((owner) => <option key={owner.name} value={owner.name}>{owner.name}</option>)}
-            </select>
+            <Label htmlFor={`${id}-owner`}>Responsable histórico</Label>
+            <Input {...fieldA11y("owner")} readOnly value={values.owner} aria-describedby={`${id}-owner-help`} />
+            <p id={`${id}-owner-help`} className={styles.formHelp}>{client?.ownerId ? "Se conserva la identidad vinculada. Las reasignaciones todavía no están habilitadas." : "Pendiente de vincular. Se conserva este texto al guardar otros datos."}</p>
             {fieldError("owner")}
           </div>
           <div className={styles.fieldWide}>
@@ -143,7 +141,7 @@ export function ClientFormDialog({ client, children, open: controlledOpen, onOpe
       <DialogContent className={styles.dialog} onCloseAutoFocus={onCloseAutoFocus}>
         <DialogHeader className={styles.dialogHeader}>
           <DialogTitle>{client ? "Editar cliente" : "Nuevo cliente"}</DialogTitle>
-          <DialogDescription>{client ? "Actualiza el contacto, su estado y responsable." : "Guarda los datos del contacto y asígnale un responsable."}</DialogDescription>
+          <DialogDescription>{client ? "Actualiza el contacto y su estado conservando su responsable histórico." : "Guarda el contacto. Su responsable quedará pendiente de vincular."}</DialogDescription>
         </DialogHeader>
         <ClientFormFields client={client} onClose={() => setOpen(false)} />
       </DialogContent>
