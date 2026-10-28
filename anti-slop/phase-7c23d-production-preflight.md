@@ -437,6 +437,40 @@ Además, comprobar en Dashboard → API settings que los esquemas expuestos no i
 
 GO esperado: ningún procedimiento/relación nuevo existe, ambos `to_regclass` son NULL y el conteo es cero. La prueba autoritativa de ausencia de la columna está en A.3.
 
+## A.13 Paquete ejecutable e interpretación
+
+El paquete consolidado está en `anti-slop/sql/phase-7c23d-production-readonly-preflight.sql`. Contiene únicamente sentencias `SELECT`/`SHOW` e introspección; no abre una transacción ni cambia sesión, permisos, datos o catálogo. En esta fase fue preparado y auditado estáticamente, no ejecutado.
+
+| Resultado | Interpretación | Acción obligatoria |
+|---|---|---|
+| `GO` | La comprobación mecánica coincide con el baseline esperado. | Conservar la evidencia; no autoriza por sí sola el siguiente paso. |
+| `REVIEW` | El catálogo no puede decidir identidad del proyecto, legitimidad del owner, definición aprobada o configuración externa de PostgREST. | Una persona responsable compara la salida con el baseline/inventario y firma GO o NO-GO. |
+| `NO-GO` | Falta un prerrequisito, existe deriva o hay expansión parcial. | Detenerse. No ejecutar migraciones, no corregir producción improvisadamente y abrir revisión. |
+
+Interpretación por bloque:
+
+- `01–03`: destino, versión, extensión y tablas. El bloque `01` siempre exige REVIEW humano del proyecto/ref.
+- `04–06`: columnas y constraints. Cualquier diferencia o `responsable_id` previo es NO-GO.
+- `07–10`: RLS, policies, grants, owners y operador. `REVIEW` exige contrastar la salida completa; no basta con el resumen.
+- `11–13`: triggers, funciones e índices. Guardar la definición de `convert_lead` como evidencia de rollback.
+- `14`: si PostgreSQL no publica la configuración de esquemas PostgREST, el resultado es REVIEW y se comprueba Dashboard/API settings; `nexo_private` expuesto es NO-GO.
+- `15–17`: expansión accidental, `updated_at` y salud mínima. Cualquier NO-GO detiene la ventana.
+- `18`: archivar conteo y huella; deben ser idénticos en la comprobación posterior.
+- `19`: recordatorio de que la autorización final es humana.
+
+La ejecución completa solo puede declararse apta cuando no haya ningún `NO-GO` y cada `REVIEW` tenga una decisión humana documentada. Los comentarios de “resultado esperado” no son resultados reales.
+
+Auditoría estática del archivo realizada el 28 de octubre de 2026:
+
+- 37 sentencias totales;
+- 36 comienzan con `SELECT` y 1 con `SHOW`;
+- 0 sentencias con un verbo inicial distinto;
+- 0 tokens de escritura, DDL, permisos, mantenimiento, transacción o `SET ROLE` fuera de comentarios/literales;
+- 0 llamadas ejecutables a funciones de aplicación en `public`, `auth` o `nexo_private`; sus firmas solo aparecen dentro de funciones de introspección;
+- `git diff --check`: sin errores.
+
+La auditoría retiró comentarios y literales antes de clasificar sentencias y buscar tokens prohibidos, para no confundir texto explicativo, valores de ACL o nombres como `updated_at` con operaciones. Esta evidencia demuestra la composición del archivo; no afirma que se haya ejecutado ni que producción haya dado GO.
+
 # B. Cambios propuestos que requieren aprobación
 
 ## B.1 Preparación de ventana
