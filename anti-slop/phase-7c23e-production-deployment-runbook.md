@@ -1,8 +1,46 @@
 # Fase 7C.2.3E — runbook de despliegue productivo
 
-Fecha de preparación: 28 de octubre de 2026 (America/Lima).
+Fecha de preparación: 28 de octubre de 2026. Cierre documental de ejecución: 29 de octubre de 2026 (America/Lima).
 
-Estado: **plan final solamente**. No se conectó a producción, no se ejecutó SQL, no se enlazó el proyecto y no se activó el frontend.
+Estado: **backend ejecutado y verificado en producción por el operador humano; frontend UUID todavía desactivado**. La preparación documental ocurrió antes de la ventana. Este cierre se basa exclusivamente en la evidencia productiva comunicada por el operador y no abrió una conexión nueva ni ejecutó SQL adicional.
+
+## Registro real de ejecución productiva
+
+Destino confirmado por el operador: **Nexo CRM / `main` / PRODUCTION**.
+
+### SQL 1
+
+- `supabase/client_responsibles.sql` fue ejecutado una sola vez;
+- `public.clientes.responsable_id` existe como `uuid`, nullable (`YES`);
+- FK `clientes_responsable_id_fkey` presente y validada;
+- índice `clientes_responsable_id_idx` presente;
+- trigger `clientes_prepare_responsible` activo;
+- RLS de Clientes continúa habilitado y `FORCE RLS = false`;
+- `clientes_total = 1`;
+- fingerprint histórico posterior a SQL 1: `ed21b427602e3b236b5a135c9d0b11ff`.
+
+SQL 1 queda documentado como **EJECUTADO EXITOSAMENTE**. La verificación posterior no detectó cambios en la historia protegida.
+
+### SQL 2
+
+Después de validar SQL 1, `supabase/client_responsibles_directory.sql` fue ejecutado una sola vez:
+
+- existe `nexo_private.client_responsible_directory`;
+- existe `public.client_responsibles(uuid)` con argumento `p_client_id uuid`;
+- la RPC es `SECURITY INVOKER` (`prosecdef = false`), no `SECURITY DEFINER`;
+- `proconfig` contiene `search_path=""` y `row_security=on`;
+- owner `postgres`;
+- ACL efectivo: `anon` sin EXECUTE y `authenticated` con EXECUTE;
+- `nexo_private` continúa fuera de los esquemas expuestos por Data API;
+- fingerprint final: `clientes_total = 1` y `clientes_history_fingerprint = ed21b427602e3b236b5a135c9d0b11ff`.
+
+SQL 2 queda documentado como **EJECUTADO EXITOSAMENTE**. El fingerprint previo, posterior a SQL 1 y posterior a SQL 2 es idéntico.
+
+### Backup y frontend
+
+Antes de la ventana se generó un backup lógico fuera del repositorio: `roles.sql`, `schema.sql` y `data.sql`. Esos archivos no se copiaron ni deben copiarse a Git; este documento no contiene datos productivos.
+
+`CLIENT_RESPONSIBLES_UUID_ENABLED` permanece en `false`. El backend está desplegado, pero la UI y las nuevas escrituras UUID siguen cerradas. No hubo backfill ni activación del frontend en esta fase.
 
 ## Propósito y regla de ejecución
 
@@ -462,22 +500,29 @@ Guardar en un repositorio de evidencias aprobado, sin secretos:
 
 Cada casilla requiere nombre, fecha/hora y referencia de evidencia. Las autorizaciones para SQL 1 y SQL 2 son independientes.
 
-- [ ] Backup/PITR disponible y restauración conocida.
-- [ ] Ventana de mantenimiento y observación aprobada.
-- [ ] Proyecto, organización, branch y región correctos confirmados.
-- [ ] Commit `29dbebfb937c2cb24dda2829389f94d2c232e678` confirmado.
-- [ ] Hash SQL 1 `F10C8821C67E744C253081BD4BE5C90DAF31F56898BDB169B904BFC38E89B747` confirmado.
-- [ ] Hash SQL 2 `F99DB55D7145F290252E19C2CA8E3E41E88CBC512C4A05071142F499F09D4ED0` confirmado.
-- [ ] Preflight inmediato read-only limpio, columna ausente y fingerprint aprobado.
-- [ ] Autorización humana explícita para ejecutar SQL 1.
-- [ ] Verificación posterior de SQL 1 aprobada y evidencia guardada.
-- [ ] Autorización humana explícita para ejecutar SQL 2.
-- [ ] Verificación posterior de SQL 2 aprobada y evidencia guardada.
+- [x] Backup lógico previo disponible fuera del repositorio (`roles.sql`, `schema.sql`, `data.sql`). La disponibilidad PITR no se infiere de esta evidencia.
+- [ ] Ventana de mantenimiento y observación: conservar aprobación/ticket operativo; no fue aportado a este cierre documental.
+- [x] Proyecto Nexo CRM, branch `main` y entorno PRODUCTION confirmados por el operador.
+- [x] Commit candidato `29dbebfb937c2cb24dda2829389f94d2c232e678` identificado por el runbook de la ventana.
+- [x] SQL 1 identificado como `supabase/client_responsibles.sql`, hash versionado `F10C8821C67E744C253081BD4BE5C90DAF31F56898BDB169B904BFC38E89B747`.
+- [x] SQL 2 identificado como `supabase/client_responsibles_directory.sql`, hash versionado `F99DB55D7145F290252E19C2CA8E3E41E88CBC512C4A05071142F499F09D4ED0`.
+- [x] Preflight 7C.2.3D limpio, columna ausente y fingerprint aprobado antes de la ventana.
+- [x] SQL 1 ejecutado una sola vez por el operador humano.
+- [x] Verificación posterior de SQL 1 conforme: UUID nullable, FK, índice, trigger, RLS y fingerprint.
+- [x] SQL 2 ejecutado una sola vez por el operador humano después del gate de SQL 1.
+- [x] Verificación posterior de SQL 2 conforme: directorio, RPC invocadora, configuración, owner, ACL y exposición.
 - [ ] Smokes read-only por rol y anon aprobados.
-- [ ] Fingerprint final: total `1` y `ed21b427602e3b236b5a135c9d0b11ff`.
-- [ ] Ana García conserva texto histórico y `responsable_id = NULL`.
-- [ ] Cierre backend firmado sin activar frontend ni escrituras UUID.
+- [x] Fingerprint final: total `1` y `ed21b427602e3b236b5a135c9d0b11ff`.
+- [ ] Ana García conserva texto histórico y `responsable_id = NULL`: protegido por el diseño, pero no se aportó en esta evidencia una consulta individual de esa fila.
+- [x] Cierre backend documentado sin activar frontend ni escrituras UUID.
 
-## Resultado de preparación
+## Resultado final de la fase
 
-Runbook preparado estáticamente desde el baseline y la evidencia aprobada de 7C.2.3A/B/C/D. No acredita una ejecución productiva. La migración, los smokes productivos y las aprobaciones humanas permanecen pendientes.
+La fase tuvo dos estados distintos:
+
+1. **PREPARADO:** el runbook fue construido estáticamente desde el baseline y la evidencia aprobada de 7C.2.3A/B/C/D, sin conexión ni ejecución productiva.
+2. **EJECUTADO:** el operador humano ejecutó SQL 1 y SQL 2 una sola vez y aportó las verificaciones productivas documentadas arriba. El fingerprint permaneció idéntico.
+
+Conclusión documental: **7C.2.3E DESPLIEGUE BACKEND PRODUCTIVO = COMPLETADO — FRONTEND UUID AÚN DESACTIVADO**.
+
+Este cierre no acredita los smokes read-only por actor ni una consulta individual posterior de Ana García porque esas salidas no fueron aportadas. No bloquea el cierre estructural comunicado, pero ambas evidencias deben conservarse como pendientes explícitos antes de cualquier fase de activación del frontend.
