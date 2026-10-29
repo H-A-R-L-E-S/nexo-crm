@@ -1,8 +1,8 @@
 // Requiere un cambio revisado de código después de validar PostgreSQL/RLS.
 export const CLIENT_RESPONSIBLES_UUID_ENABLED = false;
 
-export function assertClientResponsiblesEnabled() {
-  if (!CLIENT_RESPONSIBLES_UUID_ENABLED) throw new Error("Las asignaciones UUID de Clientes todavía no están habilitadas.");
+export function assertClientResponsiblesEnabled(enabled = CLIENT_RESPONSIBLES_UUID_ENABLED) {
+  if (!enabled) throw new Error("Las asignaciones UUID de Clientes todavía no están habilitadas.");
 }
 
 function loopbackUrl(value: string | undefined): boolean {

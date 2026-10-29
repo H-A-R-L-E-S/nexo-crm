@@ -22,6 +22,8 @@ type ClientsContextValue = {
   reload: () => Promise<void>;
   addClient: (input: ClientInput) => Promise<void>;
   updateClient: (id: string, input: ClientInput) => Promise<void>;
+  acceptCreatedClient: (client: Client) => void;
+  acceptUpdatedClient: (client: Client) => void;
   deleteClient: (id: string) => Promise<void>;
 };
 
@@ -92,6 +94,24 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const acceptCreatedClient = useCallback((client: Client) => {
+    mutationVersion.current += 1;
+    setClients((current) => {
+      const next = [client, ...current.filter((item) => item.id !== client.id)];
+      clientsRef.current = next;
+      return next;
+    });
+  }, []);
+
+  const acceptUpdatedClient = useCallback((client: Client) => {
+    mutationVersion.current += 1;
+    setClients((current) => {
+      const next = current.map((item) => item.id === client.id ? client : item);
+      clientsRef.current = next;
+      return next;
+    });
+  }, []);
+
   const deleteClient = useCallback(async (id: string) => {
     await deleteCliente(id);
     mutationVersion.current += 1;
@@ -103,8 +123,8 @@ export function ClientsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ clients, loading, error, ensure, load, reload, addClient, updateClient, deleteClient }),
-    [clients, loading, error, ensure, load, reload, addClient, updateClient, deleteClient],
+    () => ({ clients, loading, error, ensure, load, reload, addClient, updateClient, acceptCreatedClient, acceptUpdatedClient, deleteClient }),
+    [clients, loading, error, ensure, load, reload, addClient, updateClient, acceptCreatedClient, acceptUpdatedClient, deleteClient],
   );
 
   return (

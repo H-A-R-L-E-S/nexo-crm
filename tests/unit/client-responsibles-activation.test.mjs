@@ -3,9 +3,10 @@ import { test } from "node:test";
 import { CLIENT_RESPONSIBLES_UUID_ENABLED, assertClientResponsiblesEnabled, localResponsiblesPreviewAllowed } from "../../src/features/clients/responsibles-activation.ts";
 import { clientInitialValues, normalizeClientInput, validateClient, validateClientContact } from "../../src/features/clients/client-validation.ts";
 
-test("el acceso real UUID permanece cerrado sin toggles de sesión o entorno", () => {
+test("el acceso real UUID permanece cerrado por defecto y admite composición explícita revisada", () => {
   assert.equal(CLIENT_RESPONSIBLES_UUID_ENABLED, false);
   assert.throws(() => assertClientResponsiblesEnabled(), /todavía no están habilitadas/);
+  assert.doesNotThrow(() => assertClientResponsiblesEnabled(true));
 });
 
 test("los mocks requieren flag explícito y ambos extremos loopback", () => {

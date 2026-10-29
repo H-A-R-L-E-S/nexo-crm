@@ -13,7 +13,9 @@ import { useAuth } from "@/features/auth/auth-provider";
 import { canDeleteClient } from "@/features/auth/roles";
 import { cn } from "@/lib/utils";
 import { ClientFormDialog } from "./client-form";
+import { ClientUuidFormDialog, type ClientResponsibleFormAdapter } from "./client-uuid-form";
 import { useClients } from "./clients-provider";
+import { createAssignedCliente, getClientResponsibles, updateAssignedCliente } from "./services/client-responsibles.service";
 import type { Client, ClientStatus } from "./types";
 import styles from "@/components/crm/directory.module.css";
 
@@ -37,7 +39,10 @@ function pageNumbers(currentPage: number, totalPages: number) {
   return result;
 }
 
-function ClientActions({ client }: { client: Client }) {
+function ClientActions({ client, clients, uuidEnabled, uuidAdapter, onUuidSaved }: {
+  client: Client; clients: readonly Client[]; uuidEnabled: boolean;
+  uuidAdapter: ClientResponsibleFormAdapter; onUuidSaved: (client: Client) => void;
+}) {
   const { profile } = useAuth();
   const { deleteClient } = useClients();
   const [editing, setEditing] = useState(false);
@@ -94,7 +99,9 @@ function ClientActions({ client }: { client: Client }) {
         </>}
       </DropdownMenuContent>
     </DropdownMenu>
-    <ClientFormDialog client={client} open={editing} onOpenChange={setEditing} onCloseAutoFocus={restoreFocus} hideTrigger />
+    {uuidEnabled
+      ? <ClientUuidFormDialog actor={profile} client={client} clients={clients} adapter={uuidAdapter} onSaved={onUuidSaved} open={editing} onOpenChange={setEditing} onCloseAutoFocus={restoreFocus} hideTrigger />
+      : <ClientFormDialog client={client} open={editing} onOpenChange={setEditing} onCloseAutoFocus={restoreFocus} hideTrigger />}
     <AlertDialog open={confirmingDelete} onOpenChange={setConfirmingDelete}>
       <AlertDialogContent className={styles.compactDialog} onCloseAutoFocus={restoreFocus}>
         <AlertDialogHeader className={styles.dialogHeader}>
@@ -114,14 +121,22 @@ function ClientState({ status }: { status: ClientStatus }) {
   return <span className={styles.status} data-status={status}>{status}</span>;
 }
 
-export function ClientsView({ initialStatus, initialOwner, initialSearch }: { initialStatus?: ClientStatus; initialOwner?: string; initialSearch?: string }) {
-  const { clients, loading, error, reload } = useClients();
+export function ClientsView({ initialStatus, initialOwner, initialSearch, uuidEnabled = false }: {
+  initialStatus?: ClientStatus; initialOwner?: string; initialSearch?: string; uuidEnabled?: boolean;
+}) {
+  const { profile } = useAuth();
+  const { clients, loading, error, reload, acceptCreatedClient, acceptUpdatedClient } = useClients();
   const [query, setQuery] = useState(initialSearch ?? "");
   const [status, setStatus] = useState<ClientStatus | "">(initialStatus ?? "");
   const [owner, setOwner] = useState(initialOwner ?? "");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
   const id = useId();
+  const uuidAdapter = useMemo<ClientResponsibleFormAdapter>(() => ({
+    loadResponsibles: (clientId) => getClientResponsibles(clientId, uuidEnabled),
+    create: (input) => createAssignedCliente(input, uuidEnabled),
+    update: (request) => updateAssignedCliente(request, uuidEnabled),
+  }), [uuidEnabled]);
 
   const filteredClients = useMemo(() => {
     const search = normalizeSearch(query.trim());
@@ -146,8 +161,12 @@ export function ClientsView({ initialStatus, initialOwner, initialSearch }: { in
     setPage(1);
   }
 
+  const createAction = uuidEnabled
+    ? <ClientUuidFormDialog actor={profile} clients={clients} adapter={uuidAdapter} onSaved={acceptCreatedClient} />
+    : <ClientFormDialog />;
+
   return <div className={styles.page}>
-    <DirectoryHeader title="Clientes" description="Tu cartera, contactos y responsables en un solo directorio." count={error ? undefined : clients.length} loading={loading} actions={<ClientFormDialog />} />
+    <DirectoryHeader title="Clientes" description="Tu cartera, contactos y responsables en un solo directorio." count={error ? undefined : clients.length} loading={loading} actions={createAction} />
     <DirectorySummary loading={loading} error={Boolean(error)} items={[
       { label: "Total de clientes", value: clients.length },
       { label: "Clientes activos", value: activeClients },
@@ -211,7 +230,7 @@ export function ClientsView({ initialStatus, initialOwner, initialSearch }: { in
               <td><p className={styles.secondary} title={client.email}>{client.email}</p><p className={cn(styles.secondary, "tabular-nums")} title={client.phone}>{client.phone}</p></td>
               <td><ClientState status={client.status} /></td>
               <td><p className={styles.secondary} title={client.owner}>{client.owner}</p></td>
-              <td className="text-right"><ClientActions client={client} /></td>
+              <td className="text-right"><ClientActions client={client} clients={clients} uuidEnabled={uuidEnabled} uuidAdapter={uuidAdapter} onUuidSaved={acceptUpdatedClient} /></td>
             </tr>)}</tbody>
           </table>
         </div>
@@ -221,7 +240,7 @@ export function ClientsView({ initialStatus, initialOwner, initialSearch }: { in
               <span aria-hidden="true" className={styles.avatar}>{initials(client.name)}</span>
               <div className="min-w-0"><p className={styles.name}>{client.name}</p><p className={styles.company}>{client.company || "Sin empresa"}</p></div>
             </div>
-            <ClientActions client={client} />
+            <ClientActions client={client} clients={clients} uuidEnabled={uuidEnabled} uuidAdapter={uuidAdapter} onUuidSaved={acceptUpdatedClient} />
           </div>
           <div className={styles.rowMeta}><ClientState status={client.status} /></div>
           <dl className={styles.rowDetails}>
@@ -230,7 +249,7 @@ export function ClientsView({ initialStatus, initialOwner, initialSearch }: { in
             <div><dt>Responsable</dt><dd>{client.owner}</dd></div>
           </dl>
         </li>)}</ul>
-      </> : <DirectoryEmpty title={hasFilters ? "No encontramos clientes" : "Tu cartera todavía está vacía"} description={hasFilters ? "Prueba con otra búsqueda o ajusta los filtros para encontrar a quien buscas." : "Registra tu primer cliente para guardar su contacto y asignar un responsable."} action={hasFilters ? <Button variant="outline" onClick={clearFilters}>Ver todos los clientes</Button> : <ClientFormDialog><Button variant="outline">Registrar primer cliente</Button></ClientFormDialog>} />}
+      </> : <DirectoryEmpty title={hasFilters ? "No encontramos clientes" : "Tu cartera todavía está vacía"} description={hasFilters ? "Prueba con otra búsqueda o ajusta los filtros para encontrar a quien buscas." : "Registra tu primer cliente para guardar su contacto y asignar un responsable."} action={hasFilters ? <Button variant="outline" onClick={clearFilters}>Ver todos los clientes</Button> : uuidEnabled ? <ClientUuidFormDialog actor={profile} clients={clients} adapter={uuidAdapter} onSaved={acceptCreatedClient}><Button variant="outline">Registrar primer cliente</Button></ClientUuidFormDialog> : <ClientFormDialog><Button variant="outline">Registrar primer cliente</Button></ClientFormDialog>} />}
 
       {!loading && !error && <div className={styles.pagination}>
         <p role="status" className={styles.secondary}>Mostrando <span className="tabular-nums">{filteredClients.length ? startIndex + 1 : 0}–{Math.min(startIndex + pageSize, filteredClients.length)}</span> de <span className="tabular-nums">{filteredClients.length}</span> clientes</p>

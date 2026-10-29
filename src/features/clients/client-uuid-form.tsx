@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
+import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -137,14 +138,21 @@ function UuidClientFormFields({ actor, client, clients, adapter, onSaved, onClos
   </form>;
 }
 
-export function ClientUuidFormDialog({ actor, client, adapter, onSaved, clients = [], initiallyOpen = false }: {
+export function ClientUuidFormDialog({
+  actor, client, adapter, onSaved, clients = [], initiallyOpen = false, children,
+  open: controlledOpen, onOpenChange, hideTrigger = false, onCloseAutoFocus,
+}: {
   actor: ClientActor; client?: Client; adapter: ClientResponsibleFormAdapter; onSaved: (client: Client) => void;
-  clients?: readonly Client[]; initiallyOpen?: boolean;
+  clients?: readonly Client[]; initiallyOpen?: boolean; children?: ReactNode; open?: boolean;
+  onOpenChange?: (open: boolean) => void; hideTrigger?: boolean;
+  onCloseAutoFocus?: ComponentProps<typeof DialogContent>["onCloseAutoFocus"];
 }) {
-  const [open, setOpen] = useState(initiallyOpen);
+  const [localOpen, setLocalOpen] = useState(initiallyOpen);
+  const open = controlledOpen ?? localOpen;
+  const setOpen = onOpenChange ?? setLocalOpen;
   return <Dialog open={open} onOpenChange={setOpen}>
-    <DialogTrigger asChild><Button>{client ? "Editar cliente" : "Nuevo cliente"}</Button></DialogTrigger>
-    <DialogContent className={styles.dialog} onEscapeKeyDown={(event) => {
+    {!hideTrigger && <DialogTrigger asChild>{children ?? <Button>{!client && <Plus className="size-4" aria-hidden="true" />}{client ? "Editar cliente" : "Nuevo cliente"}</Button>}</DialogTrigger>}
+    <DialogContent className={styles.dialog} onCloseAutoFocus={onCloseAutoFocus} onEscapeKeyDown={(event) => {
       if (event.target instanceof HTMLElement && event.target.matches('[role="combobox"][aria-expanded="true"]')) event.preventDefault();
     }}>
       <DialogHeader className={styles.dialogHeader}><DialogTitle>{client ? "Editar cliente" : "Nuevo cliente"}</DialogTitle><DialogDescription>{client ? "Actualiza el contacto conservando su historia o selecciona un responsable autorizado." : "Registra el contacto y selecciona expresamente un usuario real."}</DialogDescription></DialogHeader>

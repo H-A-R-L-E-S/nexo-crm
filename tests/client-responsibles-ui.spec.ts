@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { writeFile } from "node:fs/promises";
 import { login } from "./support/login";
-import { CLIENT_RESPONSIBLE_IDS as ids, clientFixture } from "./support/client-responsibles-fixtures";
+import { CLIENT_RESPONSIBLE_IDS as ids, RESPONSIBLE_FIXTURES, clientFixture } from "./support/client-responsibles-fixtures";
 import { mockClientResponsibles, type ResponsibleScenario } from "./support/client-responsibles-mock";
 import { expectNoHorizontalOverflow, expectResponsibleControlContrast, expectResponsibleTextContrast, expectTouchTargets, expectVisibleFocus } from "./support/client-responsibles-a11y";
 import type { UserRole } from "../src/features/auth/roles";
@@ -67,6 +67,66 @@ async function chooseResponsible(page: Page, id: string) {
 
 function responsibleOptions(page: Page) {
   return page.getByRole("listbox", { name: "Responsables reales", exact: true }).getByRole("option");
+}
+
+type WiredClientRow = {
+  id: string; nombres: string; apellidos: string; empresa: string; correo: string; telefono: string;
+  cargo: string; estado: string; direccion: string; notas: string; responsable: string;
+  responsable_id: string | null; ultimo_contacto: string | null; created_at: string; updated_at: string;
+};
+
+function wiredRow(overrides: Partial<WiredClientRow> = {}): WiredClientRow {
+  const client = clientFixture();
+  return {
+    id: client.id, nombres: client.firstName, apellidos: client.lastName, empresa: client.company,
+    correo: client.email, telefono: client.phone, cargo: client.position, estado: client.status,
+    direccion: client.address, notas: client.notes, responsable: client.owner,
+    responsable_id: client.ownerId, ultimo_contacto: client.lastContact,
+    created_at: client.createdAt, updated_at: client.updatedAt, ...overrides,
+  };
+}
+
+async function mockWiredClients(page: Page, initial: WiredClientRow[] = [], rpcError?: string) {
+  const rows = initial.map((row) => ({ ...row }));
+  const writes: { method: string; body: Record<string, unknown>; url: string }[] = [];
+  await page.route("http://127.0.0.1:54321/rest/v1/rpc/client_responsibles", (route) => rpcError
+    ? route.fulfill({ status: 403, json: { code: "42501", message: rpcError } })
+    : route.fulfill({ json: RESPONSIBLE_FIXTURES }));
+  await page.route("http://127.0.0.1:54321/rest/v1/clientes**", (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const id = url.searchParams.get("id")?.replace("eq.", "");
+    const single = request.headers().accept?.includes("vnd.pgrst.object");
+    const respond = (body: unknown, status = 200) => route.fulfill({ status, json: body });
+    if (request.method() === "GET") {
+      const selected = id ? rows.filter((row) => row.id === id) : rows;
+      if (url.searchParams.get("select") === "responsable_id") {
+        const body = selected[0] ? { responsable_id: selected[0].responsable_id } : null;
+        return respond(single ? body : body ? [body] : []);
+      }
+      return respond(single ? selected[0] ?? null : selected);
+    }
+    const body = request.postDataJSON() as Record<string, unknown>;
+    writes.push({ method: request.method(), body, url: request.url() });
+    if (request.method() === "POST") {
+      const ownerId = body.responsable_id as string;
+      const owner = RESPONSIBLE_FIXTURES.find((person) => person.id === ownerId);
+      const now = new Date().toISOString();
+      const row = wiredRow({ ...body, id: crypto.randomUUID(), responsable_id: ownerId, responsable: `${owner?.nombres} ${owner?.apellidos}`.trim(), created_at: now, updated_at: now } as Partial<WiredClientRow>);
+      rows.unshift(row);
+      return respond(single ? row : [row], 201);
+    }
+    if (request.method() === "PATCH") {
+      const index = rows.findIndex((row) => row.id === id);
+      if (index < 0) return respond(single ? null : []);
+      const ownerId = Object.hasOwn(body, "responsable_id") ? body.responsable_id as string : rows[index].responsable_id;
+      const owner = RESPONSIBLE_FIXTURES.find((person) => person.id === ownerId);
+      rows[index] = { ...rows[index], ...body, ...(Object.hasOwn(body, "responsable_id") ? { responsable: `${owner?.nombres} ${owner?.apellidos}`.trim() } : {}), updated_at: new Date().toISOString() };
+      return respond(single ? rows[index] : [rows[index]]);
+    }
+    return respond({ message: "Método inesperado" }, 405);
+  });
+  return { rows, writes };
 }
 
 test("alta: valida contacto y exige UUID explícito sin elegir un homónimo por nombre", async ({ page }) => {
@@ -363,4 +423,63 @@ test("flujo operativo previo: no llama directorio UUID ni envía columnas nuevas
   expect(Object.hasOwn(writes[0], "responsable")).toBe(false);
   expect(row.responsable).toBe("Ana García");
   expect(uuidRequests).toEqual([]);
+});
+
+test("/clientes UUID: crea con RPC real simulada y responsable_id sin resolver por nombre", async ({ page }) => {
+  const database = await mockWiredClients(page);
+  await page.goto("/clientes?responsables_uuid=enabled");
+  await page.getByRole("button", { name: "Registrar primer cliente", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "Responsable", exact: true })).toBeVisible();
+  await fillContact(page);
+  await chooseResponsible(page, ids.duplicateB);
+  await page.getByRole("button", { name: "Guardar cliente", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  expect(database.writes).toHaveLength(1);
+  expect(database.writes[0]).toMatchObject({ method: "POST", body: { responsable_id: ids.duplicateB } });
+  expect(Object.hasOwn(database.writes[0].body, "responsable")).toBe(false);
+  await expect(page.getByRole("row").filter({ hasText: "Homónimo Prueba" })).toBeVisible();
+});
+
+test("/clientes UUID: edita contacto con responsable NULL sin tocar texto histórico", async ({ page }) => {
+  const database = await mockWiredClients(page, [wiredRow()]);
+  await page.goto("/clientes?responsables_uuid=enabled");
+  await page.getByRole("button", { name: "Acciones de Cliente Prueba", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Editar a Cliente Prueba", exact: true }).click();
+  await expect(page.getByText("Pendiente de vincular", { exact: true })).toBeVisible();
+  await page.getByRole("textbox", { name: "Empresa", exact: true }).fill("Historia conservada por wiring");
+  await page.getByRole("button", { name: "Guardar cambios", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  expect(database.writes).toHaveLength(1);
+  expect(database.writes[0].method).toBe("PATCH");
+  expect(Object.hasOwn(database.writes[0].body, "responsable_id")).toBe(false);
+  expect(Object.hasOwn(database.writes[0].body, "responsable")).toBe(false);
+  expect(database.rows[0].responsable).toBe("Ana García");
+  expect(database.rows[0].responsable_id).toBeNull();
+});
+
+test("/clientes UUID: Administrador reasigna por UUID con concurrencia optimista", async ({ page }) => {
+  const database = await mockWiredClients(page, [wiredRow({ responsable: "Carlos Prueba", responsable_id: ids.admin })]);
+  await page.goto("/clientes?responsables_uuid=enabled");
+  await page.getByRole("button", { name: "Acciones de Cliente Prueba", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Editar a Cliente Prueba", exact: true }).click();
+  await chooseResponsible(page, ids.seller);
+  await page.getByRole("button", { name: "Guardar cambios", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+  const patch = database.writes.find((write) => write.method === "PATCH");
+  expect(patch?.body).toMatchObject({ responsable_id: ids.seller });
+  expect(patch?.url).toContain("updated_at=eq.");
+  expect(database.rows[0].responsable_id).toBe(ids.seller);
+  expect(database.rows[0].responsable).toBe("Diego Prueba");
+});
+
+test("/clientes UUID: error RPC mantiene el alta bloqueada con reintento visible", async ({ page }) => {
+  const database = await mockWiredClients(page, [], "No tienes permisos para consultar responsables.");
+  await page.goto("/clientes?responsables_uuid=enabled");
+  await page.getByRole("button", { name: "Registrar primer cliente", exact: true }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "No tienes permisos" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Reintentar", exact: true })).toBeVisible();
+  await fillContact(page);
+  await page.getByRole("button", { name: "Guardar cliente", exact: true }).click();
+  expect(database.writes).toHaveLength(0);
+  await expect(page.getByRole("dialog")).toBeVisible();
 });

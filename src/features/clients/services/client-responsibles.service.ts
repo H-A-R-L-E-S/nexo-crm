@@ -25,33 +25,33 @@ async function assignmentActor(): Promise<ClientActor> {
   return actor;
 }
 
-export async function getClientResponsibles(clientId: string | null = null): Promise<ClientResponsible[]> {
-  assertClientResponsiblesEnabled();
+export async function getClientResponsibles(clientId: string | null = null, enabled?: boolean): Promise<ClientResponsible[]> {
+  assertClientResponsiblesEnabled(enabled);
   const { data, error } = await getSupabaseClient().rpc("client_responsibles", { p_client_id: clientId === null ? null : clientUuid(clientId) });
   if (error) fail(error);
   return data.map(({ id, nombres, apellidos, activo, rol, can_assign }) => ({ id, nombres, apellidos, activo, rol, can_assign }));
 }
 
-// Esta API se conectará al formulario UUID en la siguiente etapa; no usa OWNERS.
-export async function createAssignedCliente(input: AssignedClientInput) {
-  assertClientResponsiblesEnabled();
+// El backend deriva el texto histórico desde el UUID; el navegador no envía nombres.
+export async function createAssignedCliente(input: AssignedClientInput, enabled?: boolean) {
+  assertClientResponsiblesEnabled(enabled);
   const actor = await assignmentActor();
   const { ownerId, ...contact } = input;
-  const selected = assertResponsibleChange(actor, { currentOwnerId: undefined, nextOwnerId: ownerId, responsibles: await getClientResponsibles() });
+  const selected = assertResponsibleChange(actor, { currentOwnerId: undefined, nextOwnerId: ownerId, responsibles: await getClientResponsibles(null, enabled) });
   const row = { ...clientContactChanges(contact), responsable_id: selected } as Database["public"]["Tables"]["clientes"]["Insert"];
   const { data, error } = await getSupabaseClient().from("clientes").insert(row).select("*").single();
   if (error) fail(error);
   return toClient(data);
 }
 
-export async function updateAssignedCliente(request: ClientUpdateRequest) {
-  assertClientResponsiblesEnabled();
+export async function updateAssignedCliente(request: ClientUpdateRequest, enabled?: boolean) {
+  assertClientResponsiblesEnabled(enabled);
   const actor = await assignmentActor();
   if (Object.hasOwn(request, "responsableId")) {
     const { data: current, error } = await getSupabaseClient().from("clientes").select("responsable_id").eq("id", clientUuid(request.id)).maybeSingle();
     if (error) fail(error);
     if (!current) throw new Error("No se encontró el cliente autorizado.");
-    assertResponsibleChange(actor, { currentOwnerId: current.responsable_id, nextOwnerId: request.responsableId ?? null, responsibles: await getClientResponsibles(request.id) });
+    assertResponsibleChange(actor, { currentOwnerId: current.responsable_id, nextOwnerId: request.responsableId ?? null, responsibles: await getClientResponsibles(request.id, enabled) });
   }
   const result = await applyClientUpdate({
     async update(id, expectedUpdatedAt, changes) {
