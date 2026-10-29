@@ -2,9 +2,9 @@
 
 Fecha de preparación: 27 de octubre de 2026. Revisión final: 28 de octubre de 2026 (America/Lima).
 
-Estado: **preparación documental solamente**. Ninguna consulta o migración de este documento se ejecutó contra producción. No se usaron `.env.local`, `service_role`, `supabase link`, `db push`, `db pull --linked` ni conexiones remotas.
+Estado: el operador humano ejecutó en producción únicamente `anti-slop/sql/phase-7c23d-production-readonly-preflight.sql`. No se ejecutó ninguna migración ni SQL de escritura. Esta revisión no abrió conexiones remotas y no usó `.env.local`, `service_role`, `supabase link`, `db push` ni `db pull --linked`.
 
-Commit revisado: `9301b83 Completa fase 7C.2.3 responsables UUID y validacion Supabase local`.
+Commits revisados: `9301b83`, `08e430d` y `2608516`.
 
 ## Resumen ejecutivo
 
@@ -763,8 +763,98 @@ Antes de cualquier operación sobre producción se necesitan, por separado:
 9. **Cierre backend:** aceptación de C.2/C.3 y reapertura de escrituras comerciales.
 10. **Frontend:** aprobación separada de integración, cambio de constante y despliegue; nunca implícita en el despliegue SQL.
 
+## Preflight real de producción ejecutado en modo read-only
+
+Fecha de revisión de resultados: 28 de octubre de 2026 (America/Lima).
+
+Fuente de evidencia: resultados observados y confirmaciones de Dashboard proporcionados por el operador humano. Esta revisión no se conectó a producción ni volvió a ejecutar SQL. El único archivo reportado como ejecutado fue el paquete read-only de esta fase; no hubo migraciones ni escrituras.
+
+### Identidad y alcance confirmados
+
+- Dashboard: proyecto **Nexo CRM**, `branch/main`, **PRODUCTION**.
+- PostgreSQL `17.6`, `server_version_num = 170006`.
+- Base `postgres`, operador observado `postgres`, primario (`is_replica = false`).
+- `CLIENT_RESPONSIBLES_UUID_ENABLED` continúa deshabilitado según el repositorio; no se autorizó activación.
+
+### Cierre de resultados
+
+| Bloque | Resultado reportado | Cierre formal | Fundamento |
+|---|---|---|---|
+| `[01]` | REVIEW | **GO** | Versión compatible, primario y destino productivo confirmado visualmente por el operador. |
+| `[02]` | GO | **GO** | `pgcrypto` presente. |
+| `[03]` | GO | **GO** | `profiles`, `clientes` y `leads` existen con la forma relacional esperada. |
+| `[04]` | GO, 0 diferencias | **GO** | Columnas requeridas coinciden. |
+| `[05]` | GO | **GO** | `clientes.responsable_id` está ausente. |
+| `[06]` | REVIEW | **GO** | Revisión adicional confirmó las tres PK validadas, ninguna constraint sin validar y ausencia de la FK nueva. El operador indicó conformidad manual con el baseline. |
+| `[07]` | GO | **GO** | RLS/FORCE RLS conformes. |
+| `[08]` | GO | **GO** | Policies comerciales equivalentes y tres policies baseline de Profiles. |
+| `[09]` | REVIEW | **GO** | `anon` sin grants; Clientes CRUD para `authenticated`; Leads distribuido según baseline; Profiles SELECT y UPDATE únicamente de `nombres`/`apellidos`. Coincide con `auth_roles.sql` y `leads.sql`. |
+| `[10]` | REVIEW | **GO** | Operador `postgres`, owners `postgres` y capacidad BYPASSRLS. Cumple el guard de operador de confianza de `client_responsibles.sql`. |
+| `[11]` | GO | **GO** | Triggers base activos y trigger nuevo ausente. |
+| `[12]` | REVIEW | **GO** | Las definiciones completas exportadas de producción coinciden con el baseline requerido. Los cuerpos normalizados son idénticos, y firmas, defaults, retorno, lenguaje, volatilidad, seguridad y `search_path` también coinciden. Los MD5 distintos procedían de serializaciones completas generadas en versiones distintas de PostgreSQL, no de una diferencia funcional. |
+| `[13]` | GO | **GO** | Índice nuevo ausente. |
+| `[14]` | REVIEW | **GO** | Dashboard Data API expone `public` y `graphql_public`; `nexo_private` no está expuesto. |
+| `[15]` | GO | **GO** | No existe expansión parcial ni objetos accidentales. |
+| `[16]` | REVIEW | **GO** | `updated_at` conserva tipo/nullability, default `now()` y trigger activo; coincide con `schema.sql`. |
+| `[17]` | GO | **GO** | Salud mínima de datos conforme. |
+| `[18]` | REVIEW | **GO como snapshot predespliegue** | Conteo y huella quedaron capturados para comparación posterior; todavía no existe una huella postdespliegue. |
+| `[19]` | REVIEW | **GO para el preflight técnico** | Todos los bloques de inspección quedaron conformes. La ejecución de la migración sigue separada y requiere las aprobaciones operativas enumeradas en este documento. |
+
+### Fingerprint histórico protegido
+
+```text
+clientes_total = 1
+clientes_history_fingerprint = ed21b427602e3b236b5a135c9d0b11ff
+```
+
+Este valor es la referencia obligatoria para C.1. Cualquier diferencia posterior no explicada es NO-GO. No se debe modificar, reasignar ni interpretar el texto histórico para intentar igualarlo.
+
+### Revisión definitiva de ACL y configuración de funciones
+
+La segunda evidencia read-only permite cerrar owner, modo, configuración y ACL:
+
+- `nexo_private.active_role()`: owner `postgres`, `SECURITY DEFINER`, `search_path=""`; EXECUTE solo para `postgres` y `authenticated`. Coincide con `auth_roles.sql`, que revoca `public`, `anon` y `authenticated` y vuelve a conceder únicamente a `authenticated`.
+- `public.convert_lead(uuid,text,text,uuid)`: firma de cuatro argumentos conforme, owner `postgres`, `SECURITY DEFINER`, `search_path=""`; EXECUTE solo para `postgres` y `authenticated`. Coincide con `leads.sql`, que revoca `public`/`anon` y concede a `authenticated`.
+- `public.set_clientes_updated_at()`: owner `postgres`, `SECURITY INVOKER`, `proconfig = NULL`, `proacl = NULL`. El EXECUTE efectivo para `PUBLIC` y owner **es exactamente el ACL por defecto esperado** porque `schema.sql` no contiene `REVOKE`/`GRANT` para esta función. La ausencia de grant específico a `anon` no elimina la herencia desde `PUBLIC`; esto es baseline, no una deriva. `client_responsibles.sql` sustituirá la función y revocará deliberadamente EXECUTE a `public`, `anon` y `authenticated` durante la migración futura.
+
+Las pruebas SQL posteriores esperan que la versión migrada de `set_clientes_updated_at()` sea invocadora y tenga ACL endurecido; no exigen que ese endurecimiento exista antes de aplicar la migración. Por tanto, no queda ninguna discrepancia de ACL, owner, firma, modo o `proconfig`.
+
+### Comparación definitiva de `pg_get_functiondef()`
+
+El operador proporcionó los MD5 calculados directamente en producción mediante `md5(pg_get_functiondef(...))`. Para obtener el esperado sin inferirlo desde firma, ACL u owner, se recrearon exclusivamente las tres definiciones versionadas de `schema.sql`, `auth_roles.sql` y `leads.sql` en un clúster PostgreSQL 17.11 desechable, ligado solo a `127.0.0.1:55433`. Se consultó la misma expresión y se eliminó el clúster al terminar. No se usó el servicio persistente del puerto 5432, Supabase remoto ni credenciales de producción.
+
+| Función | MD5 producción (PostgreSQL 17.6) | MD5 baseline versionado (PostgreSQL 17.11) | Resultado |
+|---|---|---|---|
+| `nexo_private.active_role()` | `32a8d19bb72b8441c97f90f7dbd00b98` | `686aedfb00cf811f915cce2c22b2a172` | MD5 no comparable entre serializaciones; definición completa conforme |
+| `public.convert_lead(uuid,text,text,uuid)` | `581fcd729b56247ad05f87dcd693b5b6` | `78aa4051f37c7a62e297f32b184c89d9` | MD5 no comparable entre serializaciones; definición completa conforme |
+| `public.set_clientes_updated_at()` | `ba999eeeeb310383cd345e470c4bc215` | `ba999eeeeb310383cd345e470c4bc215` | **COINCIDE** |
+
+El operador aportó después las definiciones completas exportadas directamente desde producción. La comparación contra `auth_roles.sql` y `leads.sql` acreditó:
+
+- `active_role()`: mismo cuerpo SQL, retorno `text`, lenguaje `sql`, `STABLE`, `SECURITY DEFINER` y `search_path = ''`;
+- `convert_lead(...)`: mismos cuatro argumentos y defaults, mismo `RETURNS TABLE`, lenguaje `plpgsql`, `SECURITY DEFINER`, `search_path = ''` y mismo cuerpo, incluida la serialización por lead/correo y el manejo de `unique_violation`;
+- las transformaciones visibles de `pg_get_functiondef()` (`DEFAULT NULL::text`, `DEFAULT NULL::uuid`, mayúsculas, `TO` y delimitador `$function$`) son representación canónica, no cambios del contrato;
+- no existe ninguna sentencia añadida, eliminada o alterada en los cuerpos productivos.
+
+Para evitar una equivalencia inferida, se extrajeron los cuerpos entre delimitadores, se normalizaron exclusivamente finales de línea y se compararon como UTF-8. Ambos resultaron idénticos:
+
+| Función | SHA-256 cuerpo producción | SHA-256 cuerpo baseline | Resultado |
+|---|---|---|---|
+| `active_role()` | `c6037a8e5d2786a5098d9ff307117a3aae182897ef013737c7045931e48ce889` | `c6037a8e5d2786a5098d9ff307117a3aae182897ef013737c7045931e48ce889` | **IDÉNTICO** |
+| `convert_lead(...)` | `556c3284e819021a7c283de901cb17a0c7517eeddc4ff973fb603be54f044286` | `556c3284e819021a7c283de901cb17a0c7517eeddc4ff973fb603be54f044286` | **IDÉNTICO** |
+
+Los MD5 anteriores se calcularon sobre la serialización completa de `pg_get_functiondef()` producida por PostgreSQL 17.6 y 17.11. Esa salida incorpora formato y bytes no semánticos; por ello el hash completo no es portable entre ambas evidencias. La definición completa permite cerrar esa ambigüedad: no existe deriva textual en el cuerpo ni deriva semántica o contractual. Como control adicional, los hashes productivos tampoco coinciden con las definiciones futuras de `client_responsibles.sql`, por lo que no revelan una aplicación parcial de la migración.
+
+También permanecen pendientes antes de autorizar una migración: backup/PITR confirmado, ventana/mantenimiento, aprobación de hashes, responsables operativos y firma humana final. Estas aprobaciones no se infieren del catálogo.
+
+### Decisión
+
+No se reportó deriva en los bloques mecánicos, las ACL y configuraciones de `[12]` son conformes, y las definiciones completas cierran la única ambigüedad restante. El preflight técnico cumple el criterio de **cero diferencias sin explicar**. Esta decisión no ejecuta ni autoriza por sí sola la migración: siguen siendo obligatorias las aprobaciones humanas y condiciones operativas previas descritas arriba.
+
+**7C.2.3D PREFLIGHT PRODUCCIÓN = GO — MIGRACIÓN AÚN NO EJECUTADA**
+
 ## Estado de esta fase
 
-Se revisaron informes A/B/C, ambos SQL funcionales, las nueve migraciones y el mecanismo de activación. Las migraciones siguen coincidiendo byte a byte con sus fuentes. Los bloques de este informe fueron revisados estáticamente; no se ejecutó ninguna consulta de preflight ni se atribuye un PASS de producción. No se realizó ninguna operación remota ni se modificaron Auth, RLS, `.env.local`, datos históricos o configuración productiva. No hubo commit ni push.
+Se revisaron informes A/B/C, ambos SQL funcionales, las nueve migraciones, el mecanismo de activación y los resultados productivos suministrados. Las migraciones siguen sin ejecutarse. Esta revisión no realizó operaciones remotas ni modificó Auth, RLS, `.env.local`, datos históricos o configuración productiva. No hubo commit ni push.
 
-**7C.2.3D PREFLIGHT PREPARADO — NO EJECUTADO.**
+El paquete read-only fue ejecutado por el operador humano; la migración continúa **NO EJECUTADA**.
