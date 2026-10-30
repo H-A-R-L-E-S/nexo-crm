@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { CLIENT_RESPONSIBLE_IDS as ids, RESPONSIBLE_FIXTURES } from "./support/client-responsibles-fixtures";
 import { login } from "./support/login";
 
 test.beforeEach(async ({ request }) => {
@@ -17,6 +18,7 @@ type ClientRow = {
   direccion: string;
   notas: string;
   responsable: string;
+  responsable_id: string | null;
   ultimo_contacto: string | null;
   created_at: string;
   updated_at: string;
@@ -34,21 +36,42 @@ const initialClient: ClientRow = {
   direccion: "Lima",
   notas: "Cliente inicial",
   responsable: "Ana García",
+  responsable_id: null,
   ultimo_contacto: null,
   created_at: "2026-09-01T12:00:00Z",
   updated_at: "2026-09-01T12:00:00Z",
 };
 
+async function chooseResponsible(page: Page, id: string) {
+  const search = page.getByRole("combobox", { name: "Responsable", exact: true });
+  await search.fill(id);
+  const option = page
+    .getByRole("listbox", { name: "Responsables reales", exact: true })
+    .getByRole("option")
+    .filter({ hasText: id });
+  await expect(option).toBeVisible();
+  await option.click();
+}
+
 async function mockClientes(page: Page) {
   const rows = [initialClient];
   let unavailable = false;
+  await page.route("http://127.0.0.1:54321/rest/v1/rpc/client_responsibles", (route) => route.fulfill({ json: RESPONSIBLE_FIXTURES }));
   await page.route("http://127.0.0.1:54321/rest/v1/clientes**", async (route) => {
     const request = route.request();
     const url = new URL(request.url());
     const id = url.searchParams.get("id")?.replace("eq.", "");
     const respond = (body: unknown, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body) });
     if (unavailable) return respond({ code: "MOCK_ERROR", message: "Servicio no disponible" }, 503);
-    if (request.method() === "GET") return respond(id ? rows.filter((row) => row.id === id) : rows);
+    if (request.method() === "GET") {
+      const selected = id ? rows.filter((row) => row.id === id) : rows;
+      const single = request.headers().accept?.includes("vnd.pgrst.object") ?? false;
+      if (url.searchParams.get("select") === "responsable_id") {
+        const body = selected[0] ? { responsable_id: selected[0].responsable_id } : null;
+        return respond(single ? body : body ? [body] : []);
+      }
+      return respond(single ? selected[0] ?? null : selected);
+    }
     if (request.method() === "POST") {
       const input = request.postDataJSON() as Partial<ClientRow>;
       const row: ClientRow = { ...initialClient, ...input, id: crypto.randomUUID(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
@@ -88,6 +111,7 @@ test("lista, filtra y conserva el CRUD de clientes al recargar", async ({ page }
   await page.getByRole("textbox", { name: "Empresa" }).fill("Estudio Horizonte");
   await page.getByRole("textbox", { name: "Correo electrónico" }).fill("sofia@example.com");
   await page.getByRole("textbox", { name: "Teléfono" }).fill("+51 999 123 456");
+  await chooseResponsible(page, ids.duplicateB);
   await page.getByRole("button", { name: "Guardar cliente" }).click();
   await expect(createDialog).toBeHidden();
   const row = page.getByRole("row").filter({ hasText: "Sofía Prueba" });

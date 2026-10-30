@@ -32,6 +32,7 @@ async function mockDirectories(page: Page) {
   const mutations: string[] = [];
   await page.route(`${api}/tareas**`, (route) => route.fulfill({ json: [] }));
   await page.route(`${api}/rpc/lead_responsibles`, (route) => route.fulfill({ json: people }));
+  await page.route(`${api}/rpc/client_responsibles`, (route) => route.fulfill({ json: [] }));
   for (const [path, key] of [["clientes", "clients"], ["leads", "leads"]] as const) {
     await page.route(`${api}/${path}**`, (route) => {
       if (route.request().method() !== "GET") {
@@ -189,7 +190,11 @@ for (const directory of [
       await expect(dialog).toBeVisible();
       await focusStaysInDialog(page, dialog);
       await dialog.getByRole("button", { name: directory.save, exact: true }).click();
-      await expect(dialog.getByRole("alert")).toBeVisible();
+      if (directory.title === "Clientes") {
+        await expect(dialog.getByRole("alert").filter({ hasText: "Revisa los campos indicados antes de guardar." })).toBeVisible();
+      } else {
+        await expect(dialog.getByRole("alert")).toBeVisible();
+      }
       const dialogContrast = await assertContrast(page, '[role="dialog"] *');
       await testInfo.attach(`contrast-${directory.title}-${theme}-dialog.json`, { body: JSON.stringify(dialogContrast, null, 2), contentType: "application/json" });
       await noOverflow(page);
